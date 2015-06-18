@@ -7,6 +7,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //var passport = require('passport');
 
+// load environment variables
+var env = require('node-env-file');
+env(__dirname + '/.env');
+
 // models and db connection
 require('./models/Emails');
 mongoose.connect('mongodb://localhost/doorway');
