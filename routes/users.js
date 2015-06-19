@@ -1,9 +1,16 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
-/* GET users listing. */
+/* GET list of all users */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+	User.find(function(err, posts){
+		if (err)
+			return next(err);
+
+		res.json(posts);
+	});
 });
 
 module.exports = router;
