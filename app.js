@@ -12,11 +12,17 @@ var env = require('node-env-file');
 env(__dirname + '/.env');
 
 // models and db connection
+require('./models/Users');
+require('./models/Properties')
 require('./models/Emails');
 mongoose.connect('mongodb://localhost/doorway');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+// routes
+var routes = require('./routes/index'),
+  users = require('./routes/users'),
+  managers = require('./routes/managers'),
+  tenants = require('./routes/tenants'),
+  properties = require('./routes/properties');
 
 var app = express();
 
@@ -33,6 +39,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/users', users);
+app.use('/managers', managers);
+app.use('/tenants', tenants);
+app.use('/properties', properties);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
