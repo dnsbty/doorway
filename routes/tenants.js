@@ -3,10 +3,15 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	Tenant = mongoose.model('Tenant'),
-	Property = mongoose.model('Property');
+	Property = mongoose.model('Property'),
+	jwt = require('express-jwt'),
+	auth = jwt({
+		secret: process.env.JWT_SECRET,
+		userProperty: 'payload'
+	});
 
 /* GET list of all tenants */
-router.get('/', function(req, res, next) {
+router.get('/', auth, function(req, res, next) {
 	Tenant.find({ '_type' : 'Tenant' }, 'username name_first name_last phone created last_login property', function(err, tenants){
 		if (err)
 			return next(err);
@@ -16,12 +21,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET specified tenant */
-router.get('/:tenant', function(req, res) {
+router.get('/:tenant', auth, function(req, res) {
 	res.json(req.tenant);
 });
 
 /* POST a new tenant */
-router.post('/:property', function(req, res, next) {
+router.post('/:property', auth, function(req, res, next) {
 	if (!req.body.username || !req.body.password)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	

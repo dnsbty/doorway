@@ -2,10 +2,15 @@ var express = require('express'),
 	router = express.Router(),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	Manager = mongoose.model('Manager');
+	Manager = mongoose.model('Manager'),
+	jwt = require('express-jwt'),
+	auth = jwt({
+		secret: process.env.JWT_SECRET,
+		userProperty: 'payload'
+	});
 
 /* GET list of all managers */
-router.get('/', function(req, res, next) {
+router.get('/', auth, function(req, res, next) {
 	Manager.find({ '_type' : 'Manager' }, function(err, managers){
 		if (err)
 			return next(err);
@@ -15,12 +20,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET specified manager */
-router.get('/:manager', function(req, res) {
+router.get('/:manager', auth, function(req, res) {
 	res.json(req.manager);
 });
 
 /* GET list of all properties belonging to a manager */
-router.get('/:manager/properties', function(req, res, next) {
+router.get('/:manager/properties', auth, function(req, res, next) {
 	req.manager.populate('properties', function(err, manager) {
 		if (err)
 			return next(err);
@@ -29,7 +34,7 @@ router.get('/:manager/properties', function(req, res, next) {
 })
 
 /* POST a new manager */
-router.post('/', function(req, res, next) {
+router.post('/', auth, function(req, res, next) {
 	if (!req.body.username || !req.body.password)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	

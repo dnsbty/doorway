@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-//var passport = require('passport');
+var passport = require('passport');
 
 // load environment variables
 var env = require('node-env-file');
@@ -17,6 +17,9 @@ require('./models/Properties')
 require('./models/Emails');
 mongoose.connect('mongodb://localhost/doorway');
 
+// config files
+require('./config/passport');
+
 // routes
 var routes = require('./routes/index'),
   users = require('./routes/users'),
@@ -25,6 +28,7 @@ var routes = require('./routes/index'),
   properties = require('./routes/properties');
 
 var app = express();
+app.set('env', process.env.NODE_ENV);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,6 +41,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
 app.use('/', routes);
 app.use('/users', users);

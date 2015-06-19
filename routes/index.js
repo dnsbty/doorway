@@ -1,7 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Email = mongoose.model('Email');
+var express = require('express'),
+	router = express.Router(),
+	mongoose = require('mongoose'),
+	Email = mongoose.model('Email'),
+	jwt = require('express-jwt'),
+	auth = jwt({
+		secret: process.env.JWT_SECRET,
+		userProperty: 'payload'
+	});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

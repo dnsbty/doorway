@@ -27,7 +27,7 @@ UserSchema.methods.validPassword = function(password) {
 	return this.hash === hash;
 }
 
-/*UserSchema.methods.generateJWT = function() {
+UserSchema.methods.generateJWT = function() {
 	// set expiration to 60 days
 	var today = new Date();
 	var exp = new Date(today);
@@ -37,8 +37,8 @@ UserSchema.methods.validPassword = function(password) {
 		_id: this._id,
 		username: this.username,
 		exp: parseInt(exp.getTime() / 1000)
-	}, 'SECRET');
-};*/
+	}, process.env.JWT_SECRET);
+};
 
 /* Schema for property managers */
 var ManagerSchema = UserSchema.extend({
