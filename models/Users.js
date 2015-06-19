@@ -1,11 +1,20 @@
-var mongoose = require('mongoose');
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend'),
+	crypto = require('crypto'),
+	jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema({
 	username: { type: String, lowercase: true, unique: true },
 	hash: String,
-	salt: String
+	salt: String,
+	name_first: String,
+	name_last: String,
+	phone: String,
+	created: { type: Date, default: Date.now },
+	last_login: { type: Date, default: Date.now }
+}, {
+	collection : 'users',
+	discriminatorKey: '_type'
 });
 
 UserSchema.methods.setPassword = function(password) {
@@ -31,4 +40,19 @@ UserSchema.methods.validPassword = function(password) {
 	}, 'SECRET');
 };*/
 
+/* Schema for property managers */
+var ManagerSchema = UserSchema.extend({
+	properties: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Property'
+	}]
+});
+
+/* Schema for tenants */
+var TenantSchema = UserSchema.extend({
+  property : { type: mongoose.Schema.Types.ObjectId, ref: 'Property' }
+})
+ 
 mongoose.model('User', UserSchema);
+mongoose.model('Manager', ManagerSchema);
+mongoose.model('Tenant', TenantSchema);
