@@ -4,7 +4,8 @@ var express = require('express'),
 	Property = mongoose.model('Property'),
 	Tenant = mongoose.model('Tenant'),
 	crypto = require('crypto'),
-	mandrill = require('mandrill-api/mandrill').Mandrill(process.env.MANDRILL_KEY),
+	mandrill_lib = require('mandrill-api/mandrill'),
+	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -72,6 +73,7 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 
 			mandrill.messages.sendTemplate({
 				'template_name': 'tenant-invite',
+				'template_content': null,
 				'message': {
 					'from_email': req.property.manager.email,
 					'from_name': req.property.manager.getFullName(),
@@ -88,10 +90,10 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 						'name': 'tenant_name',
 						'content': tenant.name_first
 					},{
-						'name': 'landlord_name',
+						'name': 'manager_name',
 						'content': req.property.manager.getFullName()
 					},{
-						'name': 'landlord_phone',
+						'name': 'manager_phone',
 						'content': req.property.manager.phone
 					},{
 						'name': 'link',
@@ -102,7 +104,6 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 			}, function(result) {
 				return res.json(tenant);
 			}, function(err) {
-				console.log('A mandrill error occurred: ' + err.name + ' - ' + err.message);
 				return next(err);
 			});
 		});
