@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
 	email: { type: String, lowercase: true, unique: true },
-	hash: String,
-	salt: String,
+	hash: { type: String, select: false },
+	salt: { type: String, select: false },
 	name_first: String,
 	name_last: String,
 	phone: String,
