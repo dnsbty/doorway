@@ -32,6 +32,7 @@ router.post('/', auth, function(req, res, next) {
 		return res.status(400).json({ message: 'Please provide a street address to identify the property' });
 	
 	var property = new Property(req.body);
+	property.manager = req.payload;
 
 	property.save(function(err) {
 		if (err)
