@@ -4,6 +4,7 @@ var express = require('express'),
 	Property = mongoose.model('Property'),
 	Tenant = mongoose.model('Tenant'),
 	crypto = require('crypto'),
+	mandrill = require('mandrill-api/mandrill').Mandrill(process.env.MANDRILL_KEY),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -51,18 +52,59 @@ router.get('/:property/tenants', auth, function(req, res, next) {
 
 /* POST a new tenant to a specific property */
 router.post('/:property/tenants', auth, function(req, res, next) {
-	if (!req.body.email)
+	if (!req.body.email || !req.body.name_first)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	
-	var tenant = new Tenant();
-	tenant.email = req.body.email;
-	tenant.setPassword(crypto.randomBytes(8).toString('hex'));
-	tenant.property = req.property;
-
-	tenant.save(function(err) {
+	req.property.populate('manager', function(err, post) {
 		if (err)
 			return next(err);
-		return res.json(tenant);
+	
+		var tenant = new Tenant();
+		tenant.email = req.body.email;
+		tenant.name_first = req.body.name_first;
+		tenant.setPassword(crypto.randomBytes(8).toString('hex'));
+		tenant.property = req.property;
+
+		tenant.save(function(err) {
+			if (err)
+				return next(err);
+
+			mandrill.messages.sendTemplate({
+				'template_name': 'tenant-invite',
+				'message': {
+					'from_email': req.property.manager.email,
+					'from_name': req.property.manager.getFullName(),
+					'to': [{
+						'email': tenant.email,
+						'name': tenant.name_first,
+						'type': 'to'
+					}],
+					'headers': {
+						'Reply-To': 'dennis@doorwayapp.com'
+					},
+					'merge_language': 'handlebars',
+					'global_merge_vars': [{
+						'name': 'tenant_name',
+						'content': tenant.name_first
+					},{
+						'name': 'landlord_name',
+						'content': req.property.manager.getFullName()
+					},{
+						'name': 'landlord_phone',
+						'content': req.property.manager.phone
+					},{
+						'name': 'link',
+						'content': 'https://doorwayapp.com'
+					}]
+				},
+				'async': true
+			}, function(result) {
+				return res.json(tenant);
+			}, function(err) {
+				console.log('A mandrill error occurred: ' + err.name + ' - ' + err.message);
+				return next(err);
+			});
+		});
 	});
 });
 

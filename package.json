@@ -13,6 +13,7 @@
     "express": "~4.12.4",
     "express-jwt": "^3.0.1",
     "jsonwebtoken": "^5.0.2",
+    "mandrill-api": "^1.0.45",
     "mongoose": "^4.0.5",
     "mongoose-schema-extend": "^0.1.7",
     "morgan": "~1.5.3",
