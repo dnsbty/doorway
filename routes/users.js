@@ -2,6 +2,7 @@ var express = require('express'),
 	router = express.Router(),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
+	passport = require('passport'),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,

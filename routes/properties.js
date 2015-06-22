@@ -2,6 +2,8 @@ var express = require('express'),
 	router = express.Router(),
 	mongoose = require('mongoose'),
 	Property = mongoose.model('Property'),
+	Tenant = mongoose.model('Tenant'),
+	crypto = require('crypto'),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -34,6 +36,33 @@ router.post('/', auth, function(req, res, next) {
 		if (err)
 			return next(err);
 		return res.json(property);
+	});
+});
+
+/* GET list of all tenants in a property */
+router.get('/:property/tenants', auth, function(req, res, next) {
+	Tenant.find({ '_type' : 'Tenant' }, 'email name_first name_last phone created last_login property', function(err, tenants){
+		if (err)
+			return next(err);
+
+		res.json(tenants);
+	});
+});
+
+/* POST a new tenant to a specific property */
+router.post('/:property/tenants', auth, function(req, res, next) {
+	if (!req.body.email)
+		return res.status(400).json({ message: 'Please fill out all fields' });
+	
+	var tenant = new Tenant();
+	tenant.email = req.body.email;
+	tenant.setPassword(crypto.randomBytes(8).toString('hex'));
+	tenant.property = req.property;
+
+	tenant.save(function(err) {
+		if (err)
+			return next(err);
+		return res.json(tenant);
 	});
 });
 

@@ -12,7 +12,7 @@ var express = require('express'),
 
 /* GET list of all tenants */
 router.get('/', auth, function(req, res, next) {
-	Tenant.find({ '_type' : 'Tenant' }, 'username name_first name_last phone created last_login property', function(err, tenants){
+	Tenant.find({ '_type' : 'Tenant' }, 'email name_first name_last phone created last_login property', function(err, tenants){
 		if (err)
 			return next(err);
 
@@ -26,12 +26,12 @@ router.get('/:tenant', auth, function(req, res) {
 });
 
 /* POST a new tenant */
-router.post('/:property', auth, function(req, res, next) {
-	if (!req.body.username || !req.body.password)
+/*router.post('/:property', auth, function(req, res, next) {
+	if (!req.body.email || !req.body.password)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	
 	var tenant = new Tenant();
-	tenant.username = req.body.username;
+	tenant.email = req.body.email;
 	tenant.setPassword(req.body.password);
 	tenant.property = req.property;
 
@@ -40,7 +40,7 @@ router.post('/:property', auth, function(req, res, next) {
 			return next(err);
 		return res.json(tenant);
 	});
-});
+});*/
 
 /* Get tenant object when a tenant param is supplied */
 router.param('tenant', function(req, res, next, id) {
