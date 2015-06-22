@@ -12,7 +12,7 @@ var express = require('express'),
 
 /* GET list of all tenants */
 router.get('/', auth, function(req, res, next) {
-	Tenant.find({ '_type' : 'Tenant' }, 'email name_first name_last phone created last_login property', function(err, tenants){
+	Tenant.find({ '_type' : 'Tenant', current: {$ne: false} }, function(err, tenants){
 		if (err)
 			return next(err);
 
@@ -24,6 +24,15 @@ router.get('/', auth, function(req, res, next) {
 router.get('/:tenant', auth, function(req, res) {
 	res.json(req.tenant);
 });
+
+/* DELETE a tenant */
+router.delete('/:tenant', auth, function(req, res) {
+	req.tenant.disable(function(err, tenant){
+		if (err)
+			return next(err);
+		res.json(tenant);
+	});
+})
 
 /* POST a new tenant */
 /*router.post('/:property', auth, function(req, res, next) {

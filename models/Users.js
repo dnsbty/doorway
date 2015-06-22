@@ -50,8 +50,14 @@ var ManagerSchema = UserSchema.extend({
 
 /* Schema for tenants */
 var TenantSchema = UserSchema.extend({
-  property : { type: mongoose.Schema.Types.ObjectId, ref: 'Property' }
-})
+	property : { type: mongoose.Schema.Types.ObjectId, ref: 'Property' },
+	current: { type: Boolean, default: true },
+});
+
+TenantSchema.methods.disable = function(cb) {
+	this.current = false;
+	this.save(cb);
+};
  
 mongoose.model('User', UserSchema);
 mongoose.model('Manager', ManagerSchema);

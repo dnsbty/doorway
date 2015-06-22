@@ -41,7 +41,7 @@ router.post('/', auth, function(req, res, next) {
 
 /* GET list of all tenants in a property */
 router.get('/:property/tenants', auth, function(req, res, next) {
-	Tenant.find({ '_type' : 'Tenant' }, 'email name_first name_last phone created last_login property', function(err, tenants){
+	Tenant.find({ '_type' : 'Tenant', current: {$ne: false}}, function(err, tenants){
 		if (err)
 			return next(err);
 
