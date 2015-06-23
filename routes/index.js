@@ -14,10 +14,11 @@ router.get('/', function(req, res, next) {
 });
 
 /* POST new email */
-router.post('/email', function(req, res, next) {
-	console.log(req.body);
+router.post('/emails', function(req, res, next) {
+	if (!req.body.email || req.body.email == '')
+		return res.status(400).json({ message: 'Please fill out all fields' });
+
 	var email = new Email(req.body);
-	console.log(email);
 	email.save(function(err, post){
 		if (err)
 			return next(err);

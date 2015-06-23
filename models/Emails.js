@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 
 var EmailSchema = new mongoose.Schema({
-	email: String,
+	email: { 
+		type: String,
+		lowercase: true,
+		unique: true
+	},
 	datetime: {
 		type: Date,
 		default: Date.now
