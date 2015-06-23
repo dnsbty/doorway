@@ -25,14 +25,26 @@ router.get('/:tenant', auth, function(req, res) {
 	res.json(req.tenant);
 });
 
+/* PUT changes to tenant info */
+router.put('/:tenant', auth, function(req, res, next) {
+	req.tenant.email = req.body.email;
+	req.tenant.name_first = req.body.name_first;
+	req.tenant.name_last = req.body.name_last;
+	req.tenant.phone = req.body.phone;
+	if (req.body.password && req.body.password == req.body.password2)
+		req.tenant.setPassword(req.body.password);
+	req.tenant.save();
+	res.json(req.tenant);
+});
+
 /* DELETE a tenant */
 router.delete('/:tenant', auth, function(req, res) {
 	req.tenant.disable(function(err, tenant){
 		if (err)
 			return next(err);
-		res.json(tenant);
+		res.json(req.tenant);
 	});
-})
+});
 
 /* POST a new tenant */
 /*router.post('/:property', auth, function(req, res, next) {
