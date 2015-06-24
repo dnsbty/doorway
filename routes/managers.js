@@ -34,7 +34,7 @@ router.get('/:manager/properties', auth, function(req, res, next) {
 })
 
 /* POST a new manager */
-router.post('/', auth, function(req, res, next) {
+router.post('/', function(req, res, next) {
 	if (!req.body.email || !req.body.password)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	

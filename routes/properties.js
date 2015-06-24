@@ -95,7 +95,7 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 						'content': req.property.manager.phone
 					},{
 						'name': 'link',
-						'content': 'https://doorwayapp.com'
+						'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
 					}]
 				},
 				'async': true

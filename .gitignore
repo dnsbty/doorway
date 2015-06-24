@@ -5,3 +5,4 @@ config.json
 *.sublime-project
 *.sublime-workspace
 npm-debug.log
+*.paw
