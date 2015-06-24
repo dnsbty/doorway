@@ -42,10 +42,21 @@ router.post('/', function(req, res, next) {
 	manager.email = req.body.email;
 	manager.setPassword(req.body.password);
 
+	// optional fields
+	if (req.body.name_first && req.body.name_first !== '')
+		manager.name_first = req.body.name_first;
+	if (req.body.name_last && req.body.name_last !== '')
+		manager.name_last = req.body.name_last;
+	if (req.body.phone && req.body.phone !== '')
+		manager.phone = req.body.phone;
+
 	manager.save(function(err) {
 		if (err)
 			return next(err);
-		return res.json(manager);
+		return res.json({
+			manager: manager,
+			token: manager.generateJWT()
+		});
 	});
 });
 
