@@ -46,22 +46,22 @@ router.delete('/:tenant', auth, function(req, res) {
 	});
 });
 
-/* POST a new tenant */
-/*router.post('/:property', auth, function(req, res, next) {
-	if (!req.body.email || !req.body.password)
-		return res.status(400).json({ message: 'Please fill out all fields' });
-	
-	var tenant = new Tenant();
-	tenant.email = req.body.email;
-	tenant.setPassword(req.body.password);
-	tenant.property = req.property;
+/* POST a new tenant login */
+router.post('/:tenant/login', function(req, res, next) {
+	if (!req.body.hash)
+		return res.status(400).json({ message: 'Please include all fields' });
 
-	tenant.save(function(err) {
-		if (err)
-			return next(err);
-		return res.json(tenant);
+	if (req.tenant.last_login || req.body.hash !== req.tenant.hash)
+		return res.status(403).json({ message: 'Invalid account' });
+
+	req.tenant.last_login = Date.now();
+	req.tenant.save();
+
+	return res.json({
+		user: req.tenant,
+		token: req.tenant.generateJWT()
 	});
-});*/
+});
 
 /* Get tenant object when a tenant param is supplied */
 router.param('tenant', function(req, res, next, id) {

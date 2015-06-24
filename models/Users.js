@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
 	email: { type: String, lowercase: true, unique: true },
-	hash: { type: String, select: false },
-	salt: { type: String, select: false },
+	hash: { type: String },
+	salt: { type: String },
 	name_first: String,
 	name_last: String,
 	phone: String,
@@ -25,6 +25,13 @@ UserSchema.methods.setPassword = function(password) {
 UserSchema.methods.validPassword = function(password) {
 	var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 	return this.hash === hash;
+};
+
+UserSchema.methods.toJSON = function() {
+	var user = this.toObject();
+	delete user.hash;
+	delete user.salt;
+	return user;
 };
 
 UserSchema.methods.generateJWT = function() {

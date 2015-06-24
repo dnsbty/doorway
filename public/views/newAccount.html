@@ -1,0 +1,18 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<h3>Your Account</h3>
+		<p>Doorway uses your bank account to create an eCheck each month.  We encrypt this data using the best modern technologies.</p>
+		<form ng-submit="newAccount()" style="margin-top:30px;">
+			<div class="alert alert-danger" ng-show="error">
+				{{ error }}
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="Routing Number" ng-model="account.routing_number">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="Account Number" ng-model="account.account_number">
+			</div>
+			<button type="submit" class="btn btn-primary btn-block input-lg">Add Bank Account</button>
+		</form>
+	</div>
+</div>

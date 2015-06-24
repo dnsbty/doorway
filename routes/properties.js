@@ -66,6 +66,7 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		tenant.name_first = req.body.name_first;
 		tenant.setPassword(crypto.randomBytes(8).toString('hex'));
 		tenant.property = req.property;
+		tenant.last_login = null;
 
 		tenant.save(function(err) {
 			if (err)
@@ -82,9 +83,6 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 						'name': tenant.name_first,
 						'type': 'to'
 					}],
-					'headers': {
-						'Reply-To': 'dennis@doorwayapp.com'
-					},
 					'merge_language': 'handlebars',
 					'global_merge_vars': [{
 						'name': 'tenant_name',

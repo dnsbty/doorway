@@ -1,7 +1,7 @@
-app.factory('auth', ['$http', '$window', function($http, $window) {
+app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $filter) {
 	var auth = {
-		saveToken: function(token) {
-			$window.localStorage['doorway-token'] = token;
+		currentUser: function() {
+			return angular.fromJson($window.localStorage['doorway-user']);
 		},
 		getToken: function(token) {
 			return $window.localStorage['doorway-token'];
@@ -15,13 +15,6 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
 				return false;
 			}
 		},
-		currentUser: function() {
-			if (auth.isLoggedIn()){
-				var token = auth.getToken();
-				var payload = JSON.parse($window.atob(token.split('.')[1]));
-				return payload.username;
-			}
-		},
 		login: function(username, password) {
 			return $http.post('/users/login', user).success(function(data) {
 				auth.saveToken(data.token);
@@ -29,6 +22,22 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
 		},
 		logout: function() {
 			$window.localStorage.removeItem('doorway-token');
+			$window.localStorage.removeItem('doorway-user');
+		},
+		newTenantLogin: function(id, hash) {
+			console.log(id);
+			return $http.post('/tenants/' + id +'/login', { hash: hash }).success(function(data) {
+				auth.saveToken(data.token);
+				auth.saveCurrentUser(data.user);
+			}).error(function(err) {
+				console.log(err);
+			});
+		},
+		saveCurrentUser: function(user) {
+			$window.localStorage['doorway-user'] = angular.toJson(user);
+		},
+		saveToken: function(token) {
+			$window.localStorage['doorway-token'] = token;
 		}
 	};
 	return auth;
