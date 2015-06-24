@@ -15,6 +15,7 @@ env(__dirname + '/.env');
 require('./models/Users');
 require('./models/Properties')
 require('./models/Emails');
+require('./models/Accounts');
 mongoose.connect('mongodb://localhost/doorway');
 
 // config files

@@ -4,6 +4,7 @@ var express = require('express'),
 	User = mongoose.model('User'),
 	Tenant = mongoose.model('Tenant'),
 	Property = mongoose.model('Property'),
+	Account = mongoose.model('Account'),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -62,6 +63,21 @@ router.post('/:tenant/login', function(req, res, next) {
 		token: req.tenant.generateJWT()
 	});
 });
+
+/* POST a new tenant bank account */
+router.post('/:tenant/accounts', function(req, res, next) {
+	if (!req.body.id)
+		return res.status(400).json({ message: 'Please include all fields' });
+
+	var account = new Account();
+	account.token = req.body.id;
+	account.bank_name = req.body.bank_account.bank_name;
+	account.last4 = req.body.bank_account.last4;
+	account.created = req.body.created * 1000;
+	account.owner = req.tenant;
+	console.log(account.save());
+	return res.json(account);
+})
 
 /* Get tenant object when a tenant param is supplied */
 router.param('tenant', function(req, res, next, id) {

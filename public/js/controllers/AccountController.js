@@ -5,6 +5,9 @@ app.controller('AccountController', [
 	'stripe',
 	'accounts',
 	function($scope, $state, auth, stripe, accounts) {
+		$scope.account = {};
+		$scope.user = auth.currentUser();
+
 		$scope.newAccount = function() {
 			$scope.error = null;
 			if (!$scope.account.routing_number || $scope.account.routing_number === '' ||
@@ -29,7 +32,7 @@ app.controller('AccountController', [
 				routing_number: $scope.account.routing_number,
 				account_number: $scope.account.account_number
 			}).then(function(token) {
-				accounts.newAccount(token);
+				accounts.newAccount($scope.user._id, token);
 			}).then(function() {
 				$state.go('verifyAccount');
 			}).catch(function (err) {
