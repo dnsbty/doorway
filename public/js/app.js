@@ -26,8 +26,8 @@ app.config([
 			onEnter: ['$stateParams', 'auth', function($stateParams, auth) {
 				if ($stateParams.id == '' || $stateParams.token == '')
 					$state.go('home');
-				
-				if (!auth.isLoggedIn)
+
+				if (!auth.isLoggedIn())
 					auth.newTenantLogin($stateParams.id, $stateParams.token);
 			}]
 		})
@@ -55,6 +55,14 @@ app.config([
 			controller: 'AccountController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
+					$state.go('home');
+			}]
+		})
+		.state('login', {
+			url: '/login',
+			controller: 'AuthController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (auth.isLoggedIn())
 					$state.go('home');
 			}]
 		})
