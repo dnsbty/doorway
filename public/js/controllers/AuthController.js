@@ -8,7 +8,7 @@ app.controller('AuthController', [
 		$scope.login = function() {
 			auth.login($scope.user)
 			.error(function(err) {
-				$scope.error = err;
+				$scope.error = err.message;
 			}).then(function() {
 				$state.go('home');
 			});

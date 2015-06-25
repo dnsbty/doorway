@@ -15,7 +15,7 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 				return false;
 			}
 		},
-		login: function(username, password) {
+		login: function(user) {
 			return $http.post('/users/login', user).success(function(data) {
 				auth.saveToken(data.token);
 			})

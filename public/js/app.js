@@ -60,6 +60,7 @@ app.config([
 		})
 		.state('login', {
 			url: '/login',
+			templateUrl: './views/login.html',
 			controller: 'AuthController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (auth.isLoggedIn())
