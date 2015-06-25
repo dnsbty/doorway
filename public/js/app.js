@@ -1,4 +1,4 @@
-var app = angular.module('doorway', ['ui.router', 'angular-stripe']);
+var app = angular.module('doorway', ['ui.router', 'angular-stripe', 'angulartics', 'angulartics.google.analytics']);
 
 app.config(function (stripeProvider) {
 	stripeProvider.setPublishableKey(window.stripeKey);
