@@ -60,10 +60,7 @@ var ManagerSchema = UserSchema.extend({
 	properties: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Property'
-	}],
-	stripe_account: String,
-	stripe_secret: String,
-	stripe_publishable: String
+	}]
 });
 
 /* Schema for tenants */

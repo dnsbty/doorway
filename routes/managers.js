@@ -51,28 +51,14 @@ router.post('/', function(req, res, next) {
 	if (req.body.phone && req.body.phone !== '')
 		manager.phone = req.body.phone;
 
-	// create their account on stripe
-	stripe.accounts.create({
-		managed: true,
-		country: 'US',
-		email: manager.email
-	}, function(err, account) {
+	// save everything to the database
+	manager.save(function(err) {
 		if (err)
 			return next(err);
 
-		manager.stripe_account = account.id;
-		manager.stripe_secret = account.keys.secret;
-		manager.stripe_publishable = account.keys.publishable;
-
-		// save everything to the database
-		manager.save(function(err) {
-			if (err)
-				return next(err);
-
-			return res.json({
-				manager: manager,
-				token: manager.generateJWT()
-			});
+		return res.json({
+			manager: manager,
+			token: manager.generateJWT()
 		});
 	});
 });
