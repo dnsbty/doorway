@@ -4,6 +4,7 @@ var express = require('express'),
 	Property = mongoose.model('Property'),
 	Tenant = mongoose.model('Tenant'),
 	crypto = require('crypto'),
+	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	mandrill_lib = require('mandrill-api/mandrill'),
 	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
 	jwt = require('express-jwt'),
@@ -68,43 +69,50 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		tenant.property = req.property;
 		tenant.last_login = null;
 
-		tenant.save(function(err) {
-			if (err)
-				return next(err);
+		stripe.customers.create({
+			email: tenant.email
+		}, function(err, customer) {
+			tenant.stripe_customer = customer.id;
+			tenant.save(function(err) {
+				if (err)
+					return next(err);
 
-			mandrill.messages.sendTemplate({
-				'template_name': 'tenant-invite',
-				'template_content': null,
-				'message': {
-					'from_email': req.property.manager.email,
-					'from_name': req.property.manager.getFullName(),
-					'to': [{
-						'email': tenant.email,
-						'name': tenant.name_first,
-						'type': 'to'
-					}],
-					'merge_language': 'handlebars',
-					'global_merge_vars': [{
-						'name': 'tenant_name',
-						'content': tenant.name_first
-					},{
-						'name': 'manager_name',
-						'content': req.property.manager.getFullName()
-					},{
-						'name': 'manager_phone',
-						'content': req.property.manager.phone
-					},{
-						'name': 'link',
-						'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
-					}]
-				},
-				'async': true
-			}, function(result) {
-				return res.json(tenant);
-			}, function(err) {
-				return next(err);
+				mandrill.messages.sendTemplate({
+					'template_name': 'tenant-invite',
+					'template_content': null,
+					'message': {
+						'from_email': req.property.manager.email,
+						'from_name': req.property.manager.getFullName(),
+						'to': [{
+							'email': tenant.email,
+							'name': tenant.name_first,
+							'type': 'to'
+						}],
+						'merge_language': 'handlebars',
+						'global_merge_vars': [{
+							'name': 'tenant_name',
+							'content': tenant.name_first
+						},{
+							'name': 'manager_name',
+							'content': req.property.manager.getFullName()
+						},{
+							'name': 'manager_phone',
+							'content': req.property.manager.phone
+						},{
+							'name': 'link',
+							'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
+						}]
+					},
+					'async': true
+				}, function(result) {
+					return res.json(tenant);
+				}, function(err) {
+					return next(err);
+				});
 			});
 		});
+
+		
 	});
 });
 

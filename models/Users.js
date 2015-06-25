@@ -68,6 +68,7 @@ var ManagerSchema = UserSchema.extend({
 var TenantSchema = UserSchema.extend({
 	property : { type: mongoose.Schema.Types.ObjectId, ref: 'Property' },
 	current: { type: Boolean, default: true },
+	stripe_customer: String
 });
 
 TenantSchema.methods.disable = function(cb) {
