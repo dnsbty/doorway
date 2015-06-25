@@ -25,7 +25,6 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 			$window.localStorage.removeItem('doorway-user');
 		},
 		newTenantLogin: function(id, hash) {
-			console.log(id);
 			return $http.post('/tenants/' + id +'/login', { hash: hash }).success(function(data) {
 				auth.saveToken(data.token);
 				auth.saveCurrentUser(data.user);

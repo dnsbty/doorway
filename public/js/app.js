@@ -1,7 +1,7 @@
 var app = angular.module('doorway', ['ui.router', 'angular-stripe']);
 
 app.config(function (stripeProvider) {
-	stripeProvider.setPublishableKey('pk_test_g2I23aSpNGR3NmKm5uhzDaBC');
+	stripeProvider.setPublishableKey(window.stripeKey);
 });
 
 app.config([
@@ -26,7 +26,9 @@ app.config([
 			onEnter: ['$stateParams', 'auth', function($stateParams, auth) {
 				if ($stateParams.id == '' || $stateParams.token == '')
 					$state.go('home');
-				auth.newTenantLogin($stateParams.id, $stateParams.token);
+				
+				if (!auth.isLoggedIn)
+					auth.newTenantLogin($stateParams.id, $stateParams.token);
 			}]
 		})
 		.state('newTenantInfo', {
