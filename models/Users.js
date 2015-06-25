@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new mongoose.Schema({
 	email: { type: String, lowercase: true, unique: true },
-	hash: { type: String },
-	salt: { type: String },
+	hash: String,
+	salt: String,
 	name_first: String,
 	name_last: String,
 	phone: String,
@@ -31,6 +31,8 @@ UserSchema.methods.toJSON = function() {
 	var user = this.toObject();
 	delete user.hash;
 	delete user.salt;
+	if (user.stripe_secret)
+		delete user.stripe_secret;
 	return user;
 };
 
@@ -56,7 +58,10 @@ var ManagerSchema = UserSchema.extend({
 	properties: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Property'
-	}]
+	}],
+	stripe_account: String,
+	stripe_secret: String,
+	stripe_publishable: String
 });
 
 /* Schema for tenants */

@@ -3,6 +3,7 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	Manager = mongoose.model('Manager'),
+	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -50,12 +51,28 @@ router.post('/', function(req, res, next) {
 	if (req.body.phone && req.body.phone !== '')
 		manager.phone = req.body.phone;
 
-	manager.save(function(err) {
+	// create their account on stripe
+	stripe.accounts.create({
+		managed: true,
+		country: 'US',
+		email: manager.email
+	}, function(err, account) {
 		if (err)
 			return next(err);
-		return res.json({
-			manager: manager,
-			token: manager.generateJWT()
+
+		manager.stripe_account = account.id;
+		manager.stripe_secret = account.keys.secret;
+		manager.stripe_publishable = account.keys.publishable;
+
+		// save everything to the database
+		manager.save(function(err) {
+			if (err)
+				return next(err);
+
+			return res.json({
+				manager: manager,
+				token: manager.generateJWT()
+			});
 		});
 	});
 });
