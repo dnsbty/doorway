@@ -10,14 +10,27 @@ app.config([
 	function($stateProvider, $urlRouterProvider) {
 		$stateProvider
 		.state('home', {
-			url: '/home',
+			url: '/',
 			templateUrl: './views/home.html',
-			controller: 'MainController'
+			controller: 'MainController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (auth.isLoggedIn())
+					$state.go('dashboard');
+			}]
 		})
 		.state('waiting', {
 			url: '/waiting',
 			templateUrl: './views/waiting.html',
 			controller: 'MainController'
+		})
+		.state('dashboard', {
+			url: '/',
+			templateUrl: './views/dashboard.html',
+			controller: 'MainController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn())
+					$state.go('home');
+			}]
 		})
 		.state('newTenant', {
 			url: '/newTenant/{id}/{token}',

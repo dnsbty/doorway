@@ -2,7 +2,11 @@ app.controller('MainController', [
 	'$scope',
 	'$state',
 	'emails',
-	function($scope, $state, emails){
+	'auth',
+	function($scope, $state, emails, auth){
+
+		$scope.user = auth.currentUser();
+
 		$scope.addEmail = function(){
 			if (!$scope.email || $scope.email == '')
 			{
