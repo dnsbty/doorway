@@ -43,6 +43,24 @@ router.post('/', auth, function(req, res, next) {
 	});
 });
 
+/* PUT changes to a property */
+router.put('/:property', auth, function(req, res) {
+	if (req.body.address)
+		req.property.address = req.body.address;
+	if (req.body.address2)
+		req.property.address2 = req.body.address2;
+	if (req.body.city)
+		req.property.city = req.body.city;
+	if (req.body.state)
+		req.property.state = req.body.state;
+	if (req.body.zip)
+		req.property.zip = req.body.zip;
+	if (req.body.rent)
+		req.property.rent = req.body.rent;
+	req.property.save();
+	res.json(req.property);
+})
+
 /* GET list of all tenants in a property */
 router.get('/:property/tenants', auth, function(req, res, next) {
 	Tenant.find({ '_type' : 'Tenant', current: {$ne: false}}, function(err, tenants){
