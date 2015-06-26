@@ -12,6 +12,8 @@ h1 {
 p {
 	font-size: 1.4em;
 }
+a { color: #f2c81d; }
+a:hover { color: #f39c12; }
 form {
 	margin-top: 2em;
 }
@@ -21,6 +23,9 @@ input.form-control {
 .btn-primary {
 	background-color: #e74c3c;
 	color: #ecf0f1;
+}
+.btn-primary:hover {
+	background-color: #c0392b;
 }
 ::-webkit-input-placeholder { color: #bdc3c7 !important; }
 :-moz-placeholder { color: #bdc3c7 !important; }
