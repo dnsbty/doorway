@@ -13,9 +13,10 @@ env(__dirname + '/.env');
 
 // models and db connection
 require('./models/Users');
-require('./models/Properties')
-require('./models/Emails');
+require('./models/Owners');
+require('./models/Properties');
 require('./models/Accounts');
+require('./models/Emails');
 mongoose.connect('mongodb://localhost/doorway');
 
 // config files
@@ -26,6 +27,7 @@ var routes = require('./routes/index'),
   users = require('./routes/users'),
   managers = require('./routes/managers'),
   tenants = require('./routes/tenants'),
+  owners = require('./routes/owners'),
   properties = require('./routes/properties');
 
 var app = express();
@@ -48,6 +50,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/managers', managers);
 app.use('/tenants', tenants);
+app.use('/owners', owners);
 app.use('/properties', properties);
 
 // catch 404 and forward to error handler
