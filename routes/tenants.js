@@ -29,10 +29,14 @@ router.get('/:tenant', auth, function(req, res) {
 
 /* PUT changes to tenant info */
 router.put('/:tenant', auth, function(req, res, next) {
-	req.tenant.email = req.body.email;
-	req.tenant.name_first = req.body.name_first;
-	req.tenant.name_last = req.body.name_last;
-	req.tenant.phone = req.body.phone;
+	if (req.body.email)
+		req.tenant.email = req.body.email;
+	if (req.body.name_first)
+		req.tenant.name_first = req.body.name_first;
+	if (req.body.name_last)
+		req.tenant.name_last = req.body.name_last;
+	if (req.body.phone)
+		req.tenant.phone = req.body.phone;
 	if (req.body.password && req.body.password == req.body.password2)
 		req.tenant.setPassword(req.body.password);
 	req.tenant.save();
