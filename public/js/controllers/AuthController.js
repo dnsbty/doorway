@@ -10,7 +10,7 @@ app.controller('AuthController', [
 			.error(function(err) {
 				$scope.error = err.message;
 			}).then(function() {
-				$state.go('home');
+				$state.go('dashboard');
 			});
 		};
 	}

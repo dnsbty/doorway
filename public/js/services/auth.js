@@ -15,11 +15,19 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 				return false;
 			}
 		},
+		isManager: function() {
+			if (auth.isLoggedIn()) {
+				user = auth.currentUser();
+				return user._type == 'Manager';
+			}
+			else return false;
+		},
 		login: function(user) {
 			return $http.post('/users/login', user).success(function(data) {
+				console.log(data);
 				auth.saveToken(data.token);
 				auth.saveCurrentUser(data.user);
-			})
+			});
 		},
 		logout: function() {
 			$window.localStorage.removeItem('doorway-token');

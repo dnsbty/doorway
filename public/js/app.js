@@ -71,6 +71,29 @@ app.config([
 					$state.go('home');
 			}]
 		})
+		.state('owners', {
+			url: '/owners',
+			templateUrl: './views/manager/owners.html',
+			controller: 'ManagerController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}]
+		})
+		.state('ownerDetails', {
+			url: '/ownerDetails/{id}',
+			templateUrl: './views/manager/owner.html',
+			controller: 'OwnerController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				owner: ['$stateParams', 'owners', function($stateParams, owners) {
+					return owners.get($stateParams.id);
+				}]
+			}
+		})
 		.state('login', {
 			url: '/login',
 			templateUrl: './views/login.html',

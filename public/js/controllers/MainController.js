@@ -6,6 +6,7 @@ app.controller('MainController', [
 	function($scope, $state, emails, auth){
 
 		$scope.user = auth.currentUser();
+		$scope.isManager = auth.isManager();
 
 		$scope.addEmail = function(){
 			if (!$scope.email || $scope.email == '')

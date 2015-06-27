@@ -2,6 +2,9 @@
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2>Hi {{ user.name_first }}!</h2>
 		<p>Thanks for using Doorway!  If you have any questions, feel free to contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a>.</p>
-		<button class="btn btn-primary btn-block input-lg" ng-click="logout">Log Out</a>
+		<div ng-show="isManager">
+			<button class="btn btn-primary btn-block input-lg" ui-sref="owners">Manage Owners ({{ user.owners.length }})</button>
+		</div>
+		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

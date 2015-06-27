@@ -12,8 +12,12 @@ h1 {
 p {
 	font-size: 1.4em;
 }
+
 a { color: #f2c81d; }
+a:visited { color: #f39c12; }
 a:hover { color: #f39c12; }
+a:active { color: #f39c12; }
+
 form {
 	margin-top: 2em;
 }
@@ -24,9 +28,11 @@ input.form-control {
 	background-color: #e74c3c;
 	color: #ecf0f1;
 }
-.btn-primary:hover {
-	background-color: #c0392b;
-}
+.btn-primary:focus { background-color: #e74c3c; }
+.btn-primary:visited { background-color: #e74c3c; }
+.btn-primary:hover { background-color: #c0392b; }
+.btn-primary:active { background-color: #e74c3c; }
+
 ::-webkit-input-placeholder { color: #bdc3c7 !important; }
 :-moz-placeholder { color: #bdc3c7 !important; }
 ::-moz-placeholder { color: #bdc3c7 !important; }
