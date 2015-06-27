@@ -18,6 +18,18 @@ a:visited { color: #f39c12; }
 a:hover { color: #f39c12; }
 a:active { color: #f39c12; }
 
+ul { text-align: left; }
+ul.links {
+	display: block;
+	font-size: 1.4em;
+}
+ul.links > li {
+	padding: 0.5em 2em;
+	cursor: hand;
+	border-bottom: 1px solid #ecf0f1;
+}
+ul.links > li:hover { background-color: #2980b9; }
+
 form {
 	margin-top: 2em;
 }

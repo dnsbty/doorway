@@ -78,7 +78,12 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn() || !auth.isManager())
 					$state.go('home');
-			}]
+			}],
+			resolve: {
+				ownerPromise: ['owners', function(owners) {
+					return owners.getAll();
+				}]
+			}
 		})
 		.state('ownerDetails', {
 			url: '/ownerDetails/{id}',
@@ -93,6 +98,15 @@ app.config([
 					return owners.get($stateParams.id);
 				}]
 			}
+		})
+		.state('newOwner', {
+			url: '/newOwner',
+			templateUrl: './views/manager/newOwner.html',
+			controller: 'ManagerController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}]
 		})
 		.state('login', {
 			url: '/login',

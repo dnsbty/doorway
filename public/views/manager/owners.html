@@ -1,15 +1,15 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h2>Owners ({{ user.owners.length }})</h2>
-		<div ng-show="user.owners">
-			<ul>
-				<li ng-repeat="owner in user.owners" ui-sref="ownerDetails({ id: owner._id })">{{ owner.name }}</li>
+		<h2>Owners ({{ owners.length }})</h2>
+		<div ng-show="owners">
+			<ul class="list-unstyled links">
+				<li ng-repeat="owner in owners" ui-sref="ownerDetails({ id: owner._id })">{{ owner.name }}</li>
 			</ul>
-			<button class="btn btn-primary btn-block input-lg">Add an Owner</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="newOwner">Add an Owner</button>
 		</div>
-		<div ng-hide="user.owners">
+		<div ng-hide="owners">
 			<p>Looks like you haven't added any owners yet.</p>
-			<button class="btn btn-primary btn-block input-lg">Add an Owner</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="newOwner">Add an Owner</button>
 		</div>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>

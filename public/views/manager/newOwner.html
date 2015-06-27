@@ -1,0 +1,12 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<h2>New Owner</h2>
+		<form ng-submit="newOwner()">
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="Owner Name" ng-model="owner.name">
+			</div>
+			<button class="btn btn-primary btn-block input-lg">Add Owner</button>
+		</form>
+		<a class="btn input-lg" ui-sref="owners">&lt; All Owners</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
+	</div>
+</div>
