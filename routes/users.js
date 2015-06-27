@@ -19,10 +19,22 @@ router.post('/login', function(req, res, next){
 		if(err){ return next(err); }
 
 		if(user){
-			res.json({
-				user: user,
-				token: user.generateJWT()
-			});
+			if (user._type == 'Manager') {
+				user.populate('owners', 'name', function(err, manager) {
+					if (err)
+						return next(err);
+
+					res.json({
+						user: manager,
+						token: manager.generateJWT()
+					});
+				});
+			} else {
+				res.json({
+					user: user,
+					token: user.generateJWT()
+				});
+			}
 		} else {
 			return res.status(401).json(info);
 		}
