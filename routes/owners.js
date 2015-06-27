@@ -35,7 +35,17 @@ router.post('/', auth, function(req, res, next) {
 	owner.save(function(err) {
 		if (err)
 			return next(err);
-		return res.json(owner);
+
+		// save the owner id into the manager as well for easy access
+		owner.populate('manager', function(err, owner) {
+			owner.manager.owners.push(owner);
+			owner.manager.save(function(err, manager) {
+				if (err)
+					return next(err);
+			});
+		});
+
+		res.json(owner);
 	});
 });
 
