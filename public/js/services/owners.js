@@ -1,6 +1,16 @@
-app.factory('owners', ['$http', 'auth', function($http, auth){
+app.factory('owners', ['$http', 'auth', '$window', function($http, auth, $window){
 	var o = {
 		owners: [],
+		connect: function(token, code) {
+			var id = o.getIdFromJWT(token);
+			return $http.post('/owners/' + id + '/stripe', { code: code }, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).success(function(data) {
+				return data;
+			}).error(function(err) {
+				console.log(err);
+			});
+		},
 		create: function(owner) {
 			return $http.post('/owners', owner, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }
@@ -12,7 +22,6 @@ app.factory('owners', ['$http', 'auth', function($http, auth){
 			return $http.get('/owners/' + id, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }
 			}).then(function(res) {
-				console.log(res.data);
 				return res.data;
 			});
 		},
@@ -22,6 +31,14 @@ app.factory('owners', ['$http', 'auth', function($http, auth){
 			}).success(function(data) {
 				angular.copy(data, o.owners);
 			});
+		},
+		getIdFromJWT: function(token) {
+			if (token) {
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+				return payload.owner;
+			} else {
+				return false;
+			}
 		},
 		save: function(owner) {
 			return $http.put('/owners/' + owner._id, owner, {

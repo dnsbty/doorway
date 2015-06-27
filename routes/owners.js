@@ -3,6 +3,7 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	Owner = mongoose.model('Owner'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
+	request = require('request'),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -46,6 +47,37 @@ router.post('/', auth, function(req, res, next) {
 		});
 
 		res.json(owner);
+	});
+});
+
+/* POST connected stripe account to an owner */
+router.post('/:owner/stripe', auth, function(req, res) {
+	if (!req.body.code || req.body.code == '')
+		return res.status(400).json({ message: 'No Stripe code was received.' });
+
+	// Make /oauth/token endpoint POST request
+	request.post({
+		url: 'https://connect.stripe.com/oauth/token',
+		form: {
+			client_secret: process.env.STRIPE_SECRET,
+			code: req.body.code,
+			grant_type: 'authorization_code'
+		}
+	}, function(err, r, body) {
+		if (err)
+			return next(err);
+
+		body = JSON.parse(body);
+
+		if (body.error)
+			return res.status(502).json({ message: body.error_description });
+
+		req.owner.stripe_id = body.stripe_user_id;
+		req.owner.stripe_public = body.stripe_publishable_key;
+		req.owner.stripe_access = body.access_token;
+		req.owner.stripe_refresh = body.refresh_token;
+		req.owner.save();
+		res.json(req.owner);
 	});
 });
 

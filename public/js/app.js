@@ -108,6 +108,17 @@ app.config([
 					$state.go('home');
 			}]
 		})
+		.state('connect', {
+			url: '/owners/connect?state&code',
+			controller: 'ManagerController',
+			onEnter: ['$state', 'auth', '$stateParams', 'owners', function($state, auth, $stateParams, owners) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+				owners.connect($stateParams.state, $stateParams.code).success(function(data){
+					$state.go('ownerDetails', { id: data._id });
+				});
+			}]
+		})
 		.state('login', {
 			url: '/login',
 			templateUrl: './views/login.html',
