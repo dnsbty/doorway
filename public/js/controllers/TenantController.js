@@ -57,7 +57,7 @@ app.controller('TenantController', [
 			}).then(function(token) {
 				accounts.newAccount($scope.user._id, token);
 			}).then(function() {
-				$state.go('accounts');
+				$state.go('verifyAccount');
 			}).catch(function (err) {
 				$scope.error = err.message;
 			});

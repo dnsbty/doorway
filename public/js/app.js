@@ -63,18 +63,12 @@ app.config([
 			}]
 		})
 		.state('verifyAccount', {
-			url: '/verifyAccount/{id}',
+			url: '/verifyAccount',
 			templateUrl: './views/verifyAccount.html',
-			controller: 'AccountController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}],
-			resolve: {
-				account: ['$stateParams', 'accounts', function($stateParams, accounts) {
-					return account.get($stateParams.id);
-				}]
-			}
+			}]
 		})
 		.state('accounts', {
 			url: '/accounts',
