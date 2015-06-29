@@ -9,7 +9,7 @@ app.factory('accounts', ['$http', 'auth', function($http, auth){
 				console.log(err);
 			});
 		},
-		verifyAccount = function(id, amount1, amount2) {
+		verifyAccount: function(id, amount1, amount2) {
 			return $http.post('/accounts/' + id + '/verify', {
 				amount1: amount1,
 				amount2: amount2

@@ -22,6 +22,13 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 			}
 			else return false;
 		},
+		isTenant: function() {
+			if (auth.isLoggedIn()) {
+				user = auth.currentUser();
+				return user._type == 'Tenant';
+			}
+			else return false;
+		},
 		login: function(user) {
 			return $http.post('/users/login', user).success(function(data) {
 				console.log(data);

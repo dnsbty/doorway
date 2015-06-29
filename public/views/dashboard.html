@@ -5,6 +5,9 @@
 		<div ng-show="isManager">
 			<button class="btn btn-primary btn-block input-lg" ui-sref="owners">Manage Owners ({{ user.owners.length }})</button>
 		</div>
+		<div ng-show="isTenant">
+			<button class="btn btn-primary btn-block input-lg" ui-sref="accounts">Manage Account</button>
+		</div>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>
