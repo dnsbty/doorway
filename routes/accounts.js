@@ -4,6 +4,8 @@ var express = require('express'),
 	Account = mongoose.model('Account'),
 	Tenant = mongoose.model('Tenant'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
+	mandrill_lib = require('mandrill-api/mandrill'),
+	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
 	request = require('request'),
 	jwt = require('express-jwt'),
 	auth = jwt({
@@ -59,6 +61,58 @@ router.post('/:account/verify', auth, function(req, res) {
 			}
 			else res.json(body)
 			
+		});
+	});
+});
+
+/* POST bank account verification */
+router.post('/:account/verify/email', auth, function(req, res) {
+	req.account.populate('owner', function(err, account) {
+		if (err)
+			return next(err);
+
+		account.owner.populate('property', function(err, tenant) {
+			if (err)
+				return next(err);
+
+			tenant.property.populate('manager', function(err, property) {
+				if (err)
+					return next(err);
+
+				// make POST request to verify account with stripe
+				mandrill.messages.sendTemplate({
+					'template_name': 'bank-account-verify',
+					'template_content': null,
+					'message': {
+						'from_email': property.manager.email,
+						'from_name': property.manager.getFullName(),
+						'to': [{
+							'email': tenant.email,
+							'name': tenant.name_first,
+							'type': 'to'
+						}],
+						'merge_language': 'handlebars',
+						'global_merge_vars': [{
+							'name': 'tenant_name',
+							'content': tenant.name_first
+						},{
+							'name': 'manager_name',
+							'content': property.manager.getFullName()
+						},{
+							'name': 'manager_phone',
+							'content': property.manager.phone
+						},{
+							'name': 'link',
+							'content': process.env.ROOT_NAME + '/#/accountDetails/' + req.account._id
+						}]
+					},
+					'async': true
+				}, function(result) {
+					return res.json({message:'The email was sent successfully'});
+				}, function(err) {
+					return next(err);
+				});
+			});
 		});
 	});
 });
