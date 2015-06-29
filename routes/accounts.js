@@ -21,6 +21,11 @@ router.get('/', auth, function(req, res, next) {
 	});
 });
 
+/* GET a specified account */
+router.get('/:account', auth, function(req, res, next) {
+	res.json(req.account);
+});
+
 /* POST bank account verification */
 router.post('/:account/verify', auth, function(req, res) {
 	if (!req.body.amount1 || req.body.amount1 == '' || !req.body.amount2 || req.body.amount2 == '')
@@ -47,7 +52,13 @@ router.post('/:account/verify', auth, function(req, res) {
 			if (body.error)
 				return res.status(502).json({ message: body.error.message });
 
-			res.json(body);
+			if (body.status == "verified") {
+				req.account.validated = true;
+				req.account.save();
+				res.json(req.account);
+			}
+			else res.json(body)
+			
 		});
 	});
 });

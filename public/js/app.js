@@ -56,20 +56,53 @@ app.config([
 		.state('newAccount', {
 			url: '/newAccount',
 			templateUrl: './views/newAccount.html',
-			controller: 'AccountController',
+			controller: 'TenantController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
 			}]
 		})
 		.state('verifyAccount', {
-			url: '/verifyAccount',
+			url: '/verifyAccount/{id}',
 			templateUrl: './views/verifyAccount.html',
 			controller: 'AccountController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}]
+			}],
+			resolve: {
+				account: ['$stateParams', 'accounts', function($stateParams, accounts) {
+					return account.get($stateParams.id);
+				}]
+			}
+		})
+		.state('accounts', {
+			url: '/accounts',
+			templateUrl: './views/tenant/accounts.html',
+			controller: 'TenantController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				accountsPromise: ['accounts', function(accounts) {
+					return accounts.getAll();
+				}]
+			}
+		})
+		.state('accountDetails', {
+			url: '/accountDetails/{id}',
+			templateUrl: './views/tenant/account.html',
+			controller: 'AccountController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				account: ['$stateParams', 'accounts', function($stateParams, accounts) {
+					return accounts.get($stateParams.id);
+				}]
+			}
 		})
 		.state('owners', {
 			url: '/owners',

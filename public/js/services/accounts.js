@@ -1,5 +1,22 @@
 app.factory('accounts', ['$http', 'auth', function($http, auth){
 	var o = {
+		accounts: [],
+		get: function(id) {
+			return $http.get('/accounts/' + id, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).then(function(res) {
+				return res.data;
+			});
+		},
+		getAll: function() {
+			return $http.get('/accounts', {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).success(function(data) {
+				angular.copy(data, o.accounts);
+			}).error(function(err) {
+				console.log(err);
+			});
+		},
 		newAccount: function(id, account) {
 			return $http.post('/tenants/' + id + '/accounts', account, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }

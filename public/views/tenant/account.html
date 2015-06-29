@@ -1,0 +1,25 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<h2>{{ account.bank_name }} {{ account.last4 }}</h2>
+		<div ng-show="account.validated">
+			<p>Everything is properly configured to pay rent with this bank account.</p>
+			<a class="btn btn-block input-lg" ui-sref="accounts">&lt; Back to Accounts</a>
+		</div>
+		<div ng-hide="account.validated">
+			<p>Looks like you haven't verified this bank account yet.</p>
+			<form ng-submit="verifyAccount()">
+				<div class="alert alert-danger" ng-show="error">
+					{{ error }}
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control input-lg" placeholder="32" ng-model="amount1">
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control input-lg" placeholder="45" ng-model="amount2">
+				</div>
+				<button class="btn btn-primary btn-block input-lg">Verify Account</button>
+			</form>
+		</div>
+		<a class="btn input-lg" ui-sref="accounts">&lt; All Accounts</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
+	</div>
+</div>

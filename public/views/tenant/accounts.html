@@ -1,0 +1,16 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<h2>Bank Accounts ({{ accounts.length }})</h2>
+		<div ng-show="accounts">
+			<ul class="list-unstyled links">
+				<li ng-repeat="account in accounts" ui-sref="accountDetails({ id: account._id })">{{ account.bank_name }} {{ account.last4 }}</li>
+			</ul>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="newAccount">Add an Account</button>
+		</div>
+		<div ng-hide="accounts">
+			<p>Looks like you haven't added a bank account yet.</p>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="newAccount">Add an Account</button>
+		</div>
+		<a class="btn input-lg" ui-sref="logout">Log Out</a>
+	</div>
+</div>
