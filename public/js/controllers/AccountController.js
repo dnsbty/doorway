@@ -39,5 +39,16 @@ app.controller('AccountController', [
 				$scope.error = err.message;
 			});
 		}
+
+		$scope.verifyAccount = function() {
+			$scope.error = null;
+			if (!$scope.amount1 || $scope.amount1 === '' ||
+				!$scope.amount2 || $scope.amount2 === '') {
+					$scope.error = "Please fill out all fields";
+					return;
+			}
+
+			accounts.verifyAccount($scope.account._id, $scope.amount1, $scope.amount2);
+		}
 	}
 ]);

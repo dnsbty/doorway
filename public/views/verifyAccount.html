@@ -1,7 +1,15 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h1>Verify Bank</h1>
-		<p>For your security we have to verify your bank account. Two small deposits will arrive in the next few days.  We will email you a reminder so you can return to finish the account setup process.</p>
-		<button ui-sref="logout" class="btn btn-primary btn-block input-lg">Log Out</button>
+		<h1>Verify Account</h1>
+		<p>For your security we have to verify your bank account. Two small deposits will arrive in the next few days.  We will email you a reminder so you can return to finish the account setup process.  If you have already received the deposits, enter the amounts below.</p>
+		<form ng-submit="verifyAccount()">
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="35" ng-model="amount1">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="42" ng-model="amount2">
+			</div>
+			<button class="btn btn-primary btn-block input-lg">Verify Account</button>
+		</form>
 	</div>
 </div>
