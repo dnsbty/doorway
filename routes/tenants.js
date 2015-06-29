@@ -83,11 +83,16 @@ router.post('/:tenant/accounts', function(req, res, next) {
 	account.owner = req.tenant;
 	account.save();
 
+	// attach the account to the stripe customer
 	stripe.customers.update(req.tenant.stripe_customer, {
 		source: account.token
 	}, function(err, customer) {
 		if (err)
 			return next(err);
+
+		// save the new account token to the database
+		account.token = customer.sources.data[0].id;
+		account.save();
 
 		return res.json(account);
 	});
