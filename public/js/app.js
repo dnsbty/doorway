@@ -30,7 +30,8 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('newTenant', {
 			url: '/newTenant/{id}/{token}',
@@ -51,7 +52,8 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('newAccount', {
 			url: '/newAccount',
@@ -60,7 +62,8 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('verifyAccount', {
 			url: '/verifyAccount',
@@ -68,7 +71,8 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('accounts', {
 			url: '/accounts',
@@ -82,7 +86,8 @@ app.config([
 				accountsPromise: ['accounts', function(accounts) {
 					return accounts.getAll();
 				}]
-			}
+			},
+        	authenticate: true
 		})
 		.state('accountDetails', {
 			url: '/accountDetails/{id}',
@@ -96,7 +101,8 @@ app.config([
 				account: ['$stateParams', 'accounts', function($stateParams, accounts) {
 					return accounts.get($stateParams.id);
 				}]
-			}
+			},
+        	authenticate: true
 		})
 		.state('owners', {
 			url: '/owners',
@@ -110,7 +116,8 @@ app.config([
 				ownerPromise: ['owners', function(owners) {
 					return owners.getAll();
 				}]
-			}
+			},
+        	authenticate: true
 		})
 		.state('ownerDetails', {
 			url: '/ownerDetails/{id}',
@@ -124,7 +131,8 @@ app.config([
 				owner: ['$stateParams', 'owners', function($stateParams, owners) {
 					return owners.get($stateParams.id);
 				}]
-			}
+			},
+        	authenticate: true
 		})
 		.state('newOwner', {
 			url: '/newOwner',
@@ -133,7 +141,8 @@ app.config([
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn() || !auth.isManager())
 					$state.go('home');
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('connect', {
 			url: '/owners/connect?state&code',
@@ -144,7 +153,8 @@ app.config([
 				owners.connect($stateParams.state, $stateParams.code).success(function(data){
 					$state.go('ownerDetails', { id: data._id });
 				});
-			}]
+			}],
+        	authenticate: true
 		})
 		.state('login', {
 			url: '/login',
@@ -170,3 +180,14 @@ app.config([
         });
 	}
 ]);
+
+app.run(['$rootScope', '$location', 'auth', function ($rootScope, $location, auth) {
+	// Redirect to login if route requires auth and you're not logged in
+	$rootScope.$on('$stateChangeStart', function (event, destination, toParams) {
+		if (destination.authenticate && !auth.isLoggedIn()) {
+			$rootScope.returnToState = destination;
+			$rootScope.returnToStateParams = toParams;
+			$location.path('/login');
+		}
+	});
+}]);

@@ -1,8 +1,9 @@
 app.controller('AuthController', [
 	'$scope',
+	'$rootScope',
 	'$state',
 	'auth',
-	function($scope, $state, auth) {
+	function($scope, $rootScope, $state, auth) {
 		$scope.user = {};
 
 		$scope.login = function() {
@@ -10,7 +11,13 @@ app.controller('AuthController', [
 			.error(function(err) {
 				$scope.error = err.message;
 			}).then(function() {
-				$state.go('dashboard');
+				// Logged in, redirect to correct URL
+				if( $rootScope.returnToState ) {
+					$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
+				} else {
+					// redirect all others after login to dashboard
+					$state.go('dashboard');
+				}
 			});
 		};
 	}
