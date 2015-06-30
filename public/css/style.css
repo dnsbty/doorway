@@ -36,6 +36,9 @@ form {
 input.form-control {
 	color: #34495e;
 }
+label {
+	text-align: left;
+}
 .btn-primary {
 	background-color: #e74c3c;
 	color: #ecf0f1;

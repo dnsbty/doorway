@@ -104,6 +104,16 @@ app.config([
 			},
         	authenticate: true
 		})
+		.state('newPayment', {
+			url: '/newPayment',
+			templateUrl: './views/tenant/newPayment.html',
+			controller: 'MainController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+        	authenticate: true
+		})
 		.state('owners', {
 			url: '/owners',
 			templateUrl: './views/manager/owners.html',
