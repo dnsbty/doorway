@@ -30,7 +30,8 @@ var routes = require('./routes/index'),
   tenants = require('./routes/tenants'),
   owners = require('./routes/owners'),
   properties = require('./routes/properties'),
-  accounts = require('./routes/accounts');
+  accounts = require('./routes/accounts'),
+  payments = require('./routes/payments');
 
 var app = express();
 app.set('env', process.env.NODE_ENV);
@@ -55,6 +56,7 @@ app.use('/tenants', tenants);
 app.use('/owners', owners);
 app.use('/properties', properties);
 app.use('/accounts', accounts);
+app.use('/payments', payments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
