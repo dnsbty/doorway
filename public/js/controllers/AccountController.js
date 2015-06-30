@@ -7,6 +7,7 @@ app.controller('AccountController', [
 	function($scope, $state, auth, accounts, account) {
 		$scope.user = auth.currentUser();
 		$scope.account = account;
+		$scope.instructions = false;
 
 		$scope.verifyAccount = function() {
 			$scope.error = null;
@@ -22,5 +23,8 @@ app.controller('AccountController', [
 				$scope.error = err.message;
 			})
 		}
+
+		$scope.showInstructions = function() { $scope.instructions = true; }
+		$scope.hideInstructions = function() { $scope.instructions = false; }
 	}
 ]);

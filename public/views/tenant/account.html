@@ -1,12 +1,20 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h2>{{ account.bank_name }} {{ account.last4 }}</h2>
+		<h2 ng-hide="instructions">{{ account.bank_name }} {{ account.last4 }}</h2>
 		<div ng-show="account.validated">
 			<p>Everything is properly configured to pay rent with this bank account.</p>
 			<a class="btn btn-block input-lg" ui-sref="accounts">&lt; Back to Accounts</a>
 		</div>
 		<div ng-hide="account.validated">
-			<p>Looks like you haven't verified this bank account yet.</p>
+			<p ng-hide="instructions">Looks like you haven't verified this bank account yet.</p>
+			<a ng-click="showInstructions()" ng-hide="instructions">Show Instructions</a>
+			<div class="instructions" ng-show="instructions">
+				<h3>Instructions</h3>
+				<p>You should have received two small deposits to your bank account with the description "VERIFICATION".</p>
+				<p>Go to your bank's website and find the deposits and enter their amounts on this screen.</p>
+				<p>If you need help email us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or call us at <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.
+				<a ng-click="hideInstructions()">Hide Instructions</a>
+			</div>
 			<form ng-submit="verifyAccount()">
 				<div class="alert alert-danger" ng-show="error">
 					{{ error }}
