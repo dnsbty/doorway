@@ -11,6 +11,21 @@ var express = require('express'),
 		userProperty: 'payload'
 	});
 
+/* GET all payments */
+router.get('/', auth, function(req, res, next) {
+	Payment.find(function(err, payments){
+		if (err)
+			return next(err);
+
+		res.json(payments);
+	});
+});
+
+/* GET specified payment */
+router.get('/:payment', auth, function(req, res, next) {
+	res.json(req.payment);
+});
+
 /* Get payment object when a payment param is supplied */
 router.param('payment', function(req, res, next, id) {
 	var query = Payment.findById(id);
