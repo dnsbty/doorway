@@ -3,7 +3,7 @@
 		<h2 ng-hide="instructions">{{ account.bank_name }} {{ account.last4 }}</h2>
 		<div ng-show="account.validated">
 			<p>Everything is properly configured to pay rent with this bank account.</p>
-			<a class="btn btn-block input-lg" ui-sref="accounts">&lt; Back to Accounts</a>
+			<a class="btn input-lg" ui-sref="newPayment">Make a Payment</a>
 		</div>
 		<div ng-hide="account.validated">
 			<p ng-hide="instructions">Looks like you haven't verified this bank account yet.</p>
@@ -20,7 +20,7 @@
 					{{ error }}
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control input-lg" placeholder="32" ng-model="amount1">
+					<input type="text" class="form-control input-lg" placeholder="32" ng-model="amount1" focus="true">
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control input-lg" placeholder="45" ng-model="amount2">

@@ -14,9 +14,9 @@ p {
 }
 
 a { color: #f2c81d; cursor: hand; }
-a:visited { color: #f39c12; }
+a:visited { color: #f2c81d; }
 a:hover { color: #f39c12; }
-a:active { color: #f39c12; }
+a:active { color: #f2c81d; }
 
 ul { text-align: left; }
 ul.links {
