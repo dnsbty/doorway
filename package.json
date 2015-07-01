@@ -22,6 +22,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.58.0",
     "serve-favicon": "~2.2.1",
-    "stripe": "^3.5.0"
+    "stripe": "^3.5.0",
+    "twilio": "^2.2.1"
   }
 }

@@ -11,7 +11,8 @@ var express = require('express'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
 		userProperty: 'payload'
-	});
+	}),
+	twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 /* GET list of all accounts */
 router.get('/', auth, function(req, res, next) {
@@ -29,13 +30,20 @@ router.get('/:account', auth, function(req, res, next) {
 });
 
 /* POST bank account verification */
-router.post('/:account/verify', auth, function(req, res) {
+router.post('/:account/verify', auth, function(req, res, next) {
 	if (!req.body.amount1 || req.body.amount1 == '' || !req.body.amount2 || req.body.amount2 == '')
 		return res.status(400).json({ message: 'Please provide both amounts.' });
 
 	Tenant.findById(req.payload._id, function(err, tenant) {
 		if (err)
 			return next(err);
+
+		// notify Dennis that someone is trying to verify
+		twilio.sendMessage({
+			to: '2107718253',
+			from: '+18019013606',
+			body: tenant.getFullName() + ' is trying to verify their account (' + req.account.bank_name + ' ' + req.account.last4 + ').'
+		});
 
 		// make POST request to verify account with stripe
 		request.post({
@@ -58,9 +66,13 @@ router.post('/:account/verify', auth, function(req, res) {
 				req.account.validated = true;
 				req.account.save();
 				res.json(req.account);
+				twilio.sendMessage({
+					to: '2107718253',
+					from: '+18019013606',
+					body: tenant.getFullName() + '\'s account (' + req.account.bank_name + ' ' + req.account.last4 +') has been verified.'
+				});
 			}
-			else res.json(body)
-			
+			else res.json(body);
 		});
 	});
 });
