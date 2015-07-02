@@ -16,7 +16,11 @@ var express = require('express'),
 
 /* GET list of all accounts */
 router.get('/', auth, function(req, res, next) {
-	Account.find(function(err, accounts){
+	var filter = {};
+	if (req.payload._type == "Tenant")
+		filter.owner = req.payload._id;
+
+	Account.find(filter, function(err, accounts){
 		if (err)
 			return next(err);
 
@@ -65,7 +69,13 @@ router.post('/:account/verify', auth, function(req, res, next) {
 			if (body.status == "verified") {
 				req.account.validated = true;
 				req.account.save();
+
+				tenant.default_account = req.account;
+				tenant.save();
+
 				res.json(req.account);
+
+				// notify Dennis that the account was verified
 				twilio.sendMessage({
 					to: '2107718253',
 					from: '+18019013606',

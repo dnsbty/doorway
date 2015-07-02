@@ -19,6 +19,8 @@ app.controller('AccountController', [
 
 			accounts.verifyAccount($scope.account._id, $scope.amount1, $scope.amount2).success(function(data) {
 				$scope.account = data;
+				$scope.user.default_account = data._id;
+				auth.saveCurrentUser($scope.user);
 			}).error(function(err) {
 				$scope.error = err.message;
 			})
