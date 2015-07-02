@@ -10,7 +10,6 @@ app.controller('TenantController', [
 		$scope.accounts = accounts.accounts;
 
 		$scope.editTenant = function() {
-			console.log("Getting it");
 			// make sure all fields are filled out
 			if (!$scope.user.name_first || $scope.user.name_first === '' ||
 				!$scope.user.name_last || $scope.user.name_last === '' ||
@@ -28,6 +27,7 @@ app.controller('TenantController', [
 			}
 
 			tenants.save($scope.user);
+			auth.saveCurrentUser($scope.user);
 			$state.go('newAccount');
 		}
 
