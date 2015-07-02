@@ -32,6 +32,9 @@ router.get('/:payment', auth, function(req, res, next) {
 
 /* POST a new payment */
 router.post('/', auth, function(req, res, next) {
+	if (!req.body.payment || !req.body.payment.amount || req.body.payment.amount == "")
+		return res.status(400).json({ message: 'Please provide an amount to pay.' });
+
 	Tenant.findById(req.payload._id, function(err, tenant) {
 		if (err)
 			return next(err);
@@ -58,7 +61,7 @@ router.post('/', auth, function(req, res, next) {
 							return next(err);
 
 						stripe.charges.create({
-							amount: property.rent * 100,
+							amount: req.body.payment.amount * 100,
 							currency: 'usd',
 							source: token.id,
 							description: 'Rent payment',

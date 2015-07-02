@@ -5,7 +5,8 @@ app.controller('TenantController', [
 	'stripe',
 	'tenants',
 	'accounts',
-	function($scope, $state, auth, stripe, tenants, accounts) {
+	'payments',
+	function($scope, $state, auth, stripe, tenants, accounts, payments) {
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
 		$scope.payment = { amount: $scope.user.property.rent };
@@ -66,6 +67,12 @@ app.controller('TenantController', [
 
 		$scope.newPayment = function() {
 			$scope.error = null;
+			if (!$scope.payment.amount || $scope.payment.amount === '') {
+					$scope.error = "Please provide an amount to pay";
+					return;
+			}
+
+
 		};
 	}
 ]);
