@@ -8,6 +8,7 @@ app.controller('TenantController', [
 	function($scope, $state, auth, stripe, tenants, accounts) {
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
+		$scope.payment = { amount: $scope.user.property.rent };
 
 		$scope.editTenant = function() {
 			// make sure all fields are filled out
@@ -29,7 +30,7 @@ app.controller('TenantController', [
 			tenants.save($scope.user);
 			auth.saveCurrentUser($scope.user);
 			$state.go('newAccount');
-		}
+		};
 
 		$scope.newAccount = function() {
 			$scope.error = null;
@@ -61,6 +62,10 @@ app.controller('TenantController', [
 			}).catch(function (err) {
 				$scope.error = err.message;
 			});
-		}
+		};
+
+		$scope.newPayment = function() {
+			$scope.error = null;
+		};
 	}
 ]);

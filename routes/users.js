@@ -29,6 +29,16 @@ router.post('/login', function(req, res, next){
 						token: manager.generateJWT()
 					});
 				});
+			} else if (user._type == 'Tenant') {
+				user.populate('property', function(err, tenant) {
+					if (err)
+						return next(err);
+
+					res.json({
+						user: tenant,
+						token: tenant.generateJWT()
+					});
+				})
 			} else {
 				res.json({
 					user: user,

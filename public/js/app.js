@@ -107,10 +107,15 @@ app.config([
 		.state('newPayment', {
 			url: '/newPayment',
 			templateUrl: './views/tenant/newPayment.html',
-			controller: 'MainController',
+			controller: 'TenantController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn() || !auth.isTenant())
 					$state.go('home');
+				var user = auth.currentUser();
+				if (!user.property.rent) {
+					auth.logout();
+					$state.go('newPayment');
+				}
 			}],
         	authenticate: true
 		})
