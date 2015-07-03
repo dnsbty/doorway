@@ -32,6 +32,7 @@ router.get('/:payment', auth, function(req, res, next) {
 
 /* POST a new payment */
 router.post('/', auth, function(req, res, next) {
+	console.log(req.body.payment);
 	if (!req.body.payment || !req.body.payment.amount || req.body.payment.amount == "")
 		return res.status(400).json({ message: 'Please provide an amount to pay.' });
 
@@ -51,6 +52,36 @@ router.post('/', auth, function(req, res, next) {
 					if (err)
 						return next(err);
 
+					stripe.charges.create({
+						amount: req.body.payment.amount * 100,
+						currency: 'usd',
+						customer: tenant.stripe_customer,
+						source: account.token,
+						description: 'Rent payment',
+						application_fee: 300,
+						destination: owner.stripe_id
+					},
+					function(err, charge) {
+						if (err)
+							return next(err);
+
+						var payment = new Payment({
+							stripe_charge: charge.id,
+							amount: charge.amount / 100,
+							created: Date(charge.created * 1000),
+							source: account,
+							property: property
+						});
+						payment.save();
+						res.json(payment);
+					});
+
+					/*
+					NOTE: Eventually we will probably want to switch back to performing transactions
+					on behalf of owners instead of using the destination parameter, so I've left the
+					code here, but for the moment it will take too long to get everyone signed up to
+					the ACH beta, and using destination seems to be the easiest way around that.
+
 					stripe.tokens.create({
 						customer: tenant.stripe_customer,
 						bank_account: account.token
@@ -68,6 +99,15 @@ router.post('/', auth, function(req, res, next) {
 							application_fee: 300
 						},
 						owner.stripe_access,
+						stripe.charges.create({
+							amount: req.body.payment.amount * 100,
+							currency: 'usd',
+							customer: tenant.stripe_customer,
+							source: account.token,
+							description: 'Rent payment',
+							application_fee: 300,
+							destination: owner.stripe_id
+						},
 						function(err, charge) {
 							if (err)
 								return next(err);
@@ -82,7 +122,7 @@ router.post('/', auth, function(req, res, next) {
 							payment.save();
 							res.json(payment);
 						});
-					});
+					});*/
 				});
 			});
 		});
