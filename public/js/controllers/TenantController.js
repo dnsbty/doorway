@@ -10,6 +10,7 @@ app.controller('TenantController', [
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
 		$scope.payment = { amount: $scope.user.property.rent };
+		$scope.show = 'main';
 
 		$scope.editTenant = function() {
 			// make sure all fields are filled out
@@ -66,13 +67,22 @@ app.controller('TenantController', [
 		};
 
 		$scope.newPayment = function() {
+			$scope.view = 'processing';
 			$scope.error = null;
 			if (!$scope.payment.amount || $scope.payment.amount === '') {
 					$scope.error = "Please provide an amount to pay";
+					$scope.view = 'main';
 					return;
 			}
 
-
+			payments.create($scope.payment).success(function(data) {
+				$scope.payment = data;
+				$scope.view = 'success';
+			}).error(function(err) {
+				$scope.error = err.message;
+				$scope.view = 'main';
+				return;
+			});
 		};
 	}
 ]);

@@ -17,8 +17,8 @@ app.factory('payments', ['$http', 'auth', function($http, auth){
 				console.log(err);
 			});
 		},
-		newAccount: function(payment) {
-			return $http.post('/payments', payment, {
+		create: function(payment) {
+			return $http.post('/payments', { payment: payment }, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }
 			}).success(function(data) {
 				console.log(data);
