@@ -6,6 +6,7 @@ var express = require('express'),
 	Account = mongoose.model('Account'),
 	Property = mongoose.model('Property'),
 	Owner = mongoose.model('Owner'),
+	Manager = mongoose.model('Manager'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	mandrill_lib = require('mandrill-api/mandrill'),
 	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
@@ -13,7 +14,8 @@ var express = require('express'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
 		userProperty: 'payload'
-	});
+	}),
+	twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 /* GET all payments */
 router.get('/', auth, function(req, res, next) {
@@ -32,7 +34,6 @@ router.get('/:payment', auth, function(req, res, next) {
 
 /* POST a new payment */
 router.post('/', auth, function(req, res, next) {
-	console.log(req.body.payment);
 	if (!req.body.payment || !req.body.payment.amount || req.body.payment.amount == "")
 		return res.status(400).json({ message: 'Please provide an amount to pay.' });
 
@@ -74,6 +75,25 @@ router.post('/', auth, function(req, res, next) {
 						});
 						payment.save();
 						res.json(payment);
+
+						// notify Dennis that a payment was made
+						twilio.sendMessage({
+							to: '2107718253',
+							from: '+18019013606',
+							body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
+						});
+
+						Manager.findById(property.manager, function(err, manager) {
+							if (err)
+								return next(err);
+
+							// notify the manager that a payment was made
+							twilio.sendMessage({
+								to: manager.phone.replace(/[^0-9]/g, ''),
+								from: '+18019013606',
+								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
+							});
+						});
 					});
 
 					/*
