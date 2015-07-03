@@ -40,18 +40,26 @@ router.post('/', auth, function(req, res, next) {
 	Tenant.findById(req.payload._id, function(err, tenant) {
 		if (err)
 			return next(err);
+		if (!tenant || !tenant.property || tenant.property == '')
+			return next(new Error('Can\'t find property.'));
 
 		Property.findById(tenant.property, function(err, property) {
 			if (err)
 				return next(err);
+			if (!property || !property.owner || property.owner == '')
+				return next(new Error('Can\'t find owner.'));
 
 			Owner.findById(property.owner, function(err, owner) {
 				if (err)
 					return next(err);
+				if (!owner || !owner.stripe_id || owner.stripe_id == '')
+					return next(new Error('Owner isn\'t correctly set up.'));
 
 				Account.findOne({ owner: tenant, validated: true }, function(err, account) {
 					if (err)
 						return next(err);
+					if (!account || !account.token || account.token == '')
+						return next(new Error('Account isn\'t correctly set up.'));
 
 					stripe.charges.create({
 						amount: req.body.payment.amount * 100,
