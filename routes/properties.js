@@ -15,7 +15,13 @@ var express = require('express'),
 
 /* GET list of all properties */
 router.get('/', auth, function(req, res, next) {
-	Property.find(function(err, properties){
+	var filter = {};
+	if (req.payload._type == "Manager")
+		filter.manager = req.payload._id;
+	else
+		return res.status(403).json({ message: 'Only managers may view property lists' });
+
+	Property.find(filter, function(err, properties){
 		if (err)
 			return next(err);
 
@@ -25,11 +31,23 @@ router.get('/', auth, function(req, res, next) {
 
 /* GET specified property */
 router.get('/:property', auth, function(req, res) {
-	res.json(req.property);
+	// TODO: check for permissions to view property details
+	/*if (req.property.manager != req.payload._id && req.property.tenant != req.payload._id)
+		return res.status(403).json({ message: 'You don\'t have permission to view this property.' });*/
+
+	req.property.populate('owner', function(err, property) {
+		if (err)
+			return next(err);
+
+		res.json(property);
+	});
 });
 
 /* POST a new property */
 router.post('/', auth, function(req, res, next) {
+	if (!req.payload._type !== 'Manager')
+		return res.status(403).json({ message: 'Only managers may create new properties.' });
+
 	if (!req.body.address)
 		return res.status(400).json({ message: 'Please provide a street address to identify the property' });
 	

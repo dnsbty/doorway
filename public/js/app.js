@@ -189,6 +189,41 @@ app.config([
 			}],
         	authenticate: true
 		})
+		.state('properties', {
+			url: '/properties',
+			template: '<ui-view/>',
+			abstract: true
+		})
+		.state('properties.list', {
+			url: '',
+			controller: 'ManagerController',
+			templateUrl: './views/manager/properties.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				propertyPromise: ['properties', function(properties) {
+					return properties.getAll();
+				}]
+			},
+        	authenticate: true
+		})
+		.state('properties.detail', {
+			url: '/{id}',
+			controller: 'PropertyController',
+			templateUrl: './views/manager/property.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				property: ['$stateParams', 'properties', function($stateParams, properties) {
+					return properties.get($stateParams.id);
+				}]
+			},
+        	authenticate: true
+		})
 		.state('connect', {
 			url: '/owners/connect?state&code',
 			controller: 'ManagerController',

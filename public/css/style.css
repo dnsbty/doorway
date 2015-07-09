@@ -36,8 +36,11 @@ form {
 input.form-control {
 	color: #34495e;
 }
-label {
+label, address {
 	text-align: left;
+}
+address p {
+	margin: 0;
 }
 .btn-primary {
 	background-color: #e74c3c;

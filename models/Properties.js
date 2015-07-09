@@ -8,7 +8,8 @@ var PropertySchema = new mongoose.Schema({
 	zip: String,
 	rent: Number,
 	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' },
-	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' }
+	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
+	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }]
 });
 
 mongoose.model('Property', PropertySchema);

@@ -3,7 +3,6 @@
 		<h2>{{ owner.name }}</h2>
 		<div ng-hide="owner.stripe_connect_url">
 			<p>Everything is properly configured to collect rent for this owner.</p>
-			<a class="btn btn-block input-lg" ui-sref="owners">&lt; Back to Owners</a>
 		</div>
 		<div ng-show="owner.stripe_connect_url">
 			<p>Looks like you haven't connected a Stripe account to this owner.</p>
