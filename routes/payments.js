@@ -99,7 +99,7 @@ router.post('/', auth, function(req, res, next) {
 							twilio.sendMessage({
 								to: manager.phone.replace(/[^0-9]/g, ''),
 								from: '+18019013606',
-								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
+								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.  Please allow 5-7 business days for this payment to arrive.'
 							});
 						});
 					});
