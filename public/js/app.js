@@ -104,6 +104,36 @@ app.config([
 			},
         	authenticate: true
 		})
+		.state('payments', {
+			url: '/payments',
+			templateUrl: './views/tenant/payments.html',
+			controller: 'TenantController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				paymentsPromise: ['payments', function(payments) {
+					return payments.getAll();
+				}]
+			},
+			authenticate: true
+		})
+		.state('payment', {
+			url: '/payments/{id}',
+			templateUrl: './views/tenant/payment.html',
+			controller: 'PaymentController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				payment: ['$stateParams', 'payments', function($stateParams, payments) {
+					return payments.get($stateParams.id);
+				}]
+			},
+			authenticate: true
+		})
 		.state('newPayment', {
 			url: '/newPayment',
 			templateUrl: './views/tenant/newPayment.html',

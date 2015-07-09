@@ -1,12 +1,13 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2>Hi {{ user.name_first }}!</h2>
-		<p>Thanks for using Doorway!  If you have any questions, feel free to contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.</p>
+		<p class="small">Thanks for using Doorway!  If you have any questions, feel free to contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.</p>
 		<div ng-show="isManager">
 			<button class="btn btn-primary btn-block input-lg" ui-sref="owners">Manage Owners ({{ user.owners.length }})</button>
 		</div>
 		<div ng-show="isTenant">
-			<button class="btn btn-primary btn-block input-lg" ui-sref="accounts">Manage Account</button>
+			<p><a ui-sref="accounts" class="btn">Bank Accounts</a></p>
+			<p><a ui-sref="payments" class="btn">Payments</a></p>
 		</div>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>

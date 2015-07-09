@@ -10,6 +10,7 @@ app.controller('TenantController', [
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
 		$scope.payment = { amount: $scope.user.property.rent };
+		$scope.payments = payments.payments;
 		$scope.show = 'main';
 
 		$scope.editTenant = function() {

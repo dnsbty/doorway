@@ -19,7 +19,11 @@ var express = require('express'),
 
 /* GET all payments */
 router.get('/', auth, function(req, res, next) {
-	Payment.find(function(err, payments){
+	var filter = {};
+	if (req.payload._type == "Tenant")
+		filter.payer = req.payload._id;
+
+	Payment.find(filter, function(err, payments){
 		if (err)
 			return next(err);
 
@@ -29,7 +33,12 @@ router.get('/', auth, function(req, res, next) {
 
 /* GET specified payment */
 router.get('/:payment', auth, function(req, res, next) {
-	res.json(req.payment);
+	req.payment.populate('source', function(err, payment) {
+		if (err)
+			return next(err);
+
+		res.json(payment);
+	});
 });
 
 /* POST a new payment */
