@@ -242,6 +242,16 @@ app.config([
 			},
         	authenticate: true
 		})
+		.state('application', {
+			url: '/applications/{id}',
+			controller: 'PropertyController',
+			templateUrl: './views/application.html',
+			resolve: {
+				property: ['$stateParams', 'properties', function($stateParams, properties) {
+					return properties.get($stateParams.id);
+				}]
+			}
+		})
 		.state('connect', {
 			url: '/owners/connect?state&code',
 			controller: 'ManagerController',

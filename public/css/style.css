@@ -18,7 +18,7 @@ a:visited { color: #f2c81d; }
 a:hover { color: #f39c12; }
 a:active { color: #f2c81d; }
 
-ul { text-align: left; }
+ul, ol { text-align: left; }
 ul.links {
 	display: block;
 	font-size: 1.4em;
@@ -55,3 +55,10 @@ address p {
 :-moz-placeholder { color: #bdc3c7 !important; }
 ::-moz-placeholder { color: #bdc3c7 !important; }
 :-ms-input-placeholder { color: #bdc3c7 !important; }
+
+.panel {
+	background-color: transparent;
+	border-bottom: 1px solid #fff;
+	padding-bottom: 10px;
+	border-radius: 0;
+}
