@@ -45,11 +45,12 @@ router.get('/:property', auth, function(req, res) {
 
 /* POST a new property */
 router.post('/', auth, function(req, res, next) {
-	if (!req.payload._type !== 'Manager')
+	console.log(req.body);
+	if (req.payload._type !== 'Manager')
 		return res.status(403).json({ message: 'Only managers may create new properties.' });
 
-	if (!req.body.address)
-		return res.status(400).json({ message: 'Please provide a street address to identify the property' });
+	if (!req.body.address || req.body.address === '' || !req.body.owner || req.body.owner === '' || !req.body.rent || req.body.rent === '')
+		return res.status(400).json({ message: 'Please fill out all fields.' });
 	
 	var property = new Property(req.body);
 	property.manager = req.payload;

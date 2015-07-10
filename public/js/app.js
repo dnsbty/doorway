@@ -209,6 +209,24 @@ app.config([
 			},
         	authenticate: true
 		})
+		.state('properties.new', {
+			url: '/new',
+			controller: 'PropertyController',
+			templateUrl: './views/manager/newProperty.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				ownerPromise: ['owners', function(owners) {
+					return owners.getAll();
+				}],
+				property: function() {
+					return {};
+				}
+			},
+			authenticate: true
+		})
 		.state('properties.detail', {
 			url: '/{id}',
 			controller: 'PropertyController',

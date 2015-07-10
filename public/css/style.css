@@ -36,7 +36,7 @@ form {
 input.form-control {
 	color: #34495e;
 }
-label, address {
+label, address, .form-group {
 	text-align: left;
 }
 address p {

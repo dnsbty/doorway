@@ -18,10 +18,8 @@ app.factory('properties', ['$http', 'auth', function($http, auth){
 			});
 		},
 		create: function(property) {
-			return $http.post('/properties', { property: property }, {
+			return $http.post('/properties', property, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }
-			}).success(function(data) {
-				console.log(data);
 			}).error(function(err) {
 				console.log(err);
 			});

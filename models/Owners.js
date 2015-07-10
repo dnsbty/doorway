@@ -16,6 +16,8 @@ OwnerSchema.methods.toJSON = function() {
 		owner.stripe_connect_url = 'https://connect.stripe.com/oauth/authorize?response_type=code'
 			+ '&client_id=' + process.env.STRIPE_CONNECT + '&scope=read_write'
 			+ '&state=' + jwt.sign({ owner: this._id }, process.env.JWT_SECRET);
+	delete owner.stripe_access;
+	delete owner.stripe_refresh;
 	return owner;
 };
 
