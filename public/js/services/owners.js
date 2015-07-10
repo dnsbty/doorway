@@ -1,6 +1,7 @@
 app.factory('owners', ['$http', 'auth', '$window', function($http, auth, $window){
 	var o = {
 		owners: [],
+		properties: [],
 		connect: function(token, code) {
 			var id = o.getIdFromJWT(token);
 			return $http.post('/owners/' + id + '/stripe', { code: code }, {

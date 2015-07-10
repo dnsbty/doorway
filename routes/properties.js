@@ -3,6 +3,7 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	Property = mongoose.model('Property'),
 	Tenant = mongoose.model('Tenant'),
+	Owner = mongoose.model('Owner'),
 	crypto = require('crypto'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	mandrill_lib = require('mandrill-api/mandrill'),
@@ -58,7 +59,12 @@ router.post('/', auth, function(req, res, next) {
 	property.save(function(err) {
 		if (err)
 			return next(err);
-		return res.json(property);
+
+		Owner.findById(property.owner, function(err, owner){
+			owner.properties.push(property._id);
+			owner.save();
+			return res.json(property);
+		});
 	});
 });
 

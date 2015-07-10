@@ -22,7 +22,9 @@ router.get('/', auth, function(req, res, next) {
 
 /* GET specified owner */
 router.get('/:owner', auth, function(req, res) {
-	res.json(req.owner);
+	req.owner.populate('properties', '_id address', function(err, owner) {
+		res.json(owner);
+	});
 });
 
 /* POST a new owner */

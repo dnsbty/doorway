@@ -210,7 +210,7 @@ app.config([
         	authenticate: true
 		})
 		.state('properties.new', {
-			url: '/new',
+			url: '/new?owner',
 			controller: 'PropertyController',
 			templateUrl: './views/manager/newProperty.html',
 			onEnter: ['$state', 'auth', function($state, auth) {

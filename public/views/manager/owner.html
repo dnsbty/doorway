@@ -2,7 +2,18 @@
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2>{{ owner.name }}</h2>
 		<div ng-hide="owner.stripe_connect_url">
-			<p>Everything is properly configured to collect rent for this owner.</p>
+			<p class="small">Everything is properly configured to collect rent for this owner.</p>
+			<h3>Properties</h3>
+			<div ng-show="owner.properties">
+				<ul class="list-unstyled links">
+					<li ng-repeat="property in owner.properties" ui-sref="properties.detail({ id: property._id })">{{ property.address }}</li>
+				</ul>
+				<button ui-sref="properties.new({ owner: owner._id })" class="btn btn-primary btn-block input-lg">New Property</button>
+			</div>
+			<div ng-hide="owner.properties">
+				<p>Looks like you haven't added any properties for this owner.</p>
+				<button ui-sref="properties.new({ owner: owner._id })" class="btn btn-primary btn-block input-lg">New Property</button>
+			</div>
 		</div>
 		<div ng-show="owner.stripe_connect_url">
 			<p>Looks like you haven't connected a Stripe account to this owner.</p>
