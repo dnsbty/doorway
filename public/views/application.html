@@ -14,7 +14,8 @@
 					</address>
 					<ul class="list-unstyled">
 						<li>Monthly Rent: {{ property.rent | currency }}</li>
-						<li ng-show="property.deposit">Security Deposit: {{ property.deposit | currency }}</li>
+						<li ng-show="property.security_deposit">Security Deposit: {{ property.security_deposit | currency }}</li>
+						<li ng-show="property.pet_deposit">Pet Deposit: {{ property.pet_deposit | currency }}</li>
 					</ul>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
