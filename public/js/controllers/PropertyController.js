@@ -16,7 +16,11 @@ app.controller('PropertyController', [
 		$scope.properties = properties.properties;
 		$scope.owners = owners.owners;
 		$scope.page = 'main';
-		$scope.application = {};
+		$scope.application = {
+			occupants: [{}],
+			vehicles: [{}],
+			pets: [{}]
+		};
 
 		$scope.newProperty = function() {
 			$scope.error = null;
@@ -97,6 +101,18 @@ app.controller('PropertyController', [
 				$scope.page = page;
 			}
 			$window.scrollTo(0,0);
+		};
+
+		$scope.addOccupant = function() {
+			$scope.application.occupants.push({});
+		};
+
+		$scope.addVehicle = function() {
+			$scope.application.vehicles.push({});
+		};
+
+		$scope.addPet = function() {
+			$scope.application.pets.push({});
 		};
 
 		$scope.submitApplication = function() {

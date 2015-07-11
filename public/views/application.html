@@ -4,9 +4,10 @@
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
 			</div>
+			<pre>{{ application }}</pre>
 			<div ng-switch-when="main">
 				<h3>Residential Lease Application</h3>
-				<form ng-submit="changePage('property')">
+				<form ng-submit="changePage('property')" novalidate>
 					<address>
 						<p>{{ property.address }}</p>
 						<p ng-show="property.address2">{{ property.address2 }}</p>
@@ -17,12 +18,17 @@
 						<li ng-show="property.security_deposit">Security Deposit: {{ property.security_deposit | currency }}</li>
 						<li ng-show="property.pet_deposit">Pet Deposit: {{ property.pet_deposit | currency }}</li>
 					</ul>
+					<ul class="list-unstyled">
+						<li><a ng-click="changePage('occupants')">Occupants</a></li>
+						<li><a ng-click="changePage('vehicles')">Vehicles</a></li>
+						<li><a ng-click="changePage('pets')">Pets</a></li>
+					</ul>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="property">
 				<h3>Property Info</h3>
-				<form ng-submit="changePage('contact')">
+				<form ng-submit="changePage('contact')" novalidate>
 					<div class="form-group">
 						<label>Anticipated Move-in Date</label>
 						<input type="text" class="form-control input-lg" placeholder="MM/DD/YYYY" ng-model="application.move_in_date" ng-required="true">
@@ -76,7 +82,7 @@
 			</div>
 			<div ng-switch-when="contact">
 				<h3>Contact Info</h3>
-				<form ng-submit="changePage('identification')">
+				<form ng-submit="changePage('identification')" novalidate>
 					<div class="form-group">
 						<label>First Name</label>
 						<input type="text" class="form-control input-lg" ng-model="application.name_first" ng-required="true">
@@ -114,7 +120,7 @@
 			</div>
 			<div ng-switch-when="identification">
 				<h3>Identification</h3>
-				<form ng-submit="changePage('emergency_contact')">
+				<form ng-submit="changePage('emergency_contact')" novalidate>
 					<div class="form-group">
 						<label>Social Security Number</label>
 						<input type="text" class="form-control input-lg" ng-model="application.social_security" ng-required="true">
@@ -160,7 +166,7 @@
 			</div>
 			<div ng-switch-when="emergency_contact">
 				<h3>Emergency Contact</h3>
-				<form ng-submit="changePage('occupants')">
+				<form ng-submit="changePage('occupants')" novalidate>
 					<p>Do not insert the name of an occupant or co-applicant.</p>
 					<div class="form-group">
 						<label>Name</label>
@@ -196,27 +202,28 @@
 			<div ng-switch-when="occupants">
 				<h3>Occupants</h3>
 				<p>Name all other persons who will occupy the property.</p>
-				<form ng-submit="changePage('current_address')">
-					<div class="panel">
+				<form ng-submit="changePage('current_address')" novalidate>
+					<div class="panel" ng-repeat="occupant in application.occupants">
 						<div class="form-group">
 							<label>Name</label>
-							<input type="text" class="form-control input-lg" ng-model="application.occupants[0].name">
+							<input type="text" class="form-control input-lg" ng-model="occupant.name">
 						</div>
 						<div class="form-group">
 							<label>Relationship</label>
-							<input type="text" class="form-control input-lg" ng-model="application.occupants[0].relationship">
+							<input type="text" class="form-control input-lg" ng-model="occupant.relationship">
 						</div>
 						<div class="form-group">
 							<label>Age</label>
-							<input type="text" class="form-control input-lg" ng-model="application.occupants[0].age">
+							<input type="text" class="form-control input-lg" ng-model="occupant.age">
 						</div>
 					</div>
+					<a class="btn" ng-click="addOccupant()">Add Occupant</a>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="current_address">
 				<h3>Current Address</h3>
-				<form ng-submit="changePage('previous_address')">
+				<form ng-submit="changePage('previous_address')" novalidate>
 					<div class="form-group">
 						<label>Address</label>
 						<input type="text" class="form-control input-lg" ng-model="application.current_address.address" ng-required="true">
@@ -270,7 +277,7 @@
 			</div>
 			<div ng-switch-when="previous_address">
 				<h3>Previous Address</h3>
-				<form ng-submit="changePage('employer')">
+				<form ng-submit="changePage('employer')" novalidate>
 					<div class="form-group">
 						<label>Address</label>
 						<input type="text" class="form-control input-lg" ng-model="application.previous_address.address">
@@ -325,7 +332,7 @@
 			<div ng-switch-when="employer">
 				<h3>Current Employer</h3>
 				<p>If Applicant is self-employed, Landlord may require one or more previous year's tax return attested by a CPA, attorney, or other tax professional.</p>
-				<form ng-submit="changePage('previous_employer')">
+				<form ng-submit="changePage('previous_employer')" novalidate>
 					<div class="form-group">
 						<label>Employer</label>
 						<input type="text" class="form-control input-lg" ng-model="application.current_employer.name" ng-required="true">
@@ -375,7 +382,7 @@
 			</div>
 			<div ng-switch-when="previous_employer">
 				<h3>Previous Employer</h3>
-				<form ng-submit="changePage('other_income')">
+				<form ng-submit="changePage('other_income')" novalidate>
 					<div class="form-group">
 						<label>Employer</label>
 						<input type="text" class="form-control input-lg" ng-model="application.previous_employer.name">
@@ -430,7 +437,7 @@
 			<div ng-switch-when="other_income">
 				<h3>Other Income</h3>
 				<p>Describe any other income Applicant wants considered.</p>
-				<form ng-submit="changePage('vehicles')">
+				<form ng-submit="changePage('vehicles')" novalidate>
 					<div class="form-group">
 						<textarea class="form-control input-lg" rows="3" ng-model="application.other_income"></textarea>
 					</div>
@@ -440,43 +447,44 @@
 			<div ng-switch-when="vehicles">
 				<h3>Vehicles</h3>
 				<p>List all vehicles to be parked on the property.</p>
-				<form ng-submit="changePage('pets')">
-					<div class="panel">
+				<form ng-submit="changePage('pets')" novalidate>
+					<div class="panel" ng-repeat="vehicle in application.vehicles">
 						<div class="form-group">
 							<label>Type</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].type">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.type">
 						</div>
 						<div class="form-group">
 							<label>Year</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].year">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.year">
 						</div>
 						<div class="form-group">
 							<label>Make</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].make">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.make">
 						</div>
 						<div class="form-group">
 							<label>Model</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].model">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.model">
 						</div>
 						<div class="form-group">
 							<label>License Plate Number</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].license_plate_number">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.license_plate_number">
 						</div>
 						<div class="form-group">
 							<label>License Plate State</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].license_plate_state">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.license_plate_state">
 						</div>
 						<div class="form-group">
 							<label>Monthly Payment</label>
-							<input type="text" class="form-control input-lg" ng-model="application.vehicles[0].monthly_payment">
+							<input type="text" class="form-control input-lg" ng-model="vehicle.monthly_payment">
 						</div>
 					</div>
+					<a ng-click="addVehicle()">Add Vehicle</a>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="pets">
 				<h3>Pets</h3>
-				<form ng-submit="changePage('miscellaneous')">
+				<form ng-submit="changePage('miscellaneous')" novalidate>
 					<div class="form-group">
 						<p>Will any pets (dogs, cats, birds, reptiles, fish, and other pets) be kept on the Property?</p>
 						<label class="radio-inline">
@@ -486,68 +494,66 @@
 							<input type="radio" name="pets" ng-model="application.pets_boolean" ng-value="false" required> No
 						</label>
 					</div>
-					<div ng-show="application.pets_boolean">
-						<p>Please list all pets to be kept on the property.</p>
-						<div class="panel">
-							<div class="form-group">
-								<label>Type and Breed</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].type_breed">
-							</div>
-							<div class="form-group">
-								<label>Name</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].name">
-							</div>
-							<div class="form-group">
-								<label>Color</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].color">
-							</div>
-							<div class="form-group">
-								<label>Weight</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].weight">
-							</div>
-							<div class="form-group">
-								<label>Age (in Years)</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].age">
-							</div>
-							<div class="form-group">
-								<label>Gender</label>
-								<input type="text" class="form-control input-lg" ng-model="application.pets[0].gender">
-							</div>
-							<div class="form-group">
-								<p>Neutered</p>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].neutered" ng-value="true"> Yes
-								</label>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].neutered" ng-value="false"> No
-								</label>
-							</div>
-							<div class="form-group">
-								<p>Declawed</p>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].declawed" ng-value="true"> Yes
-								</label>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].declawed" ng-value="false"> No
-								</label>
-							</div>
-							<div class="form-group">
-								<p>Rabies Shots Current</p>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].shots_current" ng-value="true"> Yes
-								</label>
-								<label class="radio-inline">
-									<input type="radio" ng-model="application.pets[0].shots_current" ng-value="false"> No
-								</label>
-							</div>
+					<div class="panel" ng-repeat="pet in application.pets" ng-show="application.pets_boolean">
+						<div class="form-group">
+							<label>Type and Breed</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.type_breed">
+						</div>
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.name">
+						</div>
+						<div class="form-group">
+							<label>Color</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.color">
+						</div>
+						<div class="form-group">
+							<label>Weight</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.weight">
+						</div>
+						<div class="form-group">
+							<label>Age (in Years)</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.age">
+						</div>
+						<div class="form-group">
+							<label>Gender</label>
+							<input type="text" class="form-control input-lg" ng-model="pet.gender">
+						</div>
+						<div class="form-group">
+							<p>Neutered</p>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.neutered" ng-value="true"> Yes
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.neutered" ng-value="false"> No
+							</label>
+						</div>
+						<div class="form-group">
+							<p>Declawed</p>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.declawed" ng-value="true"> Yes
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.declawed" ng-value="false"> No
+							</label>
+						</div>
+						<div class="form-group">
+							<p>Rabies Shots Current</p>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.shots_current" ng-value="true"> Yes
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="pet.shots_current" ng-value="false"> No
+							</label>
 						</div>
 					</div>
+					<a class="btn" ng-click="addPet()">Add Pet</a>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="miscellaneous">
 				<h3>Miscellaneous</h3>
-				<form ng-submit="changePage('additional_info')">
+				<form ng-submit="changePage('additional_info')" novalidate>
 					<div class="form-group">
 						<p>Will any waterbeds or water-filled furniture be on the Property?</p>
 						<label class="radio-inline">
@@ -679,7 +685,7 @@
 			</div>
 			<div ng-switch-when="additional_info">
 				<h3>Additional Information</h3>
-				<form ng-submit="changePage('payment')">
+				<form ng-submit="changePage('payment')" novalidate>
 					<div class="form-group">
 						<textarea class="form-control input-lg" rows="5" ng-model="application.additional_comments"></textarea>
 					</div>
@@ -689,7 +695,7 @@
 			<div ng-switch-when="payment">
 				<h3>Payment Information</h3>
 				<p>Your card won't be processed until you click Submit on the next page.</p>
-				<form ng-submit="changePage('legal')">
+				<form ng-submit="changePage('legal')" novalidate>
 					<div class="form-group">
 						<label>Card Number</label>
 						<input type="text" class="form-control input-lg" ng-model="application.card.number" ng-required="true">
@@ -729,7 +735,7 @@
 					<li>Applicant understands that providing inaccurate or incomplete information is grounds for rejection of this application and forfeiture of any application fee and may be grounds to declare Applicant in breach of any lease the Applicant may sign.</li>
 					<li>Applicant represents that the statements in tehis application are true and complete.</li>
 				</ol>
-				<form ng-submit="submitApplication()">
+				<form ng-submit="submitApplication()" novalidate>
 					<div class="form-group">
 						<label>Signature (Please type full name)</label>
 						<input type="text" class="form-control input-lg" ng-model="application.signature" ng-required="true">
