@@ -55,7 +55,8 @@ UserSchema.methods.getFullName = function() {
 var ManagerSchema = UserSchema.extend({
 	owners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
 	properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
-	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }]
+	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }],
+	application_fee: Number
 });
 
 /* Schema for tenants */
