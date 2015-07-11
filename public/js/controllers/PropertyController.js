@@ -79,7 +79,7 @@ app.controller('PropertyController', [
 		};
 
 		$scope.validation = function(page) {
-			/*switch (page) {
+			switch (page) {
 				case "payment":
 					if ($scope.cardToken() === false)
 						return false;
@@ -90,7 +90,7 @@ app.controller('PropertyController', [
 						return false;
 					}
 					break;
-			}*/
+			}
 			return true;
 		};
 
@@ -116,7 +116,9 @@ app.controller('PropertyController', [
 		};
 
 		$scope.submitApplication = function() {
-			properties.apply($scope.property, $scope.application).success(function(data) {
+			var application = $scope.application;
+			application.card = application.card.token.id;
+			properties.apply($scope.property, application).success(function(data) {
 				console.log(data);
 			}).error(function(err) {
 				console.log(err);
