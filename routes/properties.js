@@ -31,7 +31,7 @@ router.get('/', auth, function(req, res, next) {
 });
 
 /* GET specified property */
-router.get('/:property', auth, function(req, res) {
+router.get('/:property', function(req, res) {
 	// TODO: check for permissions to view property details
 	/*if (req.property.manager != req.payload._id && req.property.tenant != req.payload._id)
 		return res.status(403).json({ message: 'You don\'t have permission to view this property.' });*/
