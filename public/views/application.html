@@ -4,7 +4,6 @@
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
 			</div>
-			<pre>{{ application }}</pre>
 			<div ng-switch-when="main">
 				<h3>Residential Lease Application</h3>
 				<form ng-submit="changePage('property')" novalidate>
@@ -17,11 +16,6 @@
 						<li>Monthly Rent: {{ property.rent | currency }}</li>
 						<li ng-show="property.security_deposit">Security Deposit: {{ property.security_deposit | currency }}</li>
 						<li ng-show="property.pet_deposit">Pet Deposit: {{ property.pet_deposit | currency }}</li>
-					</ul>
-					<ul class="list-unstyled">
-						<li><a ng-click="changePage('occupants')">Occupants</a></li>
-						<li><a ng-click="changePage('vehicles')">Vehicles</a></li>
-						<li><a ng-click="changePage('pets')">Pets</a></li>
 					</ul>
 					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
 				</form>
