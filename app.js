@@ -18,6 +18,7 @@ require('./models/Properties');
 require('./models/Accounts');
 require('./models/Emails');
 require('./models/Payments');
+require('./models/Applications');
 mongoose.connect('mongodb://localhost/doorway');
 
 // config files

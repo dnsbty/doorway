@@ -4,6 +4,7 @@ var express = require('express'),
 	Property = mongoose.model('Property'),
 	Tenant = mongoose.model('Tenant'),
 	Owner = mongoose.model('Owner'),
+	Application = mongoose.model('Application'),
 	crypto = require('crypto'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	mandrill_lib = require('mandrill-api/mandrill'),
@@ -158,6 +159,14 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		
 	});
 });
+
+/* POST new application for a property */
+router.post('/:property/applications', function(req, res, next) {
+	var application = Application(req.body);
+	application.property = req.property._id;
+	application.save();
+	res.json(application);
+})
 
 /* Get property object when a property param is supplied */
 router.param('property', function(req, res, next, id) {

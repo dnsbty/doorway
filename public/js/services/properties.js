@@ -23,6 +23,11 @@ app.factory('properties', ['$http', 'auth', function($http, auth){
 			}).error(function(err) {
 				console.log(err);
 			});
+		},
+		apply: function(property, application) {
+			return $http.post('/properties/' + property._id + '/applications', application).error(function(err) {
+				console.log(err);
+			});
 		}
 	};
 	return o;
