@@ -1,17 +1,84 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h3>Rental Application</h3>
-		<pre>{{ application }}</pre>
 		<div ng-switch="page">
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
+			</div>
+			<div ng-switch-when="main">
+				<h3>Residential Lease Application</h3>
+				<form ng-submit="changePage('property')">
+					<address>
+						<p>{{ property.address }}</p>
+						<p ng-show="property.address2">{{ property.address2 }}</p>
+						<p>{{ property.city }}, {{ property.state }} {{ property.zip }}</p>
+					</address>
+					<ul class="list-unstyled">
+						<li>Monthly Rent: {{ property.rent | currency }}</li>
+						<li ng-show="property.deposit">Security Deposit: {{ property.deposit | currency }}</li>
+					</ul>
+					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+				</form>
+			</div>
+			<div ng-switch-when="property">
+				<h3>Property Info</h3>
+				<form ng-submit="changePage('contact')">
+					<div class="form-group">
+						<label>Anticipated Move-in Date</label>
+						<input type="text" class="form-control input-lg" placeholder="MM/DD/YYYY" ng-model="application.move_in_date">
+					</div>
+					<div class="form-group">
+						<p>Applicant was referred to Landlord by:</p>
+						<div class="checkbox">
+							<label>
+								<input type="radio" ng-model="application.referral" value="agent"> Real estate agent
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="radio" ng-model="application.referral" value="newspaper"> Newspaper
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="radio" ng-model="application.referral" value="sign"> Sign
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="radio" ng-model="application.referral" value="internet"> Internet
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="radio" ng-model="application.referral" value="other"> Other
+							</label>
+						</div>
+					</div>
+					<div class="form-group" ng-show="application.referral == 'agent'">
+						<label>Agent Name</label>
+						<input type="text" class="form-control input-lg" ng-model="application.referral_agent.name">
+					</div>
+					<div class="form-group" ng-show="application.referral == 'agent'">
+						<label>Agent Phone Number</label>
+						<input type="text" class="form-control input-lg" ng-model="application.referral_agent.phone">
+					</div>
+					<div class="form-group" ng-show="application.referral == 'other'">
+						<label>Referred by</label>
+						<input type="text" class="form-control input-lg" ng-model="application.referral_other">
+					</div>
+					<div class="form-group">
+						<p><strong>Applicant is strongly encouraged to view the Property prior to submitting any application.</strong> <span class="small">Landlord makes no express or implied warranties as to the Property's condition. Applicant requests Landlord consider the following repairs or treatments should Applicant and Landlord enter into a lease:</span></p>
+						<textarea class="form-control input-lg" rows="5" ng-model="application.repair_requests"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+				</form>
 			</div>
 			<div ng-switch-when="contact">
 				<h3>Contact Info</h3>
 				<form ng-submit="changePage('identification')">
 					<div class="form-group">
 						<label>First Name</label>
-						<input type="text" class="form-control input-lg" ng-model="application.name_first" focus="true">
+						<input type="text" class="form-control input-lg" ng-model="application.name_first">
 					</div>
 					<div class="form-group">
 						<label>Middle Name</label>
@@ -666,8 +733,12 @@
 						<label>Signature (Please type full name)</label>
 						<input type="text" class="form-control input-lg" ng-model="application.signature">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block input-lg">Submit Application</button>
 				</form>
+			</div>
+			<div ng-switch-when="confirmation">
+				<h3>Success</h3>
+				<p>Your application has been submitted. You will be contacted when a decision has been made.</p>
 			</div>
 		</div>
 	</div>

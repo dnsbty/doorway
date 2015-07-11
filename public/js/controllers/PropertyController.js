@@ -15,7 +15,7 @@ app.controller('PropertyController', [
 			$scope.property.owner = $stateParams.owner;
 		$scope.properties = properties.properties;
 		$scope.owners = owners.owners;
-		$scope.page = 'contact';
+		$scope.page = 'main';
 		$scope.application = {};
 
 		$scope.newProperty = function() {
@@ -87,12 +87,13 @@ app.controller('PropertyController', [
 					}
 					break;
 			}
+			return true;
 		};
 
 		$scope.changePage = function(page, validate) {
 			var valid = true;
 
-			if (validate === false || validation($scope.page)) {
+			if (validate === false || $scope.validation($scope.page)) {
 				$scope.page = page;
 			}
 			$window.scrollTo(0,0);
