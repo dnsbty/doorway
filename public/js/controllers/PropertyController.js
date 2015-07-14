@@ -120,6 +120,7 @@ app.controller('PropertyController', [
 			application.card = application.card.token.id;
 			properties.apply($scope.property, application).success(function(data) {
 				console.log(data);
+				$scope.page = 'confirmation';
 			}).error(function(err) {
 				console.log(err);
 			});
