@@ -13,7 +13,8 @@ var express = require('express'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
 		userProperty: 'payload'
-	});
+	}),
+	twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 /* GET list of all properties */
 router.get('/', auth, function(req, res, next) {
@@ -166,6 +167,26 @@ router.post('/:property/applications', function(req, res, next) {
 	application.property = req.property._id;
 	application.save();
 	res.json(application);
+
+	// notify Dennis that a payment was made
+	twilio.sendMessage({
+		to: '2107718253',
+		from: '+18019013606',
+		body: 'Just received an application for ' + req.property.address
+	});
+
+	//notify the manager that an application was received
+	req.property.populate('manager', function(err, property) {
+		if (err)
+			return next(err);
+
+		// notify the manager that a payment was made
+		twilio.sendMessage({
+			to: property.manager.phone.replace(/[^0-9]/g, ''),
+			from: '+18019013606',
+			body: 'An application was just received for ' + property.address
+		});
+	});
 })
 
 /* Get property object when a property param is supplied */

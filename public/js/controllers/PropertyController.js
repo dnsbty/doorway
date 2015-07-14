@@ -123,6 +123,7 @@ app.controller('PropertyController', [
 				$scope.page = 'confirmation';
 			}).error(function(err) {
 				console.log(err);
+				$scope.error = err.message;
 			});
 		};
 	}
