@@ -161,6 +161,19 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 	});
 });
 
+/* GET all applications for a property */
+router.get('/:property/applications', auth, function(req, res, next) {
+	if (req.payload._type != "Manager")
+		return res.status(403).json({ message: 'Only managers may view property lists' });
+
+	Application.find({property: req.property._id}, function(err, applications){
+		if (err)
+			return next(err);
+
+		res.json(applications);
+	});
+});
+
 /* POST new application for a property */
 router.post('/:property/applications', function(req, res, next) {
 	var application = Application(req.body);
@@ -187,7 +200,7 @@ router.post('/:property/applications', function(req, res, next) {
 			body: 'An application was just received for ' + property.address
 		});
 	});
-})
+});
 
 /* Get property object when a property param is supplied */
 router.param('property', function(req, res, next, id) {
