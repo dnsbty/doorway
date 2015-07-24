@@ -142,7 +142,7 @@ app.config([
 				if (!auth.isLoggedIn() || !auth.isTenant())
 					$state.go('home');
 				var user = auth.currentUser();
-				if (!user.property.rent) {
+				if (!user.property || !user.property.rent) {
 					auth.logout();
 					$state.go('newPayment');
 				}
