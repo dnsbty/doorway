@@ -2,7 +2,7 @@
 	<div class="col-sm-4 col-sm-offset-4">
 		<div>
 			<address>
-				<p>{{ property.address }}</p>
+				<h2>{{ property.address }}</h2>
 				<p>{{ property.address2 }}</p>
 				<p>{{ property.city }}, {{ property.state }} {{ property.zip }}</p>
 			</address>
@@ -10,6 +10,14 @@
 				<li><p>Rent: {{ property.rent }}</p></li>
 				<li><p>Owner: <a ui-sref="ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p></li>
 			</ul>
+			<div>
+				<h3>Tenants</h3>
+				<ul class="list-unstyled links" ng-show="property.tenants.length">
+					<li ng-repeat="tenant in property.tenants">{{ tenant.name_first }} {{ tenant.name_last }}</li>
+				</ul>
+				<p ng-hide="property.tenants.length">It appears that this property is empty.</p>
+				<button class="btn btn-primary input-lg" ui-sref="newTenant">Add a Tenant</button>
+			</div>
 		</div>
 		<a class="btn input-lg" ui-sref="properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>

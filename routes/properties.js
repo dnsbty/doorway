@@ -38,7 +38,7 @@ router.get('/:property', function(req, res) {
 	/*if (req.property.manager != req.payload._id && req.property.tenant != req.payload._id)
 		return res.status(403).json({ message: 'You don\'t have permission to view this property.' });*/
 
-	req.property.populate('owner', function(err, property) {
+	req.property.populate('owner tenants', function(err, property) {
 		if (err)
 			return next(err);
 
@@ -103,10 +103,12 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 	if (!req.body.email || !req.body.name_first)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	
+	// grab the manager info
 	req.property.populate('manager', function(err, post) {
 		if (err)
 			return next(err);
 	
+		// set the new tenant info from the request body
 		var tenant = new Tenant();
 		tenant.email = req.body.email;
 		tenant.name_first = req.body.name_first;
@@ -114,50 +116,59 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		tenant.property = req.property;
 		tenant.last_login = null;
 
+		// create a new customer in stripe with the tenant info
 		stripe.customers.create({
 			email: tenant.email
 		}, function(err, customer) {
 			tenant.stripe_customer = customer.id;
+
+			// save the tenant to the database
 			tenant.save(function(err) {
 				if (err)
 					return next(err);
 
-				mandrill.messages.sendTemplate({
-					'template_name': 'tenant-invite',
-					'template_content': null,
-					'message': {
-						'from_email': req.property.manager.email,
-						'from_name': req.property.manager.getFullName(),
-						'to': [{
-							'email': tenant.email,
-							'name': tenant.name_first,
-							'type': 'to'
-						}],
-						'merge_language': 'handlebars',
-						'global_merge_vars': [{
-							'name': 'tenant_name',
-							'content': tenant.name_first
-						},{
-							'name': 'manager_name',
-							'content': req.property.manager.getFullName()
-						},{
-							'name': 'manager_phone',
-							'content': req.property.manager.phone
-						},{
-							'name': 'link',
-							'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
-						}]
-					},
-					'async': true
-				}, function(result) {
-					return res.json(tenant);
-				}, function(err) {
-					return next(err);
+				// add the tenant to the list of tenants in the property
+				req.property.tenants.push(tenant._id);
+				req.property.save(function(err) {
+					if (err)
+						return next(err);
+
+					// send the invitation to the tenant
+					mandrill.messages.sendTemplate({
+						'template_name': 'tenant-invite',
+						'template_content': null,
+						'message': {
+							'from_email': req.property.manager.email,
+							'from_name': req.property.manager.getFullName(),
+							'to': [{
+								'email': tenant.email,
+								'name': tenant.name_first,
+								'type': 'to'
+							}],
+							'merge_language': 'handlebars',
+							'global_merge_vars': [{
+								'name': 'tenant_name',
+								'content': tenant.name_first
+							},{
+								'name': 'manager_name',
+								'content': req.property.manager.getFullName()
+							},{
+								'name': 'manager_phone',
+								'content': req.property.manager.phone
+							},{
+								'name': 'link',
+								'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
+							}]
+						},
+						'async': true
+					}, function(result) {
+						return res.json(tenant);
+					}, function(err) {
+						return next(err);
+					});
 				});
 			});
 		});
-
-		
 	});
 });
 
