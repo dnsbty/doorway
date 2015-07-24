@@ -63,7 +63,11 @@ router.post('/:tenant/login', function(req, res, next) {
 	req.tenant.last_login = Date.now();
 	req.tenant.save();
 
-	req.tenant.populate('property', function(tenant) {
+	req.tenant.populate('property', function(err, tenant) {
+		if (err)
+			return next(err);
+
+		console.log(tenant);
 		return res.json({
 			user: tenant,
 			token: tenant.generateJWT()
