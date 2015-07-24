@@ -116,6 +116,12 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		tenant.property = req.property;
 		tenant.last_login = null;
 
+		// add in optional info if it was passed in
+		if (req.body.name_last)
+			tenant.name_last = req.body.name_last;
+		if (req.body.phone)
+			tenant.phone = req.body.phone;
+
 		// create a new customer in stripe with the tenant info
 		stripe.customers.create({
 			email: tenant.email

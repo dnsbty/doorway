@@ -242,6 +242,29 @@ app.config([
 			},
         	authenticate: true
 		})
+		.state('tenants', {
+			url: '/tenants',
+			template: '<ui-view/>',
+			abstract: true
+		})
+		.state('tenants.new', {
+			url: '/new?property',
+			controller: 'ManagerController',
+			templateUrl: './views/manager/newTenant.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				propertyPromise: ['properties', function(properties) {
+					return properties.getAll();
+				}],
+				tenant: function() {
+					return {};
+				}
+			},
+			authenticate: true
+		})
 		.state('application', {
 			url: '/applications/{id}',
 			controller: 'PropertyController',

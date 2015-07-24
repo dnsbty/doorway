@@ -16,7 +16,7 @@
 					<li ng-repeat="tenant in property.tenants">{{ tenant.name_first }} {{ tenant.name_last }}</li>
 				</ul>
 				<p ng-hide="property.tenants.length">It appears that this property is empty.</p>
-				<button class="btn btn-primary input-lg" ui-sref="newTenant">Add a Tenant</button>
+				<button class="btn btn-primary input-lg" ui-sref="tenants.new({property: property._id})">Add a Tenant</button>
 			</div>
 		</div>
 		<a class="btn input-lg" ui-sref="properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
