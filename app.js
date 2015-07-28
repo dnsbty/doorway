@@ -19,7 +19,7 @@ require('./models/Accounts');
 require('./models/Emails');
 require('./models/Payments');
 require('./models/Applications');
-mongoose.connect('mongodb://localhost/doorway');
+mongoose.connect(process.env.DB_URL);
 
 // config files
 require('./config/passport');
