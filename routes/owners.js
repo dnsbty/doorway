@@ -11,8 +11,13 @@ var express = require('express'),
 	});
 
 /* GET list of all owners */
-router.get('/', auth, function(req, res, next) {
-	Owner.find(function(err, owners){
+router.get('/', auth, function(req, res, next) {var filter = {};
+	if (req.payload._type == "Manager")
+		filter.manager = req.payload._id;
+	else
+		return res.status(403).json({ message: 'Only managers may view owner lists' });
+
+	Owner.find(filter, function(err, owners){
 		if (err)
 			return next(err);
 
