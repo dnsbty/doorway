@@ -287,6 +287,15 @@ app.config([
 			}],
         	authenticate: true
 		})
+		.state('register', {
+			url: '/register',
+			templateUrl: './views/register.html',
+			controller: 'AuthController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (auth.isLoggedIn())
+					$state.go('home');
+			}]
+		})
 		.state('login', {
 			url: '/login',
 			templateUrl: './views/login.html',

@@ -57,7 +57,7 @@ router.post('/', function(req, res, next) {
 			return next(err);
 
 		return res.json({
-			manager: manager,
+			user: manager,
 			token: manager.generateJWT()
 		});
 	});

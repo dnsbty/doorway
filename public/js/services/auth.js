@@ -47,6 +47,12 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 				console.log(err);
 			});
 		},
+		register: function(user) {
+			return $http.post('/managers', user).success(function(data) {
+				auth.saveToken(data.token);
+				auth.saveCurrentUser(data.user);
+			});
+		},
 		saveCurrentUser: function(user) {
 			$window.localStorage['doorway-user'] = angular.toJson(user);
 		},

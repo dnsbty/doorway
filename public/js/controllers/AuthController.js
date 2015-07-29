@@ -23,5 +23,14 @@ app.controller('AuthController', [
 				}
 			});
 		};
+
+		$scope.register = function() {
+			auth.register($scope.user)
+			.error(function(err) {
+				$scope.error = err.message;
+			}).then(function() {
+				$state.go('dashboard');
+			});
+		};
 	}
 ]);
