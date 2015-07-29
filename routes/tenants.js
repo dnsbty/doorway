@@ -101,6 +101,13 @@ router.post('/:tenant/accounts', function(req, res, next) {
 		account.save();
 
 		return res.json(account);
+
+		// notify Dennis that an account was added
+		twilio.sendMessage({
+			to: '2107718253',
+			from: '+18019013606',
+			body: req.tenant.getFullName() + ' just added a bank account to their account.'
+		});
 	});
 })
 
