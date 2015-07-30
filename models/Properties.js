@@ -15,4 +15,11 @@ var PropertySchema = new mongoose.Schema({
 	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }]
 });
 
+PropertySchema.methods.toJSON = function() {
+	var property = this.toObject();
+	if (property.applications_open)
+		property.application_url = process.env.ROOT_NAME +'/#/applications/' + property._id;
+	return property;
+};
+
 mongoose.model('Property', PropertySchema);
