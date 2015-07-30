@@ -2,7 +2,7 @@
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2 ng-hide="instructions">{{ account.bank_name }} {{ account.last4 }}</h2>
 		<div ng-show="account.validated">
-			<p>Everything is properly configured to pay rent with this bank account.</p>
+			<p>This bank account is properly configured to pay rent.</p>
 			<a class="btn input-lg" ui-sref="newPayment">Make a Payment</a>
 		</div>
 		<div ng-hide="account.validated">
