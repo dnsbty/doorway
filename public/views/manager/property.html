@@ -7,7 +7,7 @@
 				<p>{{ property.city }}, {{ property.state }} {{ property.zip }}</p>
 			</address>
 			<ul class="list-unstyled">
-				<li><p>Rent: {{ property.rent }}</p></li>
+				<li><p>Rent: {{ property.rent | currency }}</p></li>
 				<li><p>Owner: <a ui-sref="ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p></li>
 			</ul>
 			<div>
