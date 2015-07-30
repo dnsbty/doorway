@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<div ng-switch="page">
+		<div ng-switch="page" ng-show="property.applications_open">
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
 			</div>
@@ -740,6 +740,11 @@
 				<h3>Success</h3>
 				<p>Your application has been submitted. You will be contacted when a decision has been made.</p>
 			</div>
+		</div>
+		<div ng-hide="property.applications_open">
+			<h3>Applications Closed</h3>
+			<p>Sorry, but applications have been closed for this property.</p>
+			<a class="btn btn-lg" ui-sref="home">What is this?</a>
 		</div>
 	</div>
 </div>
