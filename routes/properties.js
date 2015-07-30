@@ -191,6 +191,21 @@ router.get('/:property/applications', auth, function(req, res, next) {
 	});
 });
 
+/* PUT application status change */
+router.put('/:property/applications', auth, function(req, res, next) {
+	if (req.property.manager != req.payload._id)
+		return res.status(403).json({ message: 'Only the manager of this property may open applications for it' });
+
+	req.property.populate('owner tenants', function(err, property) {
+		if (err)
+			return next(err);
+
+		req.property.applications_open = req.body.applications_open;
+		req.property.save();
+		res.json(property);
+	});
+});
+
 /* POST new application for a property */
 router.post('/:property/applications', function(req, res, next) {
 	req.property.populate('manager owner', function(err, property) {

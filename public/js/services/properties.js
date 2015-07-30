@@ -24,6 +24,13 @@ app.factory('properties', ['$http', 'auth', function($http, auth){
 				console.log(err);
 			});
 		},
+		toggleApplications: function(id, open) {
+			return $http.put('/properties/' + id + '/applications', { applications_open: open }, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).error(function(err) {
+				console.log(err);
+			});
+		},
 		apply: function(property, application) {
 			return $http.post('/properties/' + property._id + '/applications', application).error(function(err) {
 				console.log(err);

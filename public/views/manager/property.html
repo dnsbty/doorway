@@ -19,6 +19,12 @@
 				<button class="btn btn-primary input-lg" ui-sref="tenants.new({property: property._id})">Add a Tenant</button>
 			</div>
 		</div>
+		<a class="btn btn-block" ng-click="openApplications()" ng-hide="property.applications_open">Open Applications for this Property</a>
+		<a class="btn btn-block" ng-click="closeApplications()" ng-show="property.applications_open">Close Applications for this Property</a>
+		<div class="form-group" ng-show="property.applications_open">
+			<label>Application Link</label>
+			<pre>https://doorwayapp.com/#/applications/{{ property._id }}</pre>
+		</div>
 		<a class="btn input-lg" ui-sref="properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

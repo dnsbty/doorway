@@ -31,6 +31,22 @@ app.controller('PropertyController', [
 			});
 		};
 
+		$scope.openApplications = function() {
+			properties.toggleApplications($scope.property._id, true).success(function(property) {
+				$scope.property = property;
+			}).error(function(err) {
+				$scope.error = err.message;
+			});
+		};
+
+		$scope.closeApplications = function() {
+			properties.toggleApplications($scope.property._id, false).success(function(property) {
+				$scope.property = property;
+			}).error(function(err) {
+				$scope.error = err.message;
+			});
+		};
+
 		$scope.cardToken = function() {
 			$scope.error = null;
 			if (!$scope.application || !$scope.application.card) {
