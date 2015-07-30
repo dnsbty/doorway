@@ -5,12 +5,14 @@ var express = require('express'),
 	Tenant = mongoose.model('Tenant'),
 	Property = mongoose.model('Property'),
 	Account = mongoose.model('Account'),
+	Manager = mongoose.model('Manager'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
 		userProperty: 'payload'
-	});
+	}),
+	twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 /* GET list of all tenants */
 router.get('/', auth, function(req, res, next) {
@@ -100,13 +102,32 @@ router.post('/:tenant/accounts', function(req, res, next) {
 		account.token = customer.sources.data[0].id;
 		account.save();
 
-		return res.json(account);
+		res.json(account);
+		res.end();
 
 		// notify Dennis that an account was added
 		twilio.sendMessage({
 			to: '2107718253',
 			from: '+18019013606',
 			body: req.tenant.getFullName() + ' just added a bank account to their account.'
+		});
+
+		// get the property manager's phone number
+		req.tenant.populate('property', function(err, tenant) {
+			if (err)
+				return next(err);
+			
+			tenant.property.populate('manager', function(err, property) {
+				if (err)
+					return next(err);
+
+				// notify the manager that an account was added
+				twilio.sendMessage({
+					to: property.manager.phone.replace(/[^0-9]/g, ''),
+					from: '+18019013606',
+					body: req.tenant.getFullName() + ' just added a bank account to their account.'
+				});
+			});
 		});
 	});
 })

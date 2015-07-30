@@ -3,6 +3,8 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	Account = mongoose.model('Account'),
 	Tenant = mongoose.model('Tenant'),
+	Property = mongoose.model('Property'),
+	Manager = mongoose.model('Manager'),
 	stripe = require('stripe')(process.env.STRIPE_SECRET),
 	mandrill_lib = require('mandrill-api/mandrill'),
 	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
@@ -74,12 +76,28 @@ router.post('/:account/verify', auth, function(req, res, next) {
 				tenant.save();
 
 				res.json(req.account);
+				res.end();
 
 				// notify Dennis that the account was verified
 				twilio.sendMessage({
 					to: '2107718253',
 					from: '+18019013606',
 					body: tenant.getFullName() + '\'s account (' + req.account.bank_name + ' ' + req.account.last4 +') has been verified.'
+				});
+
+				//notify the manager that the account was verified
+				tenant.populate('property', function(err, tenant) {
+					if (err)
+						return next(err);
+
+					tenant.property.populate('manager', function(err, property) {
+						// notify the manager that a payment was made
+						twilio.sendMessage({
+							to: property.manager.phone.replace(/[^0-9]/g, ''),
+							from: '+18019013606',
+							body: tenant.getFullName() + '\'s account (' + req.account.bank_name + ' ' + req.account.last4 +') has been verified.'
+						});
+					});
 				});
 			}
 			else res.json(body);
