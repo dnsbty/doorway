@@ -193,28 +193,45 @@ router.get('/:property/applications', auth, function(req, res, next) {
 
 /* POST new application for a property */
 router.post('/:property/applications', function(req, res, next) {
-	var application = Application(req.body);
-	application.property = req.property._id;
-	application.save();
-	res.json(application);
-
-	// notify Dennis that a payment was made
-	twilio.sendMessage({
-		to: '2107718253',
-		from: '+18019013606',
-		body: 'Just received an application for ' + req.property.address
-	});
-
-	//notify the manager that an application was received
-	req.property.populate('manager', function(err, property) {
+	req.property.populate('manager owner', function(err, property) {
 		if (err)
 			return next(err);
 
-		// notify the manager that a payment was made
-		twilio.sendMessage({
-			to: property.manager.phone.replace(/[^0-9]/g, ''),
-			from: '+18019013606',
-			body: 'An application was just received for ' + property.address
+		var application = Application(req.body);
+		application.property = req.property._id;
+		application.save();
+
+		// charge the application fee to the provided card
+		stripe.charges.create({
+			amount: property.manager.application_fee * 100,
+			currency: 'usd',
+			source: application.card,
+			description: 'Application fee for ' + property.address,
+			application_fee: 500,
+			destination: property.owner.stripe_id
+		}, function(err, charge) {
+			if (err)
+				return next(err);
+
+			// save the charge data with the application to the database
+			application.charge = charge;
+			application.save();
+			res.json(application);
+			res.end();
+
+			// notify Dennis that an application was received
+			twilio.sendMessage({
+				to: '2107718253',
+				from: '+18019013606',
+				body: 'Just received an application for ' + req.property.address
+			});
+
+			// notify the manager that a payment was made
+			twilio.sendMessage({
+				to: property.manager.phone.replace(/[^0-9]/g, ''),
+				from: '+18019013606',
+				body: 'An application was just received for ' + property.address
+			});
 		});
 	});
 });
