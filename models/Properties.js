@@ -18,7 +18,7 @@ var PropertySchema = new mongoose.Schema({
 PropertySchema.methods.toJSON = function() {
 	var property = this.toObject();
 	if (property.applications_open)
-		property.application_url = process.env.ROOT_NAME +'/#/applications/' + property._id;
+		property.application_url = process.env.ROOT_NAME +'/#/properties/' + property._id + '/apply';
 	return property;
 };
 
