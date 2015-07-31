@@ -34,9 +34,14 @@ router.get('/', auth, function(req, res, next) {
 
 /* GET specified property */
 router.get('/:property', function(req, res) {
-	// TODO: check for permissions to view property details
-	/*if (req.property.manager != req.payload._id && req.property.tenant != req.payload._id)
-		return res.status(403).json({ message: 'You don\'t have permission to view this property.' });*/
+	// TODO: find a way to use the middleware function here only when applications aren't open
+	/*if (!req.property.applications_open)
+	{
+		if (req.payload._type == "Manager" && req.payload._id != req.property.manager)
+			return res.status(403).json({ message: 'Only the manager of this property may view its details' });
+		else if (req.payload._type == "Tenant" && req.property.tenants.indexOf(req.payload._id) != -1)
+			return res.status(403).json({ message: 'Only the current tenant of this property may view its details' });
+	}*/
 
 	req.property.populate('owner tenants', function(err, property) {
 		if (err)
@@ -48,7 +53,6 @@ router.get('/:property', function(req, res) {
 
 /* POST a new property */
 router.post('/', auth, function(req, res, next) {
-	console.log(req.body);
 	if (req.payload._type !== 'Manager')
 		return res.status(403).json({ message: 'Only managers may create new properties.' });
 
@@ -72,6 +76,9 @@ router.post('/', auth, function(req, res, next) {
 
 /* PUT changes to a property */
 router.put('/:property', auth, function(req, res) {
+	if (req.payload._id != req.property.manager)
+		return res.status(403).json({ message: 'Only the manager of this property may make changes to it' });
+
 	if (req.body.address)
 		req.property.address = req.body.address;
 	if (req.body.address2)
@@ -90,7 +97,10 @@ router.put('/:property', auth, function(req, res) {
 
 /* GET list of all tenants in a property */
 router.get('/:property/tenants', auth, function(req, res, next) {
-	Tenant.find({ '_type' : 'Tenant', current: {$ne: false}}, function(err, tenants){
+	if (req.payload._id != req.property.manager)
+		return res.status(403).json({ message: 'Only the manager of this property may view tenants in it' });
+
+	Tenant.find({ '_type' : 'Tenant', current: {$ne: false}, property: req.property._id}, function(err, tenants){
 		if (err)
 			return next(err);
 
@@ -100,6 +110,9 @@ router.get('/:property/tenants', auth, function(req, res, next) {
 
 /* POST a new tenant to a specific property */
 router.post('/:property/tenants', auth, function(req, res, next) {
+	if (req.payload._id != req.property.manager)
+		return res.status(403).json({ message: 'Only the manager of this property may add tenants to it' });
+
 	if (!req.body.email || !req.body.name_first)
 		return res.status(400).json({ message: 'Please fill out all fields' });
 	
@@ -179,9 +192,9 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 });
 
 /* GET all applications for a property */
-router.get('/:property/applications', function(req, res, next) {
-	/*if (req.payload._type != "Manager")
-		return res.status(403).json({ message: 'Only managers may view property lists' });*/
+router.get('/:property/applications', auth, function(req, res, next) {
+	if (req.payload._id != req.property.manager)
+		return res.status(403).json({ message: 'Only the manager of this property may view applications for it' });
 
 	Application.find({property: req.property._id}, function(err, applications){
 		if (err)
