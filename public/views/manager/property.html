@@ -21,9 +21,16 @@
 		</div>
 		<a class="btn btn-block" ng-click="openApplications()" ng-hide="property.applications_open">Open Lease Applications for this Property</a>
 		<a class="btn btn-block" ng-click="closeApplications()" ng-show="property.applications_open">Close Lease Applications for this Property</a>
-		<div class="form-group" ng-show="property.applications_open">
-			<label>Lease Application Link <a href="{{ property.application_url }}"><span class="glyphicon glyphicon-search"></span></a></label>
-			<pre>{{ property.application_url }}</pre>
+		<div ng-show="property.applications_open">
+			<h3>Applications</h3>
+			<ul class="list-unstyled links" ng-show="applications.length">
+				<li ng-repeat="application in applications">{{ application.name_first }} {{ application.name_last }}</li>
+			</ul>
+			<p ng-hide="applications.length">No applications have been received for this property.</p>
+			<div class="form-group">
+				<label>Lease Application Link <a href="{{ property.application_url }}"><span class="glyphicon glyphicon-search"></span></a></label>
+				<pre>{{ property.application_url }}</pre>
+			</div>
 		</div>
 		<a class="btn input-lg" ui-sref="properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>

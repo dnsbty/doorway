@@ -8,7 +8,8 @@ app.controller('PropertyController', [
 	'properties',
 	'property',
 	'owners',
-	function($scope, $state, $stateParams, $window, auth, stripe, properties, property, owners) {
+	'applications',
+	function($scope, $state, $stateParams, $window, auth, stripe, properties, property, owners, applications) {
 		$scope.user = auth.currentUser();
 		$scope.property = property;
 		if ($stateParams.owner)
@@ -16,6 +17,7 @@ app.controller('PropertyController', [
 		$scope.properties = properties.properties;
 		$scope.owners = owners.owners;
 		$scope.page = 'main';
+		$scope.applications = applications.applications;
 		$scope.application = {
 			occupants: [{}],
 			vehicles: [{}],

@@ -179,9 +179,9 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 });
 
 /* GET all applications for a property */
-router.get('/:property/applications', auth, function(req, res, next) {
-	if (req.payload._type != "Manager")
-		return res.status(403).json({ message: 'Only managers may view property lists' });
+router.get('/:property/applications', function(req, res, next) {
+	/*if (req.payload._type != "Manager")
+		return res.status(403).json({ message: 'Only managers may view property lists' });*/
 
 	Application.find({property: req.property._id}, function(err, applications){
 		if (err)

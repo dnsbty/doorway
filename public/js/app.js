@@ -238,6 +238,9 @@ app.config([
 			resolve: {
 				property: ['$stateParams', 'properties', function($stateParams, properties) {
 					return properties.get($stateParams.id);
+				}],
+				applicationsPromise: ['$stateParams', 'applications', function($stateParams, applications) {
+					return applications.getAll($stateParams.id);
 				}]
 			},
         	authenticate: true
