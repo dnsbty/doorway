@@ -53,8 +53,20 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 				auth.saveCurrentUser(data.user);
 			});
 		},
+		resetPassword: function(user) {
+			return $http.post('/users/' + user.email + '/password/reset').success(function(res) {
+				return res.data;
+			});
+		},
 		saveCurrentUser: function(user) {
 			$window.localStorage['doorway-user'] = angular.toJson(user);
+		},
+		savePasswordReset: function(user) {
+			return $http.put('/users/' + user._id + '/password', {
+				token: user.token, password: user.password
+			}).success(function(res) {
+				return res.data;
+			});
 		},
 		saveToken: function(token) {
 			$window.localStorage['doorway-token'] = token;

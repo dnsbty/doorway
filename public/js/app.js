@@ -308,6 +308,24 @@ app.config([
 			}],
         	authenticate: true
 		})
+		.state('forgotPassword', {
+			url: '/forgotPassword',
+			templateUrl: './views/forgotPassword.html',
+			controller: 'AuthController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (auth.isLoggedIn())
+					$state.go('home');
+			}]
+		})
+		.state('resetPassword', {
+			url: '/resetPassword/{id}/{token}',
+			templateUrl: './views/resetPassword.html',
+			controller: 'AuthController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (auth.isLoggedIn())
+					$state.go('home');
+			}]
+		})
 		.state('register', {
 			url: '/register',
 			templateUrl: './views/register.html',

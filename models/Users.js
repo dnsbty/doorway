@@ -51,6 +51,12 @@ UserSchema.methods.getFullName = function() {
 	return this.name_first + ' ' + this.name_last;
 };
 
+UserSchema.methods.loginToken = function() {
+	var today = new Date();
+	today.setHours(0,0,0,0);
+	return crypto.pbkdf2Sync(today + this.id, this.salt, 1000, 64).toString('hex');
+};
+
 /* Schema for property managers */
 var ManagerSchema = UserSchema.extend({
 	owners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],

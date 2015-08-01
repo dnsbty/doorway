@@ -6,6 +6,11 @@ app.controller('AuthController', [
 	'auth',
 	function($scope, $rootScope, $state, $stateParams, auth) {
 		$scope.user = {};
+		if ($stateParams.id)
+			$scope.user._id = $stateParams.id;
+		if ($stateParams.token)
+			$scope.user.token = $stateParams.token;
+		$scope.success = false;
 
 		$scope.login = function() {
 			auth.login($scope.user)
@@ -30,6 +35,29 @@ app.controller('AuthController', [
 				$scope.error = err.message;
 			}).then(function() {
 				$state.go('dashboard');
+			});
+		};
+
+		$scope.resetPassword = function() {
+			auth.resetPassword($scope.user)
+			.error(function(err) {
+				$scope.error = err.message;
+			}).then(function() {
+				$scope.success = true;
+			});
+		};
+
+		$scope.savePasswordReset = function() {
+			if (!$scope.user.password || !$scope.user.password2)
+				return $scope.error = 'Please enter your new password in both fields';
+			if ($scope.user.password !== $scope.user.password2)
+				return $scope.error = 'Please check both fields to make sure the password matches';
+
+			auth.savePasswordReset($scope.user)
+			.error(function(err) {
+				$scope.error = err.message;
+			}).then(function() {
+				$scope.success = true;
 			});
 		};
 	}
