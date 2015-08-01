@@ -73,7 +73,7 @@ router.post('/:email/password/reset', function(req, res, next) {
 				}],
 				'merge_language': 'handlebars',
 				'global_merge_vars': [{
-					'name': 'tenant_name',
+					'name': 'name',
 					'content': user.name_first
 				},{
 					'name': 'link',
