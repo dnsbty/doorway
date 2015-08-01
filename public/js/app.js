@@ -255,6 +255,24 @@ app.config([
 				}]
 			}
 		})
+		.state('application', {
+			url: 'applications/{id}',
+			controller: 'ApplicationController',
+			templateUrl: './views/manager/application.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				application: ['$stateParams', 'properties', function($stateParams, properties) {
+					return applications.get($stateParams.id);
+				}],
+				applicationsPromise: ['$stateParams', 'applications', function($stateParams, applications) {
+					return applications.getAll($stateParams.id);
+				}]
+			},
+        	authenticate: true
+		})
 		.state('tenants', {
 			url: '/tenants',
 			template: '<ui-view/>',
