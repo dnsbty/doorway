@@ -1,0 +1,224 @@
+<div class="row page-application-detail">
+	<div class="col-sm-4 col-sm-offset-4">
+		<div>
+			<h2>Lease Application</h2>
+			<div>
+				<h3>Contact Info</h3>
+				<p><small>First Name:</small> {{ application.name_first }}</p>
+				<p><small>Middle Name:</small> {{ application.name_middle }}</p>
+				<p><small>Last Name:</small> {{ application.name_last }}</p>
+				<p><small>Former Last Name:</small> {{ application.name_former }}</p>
+				<p><small>Email:</small> {{ application.email }}</p>
+				<p><small>Home Phone:</small> {{ application.phone_home }}</p>
+				<p><small>Work Phone:</small> {{ application.phone_work }}</p>
+				<p><small>Mobile Phone:</small> {{ application.phone_mobile }}</p>
+			</div>
+			<div>
+				<h3>Identification</h3>
+				<p><small>Social Security Number:</small> {{application.social_security}}</p>
+				<p><small>Driver License Number:</small> {{ application.driver_license_number }}</p>
+				<p><small>Driver License State:</small> {{ application.drive_license_state }}</p>
+				<p><small>Date of Birth:</small> {{ application.date_of_birth }}</p>
+				<p><small>Height:</small> {{ application.height }}</p>
+				<p><small>Weight:</small> {{ application.weight }}</p>
+				<p><small>Eye Color:</small> {{ application.eye_color }}</p>
+				<p><small>Hair Color:</small> {{ application.hair_color }}</p>
+				<p><small>Marital Status:</small> {{ application.marital_status }}</p>
+				<p><small>Citizenship:</small> {{ application.citizenship }}</p>
+			</div>
+			<div>
+				<h3>Occupants</h3>
+				<div ng-repeat="occupant in application.occupants">
+					<p><small>Name:</small> {{ occupant.name }}</p>
+					<p><small>&mdash; Relationship:</small> {{ occupant.relationship }}</p>
+					<p><small>&mdash; Age:</small> {{occupant.age}}</p>
+				</div>
+			</div>
+			<div>
+				<h3>Current Address</h3>
+				<p><small>Address:</small> {{ application.current_address.address }}</p>
+				<p><small>Apartment Number:</small> {{ application.current_address.apartment }}</p>
+				<p><small>City:</small> {{ application.current_address.city }}</p>
+				<p><small>State:</small> {{ application.current_address.state }}</p>
+				<p><small>Zip:</small> {{ application.current_address.zip }}</p>
+				<p><small>Landlord or Property Manager's Name:</small> {{ application.current_address.landlord_name }}</p>
+				<p><small>Email:</small> {{ application.current_address.email }}</p>
+				<p><small>Phone:</small> {{ application.current_address.phone }}</p>
+				<p><small>Date Moved In:</small> {{ application.current_address.date_moved_in }}</p>
+				<p><small>Move Out Date:</small> {{ application.current_address.date_move_out }}</p>
+				<p><small>Rent:</small> {{ application.current_address.rent }}</p>
+				<p><small>Reason for move:</small> {{ application.current_address.reason }}</p>
+			</div>
+			<div>
+				<h3>Previous Address</h3>
+				<p><small>Address:</small> {{ application.previous_address.address }}</p>
+				<p><small>Apartment Number:</small> {{ application.previous_address.apartment }}</p>
+				<p><small>City:</small> {{ application.previous_address.city }}</p>
+				<p><small>State:</small> {{ application.previous_address.state }}</p>
+				<p><small>Zip:</small> {{ application.previous_address.zip }}</p>
+				<p><small>Landlord or Property Manager's Name:</small> {{ application.previous_address.landlord_name }}</p>
+				<p><small>Email:</small> {{ application.previous_address.email }}</p>
+				<p><small>Phone:</small> {{ application.previous_address.phone }}</p>
+				<p><small>Date Moved In:</small> {{ application.previous_address.date_moved_in }}</p>
+				<p><small>Move Out Date:</small> {{ application.previous_address.date_move_out }}</p>
+				<p><small>Rent:</small> {{ application.previous_address.rent }}</p>
+				<p><small>Reason for move:</small> {{ application.previous_address.reason }}</p>
+			</div>
+			<div>
+				<h3>Current Employer</h3>
+				<p><small>Employer:</small> {{ application.current_employer.name }}</p>
+				<p><small>Address:</small> {{ application.current_employer.address }}</p>
+				<p><small>City:</small> {{ application.current_employer.city }}</p>
+				<p><small>State:</small> {{ application.current_employer.state }}</p>
+				<p><small>Zip:</small> {{ application.current_employer.zip }}</p>
+				<p><small>Supervisor's Name:</small> {{ application.current_employer.supervisor.name }}</p>
+				<p><small>Phone:</small> {{ application.current_employer.supervisor.phone }}</p>
+				<p><small>Email:</small> {{ application.current_employer.supervisor.email }}</p>
+				<p><small>Start Date:</small> {{ application.current_employer.start_date }}</p>
+				<p><small>Gross Monthly Income:</small> {{ application.current_employer.monthly_income }}</p>
+				<p><small>Position:</small> {{ application.current_employer.position }}</p>
+			</div>
+			<div>
+				<h3>Previous Employer</h3>
+				<p><small>Employer:</small> {{ application.previous_employer.name }}</p>
+				<p><small>Address:</small> {{ application.previous_employer.address }}</p>
+				<p><small>City:</small> {{ application.previous_employer.city }}</p>
+				<p><small>State:</small> {{ application.previous_employer.state }}</p>
+				<p><small>Zip:</small> {{ application.previous_employer.zip }}</p>
+				<p><small>Supervisor's Name:</small> {{ application.previous_employer.supervisor.name }}</p>
+				<p><small>Phone:</small> {{ application.previous_employer.supervisor.phone }}</p>
+				<p><small>Email:</small> {{ application.previous_employer.supervisor.email }}</p>
+				<p><small>Start Date:</small> {{ application.previous_employer.start_date }}</p>
+				<p><small>End Date:</small> {{ application.previous_employer.end_date }}</p>
+				<p><small>Gross Monthly Income:</small> {{ application.previous_employer.monthly_income }}</p>
+				<p><small>Position:</small> {{ application.previous_employer.position }}</p>
+			</div>
+			<div>
+				<h3>Other Income</h3>
+				<p>{{ application.other_income }}</p>
+			</div>
+			<div>
+				<h3>Vehicles</h3>
+				<div ng-repeat="vehicle in application.vehicles">
+					<p><small>Name:</small> {{ occupant.name }}</p>
+					<p><small>&mdash; Relationship:</small> {{ occupant.relationship }}</p>
+					<p><small>&mdash; Age:</small> {{occupant.age}}</p>
+				</div>
+			</div>
+			<div>
+				<h3>Pets</h3>
+				<p ng-hide="application.pets_boolean">No pets will be kept on the property:</p>
+				<div ng-show="application.pets_boolean">
+					<p>The following pets will be kept on the property:</p>
+					<div ng-repeat="pet in application.pets">
+						<p><small>Type and Breed</small> {{ pet.type_breed"></p>
+						<p><small>Name:</small> {{ pet.name"></p>
+						<p><small>Color:</small> {{ pet.color"></p>
+						<p><small>Weight:</small> {{ pet.weight"></p>
+						<p><small>Age (in Years):</small> {{ pet.age"></p>
+						<p><small>Gender:</small> {{ pet.gender"></p>
+						<p><small>Neutered:</small> <span ng-show="pet.neutered">Yes</span><span ng-hide="pet.neutered">No</span></p>
+						<p><small>Declawed:</small> <span ng-show="pet.declawed">Yes</span><span ng-hide="pet.declawed">No</span></p>
+						<p><small>Rabies Shots Current:</small> <span ng-show="pet.shots_current">Yes</span><span ng-hide="pet.shots_current">No</span></p>
+					</div>
+				</div>
+			</div>
+			<div>
+				<h3>Miscellaneous</h3>
+				<p>
+					<small>Will any waterbeds or water-filled furniture be on the Property?</small> 
+					<span ng-show="application.miscellaneous.waterbeds">Yes</span>
+					<span ng-hide="application.miscellaneous.waterbeds">No</span>
+				</p>
+				<p>
+					<small>Does anyone who will occupy the Property smoke?</small> 
+					<span ng-show="application.miscellaneous.smoke">Yes</span>
+					<span ng-hide="application.miscellaneous.smoke">No</span>
+				</p>
+				<p>
+					<small>Will Applicant maintain renter's insurance?</small> 
+					<span ng-show="application.miscellaneous.insurance">Yes</span>
+					<span ng-hide="application.miscellaneous.insurance">No</span>
+				</p>
+				<p>
+					<small>Is Applicant or Applicant's spouse, even if separated, in the military?</small> 
+					<span ng-show="application.miscellaneous.military">Yes</span>
+					<span ng-hide="application.miscellaneous.military">No</span>
+				</p>
+				<p>
+					<small>Is the military person serving under orders limiting the military person's stay to one year or less?</small> 
+					<span ng-show="application.miscellaneous.military_term">Yes</span>
+					<span ng-hide="application.miscellaneous.military_term">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever been evicted?</small> 
+					<span ng-show="application.miscellaneous.evicted">Yes</span>
+					<span ng-hide="application.miscellaneous.evicted">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever been asked to move out by a landlord?</small> 
+					<span ng-show="application.miscellaneous.asked_to_move">Yes</span>
+					<span ng-hide="application.miscellaneous.asked_to_move">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever breached a lease or rental agreement?</small> 
+					<span ng-show="application.miscellaneous.breached">Yes</span>
+					<span ng-hide="application.miscellaneous.breached">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever filed for bankruptcy?</small> 
+					<span ng-show="application.miscellaneous.bankruptcy">Yes</span>
+					<span ng-hide="application.miscellaneous.bankruptcy">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever lost property in a foreclosure?</small> 
+					<span ng-show="application.miscellaneous.foreclosure">Yes</span>
+					<span ng-hide="application.miscellaneous.foreclosure">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever had <strong>any</strong> credit problems (including outstanding debt e.g. student loans or medical bills), slow-pays or delinquencies?</small> 
+					<span ng-show="application.miscellaneous.credit_problems">Yes</span>
+					<span ng-hide="application.miscellaneous.credit_problems">No</span>
+				</p>
+				<p>
+					<small>Has Applicant ever been convicted of a crime?</small>
+					<span ng-show="application.miscellaneous.crime">Yes</span>
+					<span ng-hide="application.miscellaneous.crime">No</span>
+				</p>
+				<p>
+					<small>Is any occupant a registered sex offender?</small> 
+					<span ng-show="application.miscellaneous.sex_offender">Yes</span>
+					<span ng-hide="application.miscellaneous.sex_offender">No</span>
+				</p>
+				<p>
+					<small>Are there any criminal matters pending against any occupant?</small> 
+					<span ng-show="application.miscellaneous.criminal_pending">Yes</span>
+					<span ng-hide="application.miscellaneous.criminal_pending">No</span>
+				</p>
+			</div>
+			<div>
+				<h3>Additional Information</h3>
+				<p>{{ application.additional_comments }}</p>
+			</div>
+			<div>
+				<h3>Property Info</h3>
+				<p><small>Anticipated Move-in Date: </small> {{ application.move_in_date }}</p>
+				<p>
+					<small>Applicant was referred to Landlord by:</small> 
+					<span ng-show="application.referral=='agent'">Real estate agent</span>
+					<span ng-show="application.referral=='newspaper'">Newspaper</span>
+					<span ng-show="application.referral=='sign'">Sign</span>
+					<span ng-show="application.referral=='internet'">Internet</span>
+					<span ng-show="application.referral=='other'">Other</span>
+				</p>
+				<div ng-show="application.referral=='agent'">
+					<p><small>Agent Name</small> {{ application.referral_agent.name }}</p>
+					<p><small>Agent Phone Number</small> {{ application.referral_agent.phone }}</p>
+				</div>
+				<p ng-show="application.referral=='other'"><small>Referred by:</small> {{ application.referral_other }}</p>
+				<p><small>Repair Requests:</small> {{ application.repair_requests }}</p>
+			</div>
+		</div>
+		<a class="btn" ui-sref="properties.detail({id: application.property._id })">&lt; {{ application.property.address }}</a>
+	</div>
+</div>

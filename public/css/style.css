@@ -62,3 +62,8 @@ address p {
 	padding-bottom: 10px;
 	border-radius: 0;
 }
+
+/* PAGE-SPECIFIC STYLES */
+.page-application-detail p {
+	text-align: left;
+}

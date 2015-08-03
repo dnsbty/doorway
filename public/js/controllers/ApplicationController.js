@@ -3,13 +3,11 @@ app.controller('ApplicationController', [
 	'$state',
 	'$stateParams',
 	'auth',
-	'property',
 	'applications',
 	'application',
-	function($scope, $state, $stateParams, auth, property, applications, application) {
+	function($scope, $state, $stateParams, auth, applications, application) {
 		$scope.user = auth.currentUser();
-		$scope.property = property;
-		$scope.applications = applications.applications;
 		$scope.application = application;
+		$scope.page = "contact";
 	}
 ]);

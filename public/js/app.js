@@ -256,7 +256,7 @@ app.config([
 			}
 		})
 		.state('application', {
-			url: 'applications/{id}',
+			url: '/applications/{id}',
 			controller: 'ApplicationController',
 			templateUrl: './views/manager/application.html',
 			onEnter: ['$state', 'auth', function($state, auth) {
@@ -264,11 +264,8 @@ app.config([
 					$state.go('home');
 			}],
 			resolve: {
-				application: ['$stateParams', 'properties', function($stateParams, properties) {
+				application: ['$stateParams', 'applications', function($stateParams, applications) {
 					return applications.get($stateParams.id);
-				}],
-				applicationsPromise: ['$stateParams', 'applications', function($stateParams, applications) {
-					return applications.getAll($stateParams.id);
 				}]
 			},
         	authenticate: true

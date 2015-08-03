@@ -24,7 +24,9 @@
 		<div ng-show="property.applications_open">
 			<h3>Applications</h3>
 			<ul class="list-unstyled links" ng-show="applications.length">
-				<li ng-repeat="application in applications">{{ application.name_first }} {{ application.name_last }}</li>
+				<li ng-repeat="application in applications">
+					<a ui-sref="application({id: application._id})">{{ application.name_first }} {{ application.name_last }}</a>
+				</li>
 			</ul>
 			<p ng-hide="applications.length">No applications have been received for this property.</p>
 			<div class="form-group">
