@@ -31,7 +31,7 @@
 				<div ng-repeat="occupant in application.occupants">
 					<p><small>Name:</small> {{ occupant.name }}</p>
 					<p><small>&mdash; Relationship:</small> {{ occupant.relationship }}</p>
-					<p><small>&mdash; Age:</small> {{occupant.age}}</p>
+					<p><small>&mdash; Age:</small> {{ occupant.age }}</p>
 				</div>
 			</div>
 			<div>
@@ -100,9 +100,13 @@
 			<div>
 				<h3>Vehicles</h3>
 				<div ng-repeat="vehicle in application.vehicles">
-					<p><small>Name:</small> {{ occupant.name }}</p>
-					<p><small>&mdash; Relationship:</small> {{ occupant.relationship }}</p>
-					<p><small>&mdash; Age:</small> {{occupant.age}}</p>
+					<p><small>Type:</small> {{ vehicle.type }}</p>
+					<p><small>&mdash; Year:</small> {{ vehicle.year }}</p>
+					<p><small>&mdash; Make:</small> {{ vehicle.make }}</p>
+					<p><small>&mdash; Model:</small> {{ vehicle.model }}</p>
+					<p><small>&mdash; License Plate Number:</small> {{ vehicle.license_plate_number }}</p>
+					<p><small>&mdash; License Plate State:</small> {{ vehicle.license_plate_state }}</p>
+					<p><small>&mdash; Monthly Payment:</small> {{ vehicle.monthly_payment }}</p>
 				</div>
 			</div>
 			<div>
