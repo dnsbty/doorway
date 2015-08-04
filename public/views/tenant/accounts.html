@@ -3,13 +3,13 @@
 		<h2>Bank Accounts ({{ accounts.length }})</h2>
 		<div ng-show="accounts">
 			<ul class="list-unstyled links">
-				<li ng-repeat="account in accounts" ui-sref="accountDetails({ id: account._id })">{{ account.bank_name }} {{ account.last4 }}</li>
+				<li ng-repeat="account in accounts" ui-sref="app.accountDetails({ id: account._id })">{{ account.bank_name }} {{ account.last4 }}</li>
 			</ul>
-			<button class="btn btn-primary btn-block input-lg" ui-sref="newAccount">Add an Account</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newAccount">Add an Account</button>
 		</div>
 		<div ng-hide="accounts">
 			<p>Looks like you haven't added a bank account yet.</p>
-			<button class="btn btn-primary btn-block input-lg" ui-sref="newAccount">Add an Account</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newAccount">Add an Account</button>
 		</div>
 		<a class="btn input-lg" ui-sref="dashboard">&lt; Dashboard</a>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>

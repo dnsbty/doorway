@@ -4,9 +4,9 @@
 		<div>
 			<p>Date: {{ payment.created | date }}</p>
 			<p>Amount: {{ payment.amount | currency }}</p>
-			<p>Source: <a ui-sref="accountDetails({id: payment.source._id})">{{ payment.source.bank_name }} {{ payment.source.last4 }}</a></p>
+			<p>Source: <a ui-sref="app.accountDetails({id: payment.source._id})">{{ payment.source.bank_name }} {{ payment.source.last4 }}</a></p>
 			<p>If you have any questions about this payment please contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.</p>
 		</div>
-		<a class="btn input-lg" ui-sref="payments">&lt; All Payments</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
+		<a class="btn input-lg" ui-sref="app.payments">&lt; All Payments</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

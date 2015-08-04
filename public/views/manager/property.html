@@ -8,7 +8,7 @@
 			</address>
 			<ul class="list-unstyled">
 				<li><p>Rent: {{ property.rent | currency }}</p></li>
-				<li><p>Owner: <a ui-sref="ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p></li>
+				<li><p>Owner: <a ui-sref="app.ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p></li>
 			</ul>
 			<div>
 				<h3>Tenants</h3>
@@ -16,7 +16,7 @@
 					<li ng-repeat="tenant in property.tenants">{{ tenant.name_first }} {{ tenant.name_last }}</li>
 				</ul>
 				<p ng-hide="property.tenants.length">It appears that this property is empty.</p>
-				<button class="btn btn-primary input-lg" ui-sref="tenants.new({property: property._id})">Add a Tenant</button>
+				<button class="btn btn-primary input-lg" ui-sref="app.tenants.new({property: property._id})">Add a Tenant</button>
 			</div>
 		</div>
 		<a class="btn btn-block" ng-click="openApplications()" ng-hide="property.applications_open">Open Lease Applications for this Property</a>
@@ -25,7 +25,7 @@
 			<h3>Applications</h3>
 			<ul class="list-unstyled links" ng-show="applications.length">
 				<li ng-repeat="application in applications">
-					<a ui-sref="application({id: application._id})">{{ application.name_first }} {{ application.name_last }}</a>
+					<a ui-sref="app.application({id: application._id})">{{ application.name_first }} {{ application.name_last }}</a>
 				</li>
 			</ul>
 			<p ng-hide="applications.length">No applications have been received for this property.</p>
@@ -34,6 +34,6 @@
 				<pre>{{ property.application_url }}</pre>
 			</div>
 		</div>
-		<a class="btn input-lg" ui-sref="properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
+		<a class="btn input-lg" ui-sref="app.properties.list">&lt; All Properties</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

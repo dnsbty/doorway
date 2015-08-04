@@ -24,7 +24,7 @@ app.controller('AuthController', [
 					$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
 				} else {
 					// redirect all others after login to dashboard
-					$state.go('dashboard');
+					$state.go('app.dashboard');
 				}
 			});
 		};
@@ -34,7 +34,7 @@ app.controller('AuthController', [
 			.error(function(err) {
 				$scope.error = err.message;
 			}).then(function() {
-				$state.go('dashboard');
+				$state.go('app.dashboard');
 			});
 		};
 

@@ -3,12 +3,12 @@
 		<h2>Hi {{ user.name_first }}!</h2>
 		<p class="small">Thanks for using Doorway!  If you have any questions, feel free to contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.</p>
 		<div ng-show="isManager">
-			<p><a ui-sref="owners" class="btn">Owners</a></p>
-			<p><a ui-sref="properties.list" class="btn">Properties</a></p>
+			<p><a ui-sref="app.owners" class="btn">Owners</a></p>
+			<p><a ui-sref="app.properties.list" class="btn">Properties</a></p>
 		</div>
 		<div ng-show="isTenant">
-			<p><a ui-sref="accounts" class="btn">Bank Accounts</a></p>
-			<p><a ui-sref="payments" class="btn">Payments</a></p>
+			<p><a ui-sref="app.accounts" class="btn">Bank Accounts</a></p>
+			<p><a ui-sref="app.payments" class="btn">Payments</a></p>
 		</div>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>

@@ -15,15 +15,15 @@ app.config([
 			controller: 'MainController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (auth.isLoggedIn())
-					$state.go('dashboard');
+					$state.go('app.dashboard');
 			}]
 		})
-		.state('waiting', {
-			url: '/waiting',
-			templateUrl: './views/waiting.html',
-			controller: 'MainController'
+		.state('app', {
+			url: '/',
+			template: '<div class="container" ui-view></div>',
+			abstract: true
 		})
-		.state('dashboard', {
+		.state('app.dashboard', {
 			url: '/',
 			templateUrl: './views/dashboard.html',
 			controller: 'MainController',
@@ -33,7 +33,7 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('newTenant', {
+		.state('app.newTenant', {
 			url: '/newTenant/{id}/{token}',
 			templateUrl: './views/newTenant.html',
 			controller: 'TenantController',
@@ -45,7 +45,7 @@ app.config([
 					auth.newTenantLogin($stateParams.id, $stateParams.token);
 			}]
 		})
-		.state('newTenantInfo', {
+		.state('app.newTenantInfo', {
 			url: '/newTenantInfo',
 			templateUrl: './views/newTenantInfo.html',
 			controller: 'TenantController',
@@ -55,7 +55,7 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('newAccount', {
+		.state('app.newAccount', {
 			url: '/newAccount',
 			templateUrl: './views/newAccount.html',
 			controller: 'TenantController',
@@ -65,7 +65,7 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('verifyAccount', {
+		.state('app.verifyAccount', {
 			url: '/verifyAccount',
 			templateUrl: './views/verifyAccount.html',
 			onEnter: ['$state', 'auth', function($state, auth) {
@@ -74,7 +74,7 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('accounts', {
+		.state('app.accounts', {
 			url: '/accounts',
 			templateUrl: './views/tenant/accounts.html',
 			controller: 'TenantController',
@@ -89,7 +89,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('accountDetails', {
+		.state('app.accountDetails', {
 			url: '/accountDetails/{id}',
 			templateUrl: './views/tenant/account.html',
 			controller: 'AccountController',
@@ -104,7 +104,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('payments', {
+		.state('app.payments', {
 			url: '/payments',
 			templateUrl: './views/tenant/payments.html',
 			controller: 'TenantController',
@@ -119,7 +119,7 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('payment', {
+		.state('app.payment', {
 			url: '/payments/{id}',
 			templateUrl: './views/tenant/payment.html',
 			controller: 'PaymentController',
@@ -134,7 +134,7 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('newPayment', {
+		.state('app.newPayment', {
 			url: '/newPayment',
 			templateUrl: './views/tenant/newPayment.html',
 			controller: 'TenantController',
@@ -144,12 +144,12 @@ app.config([
 				var user = auth.currentUser();
 				if (!user.property || !user.property.rent) {
 					auth.logout();
-					$state.go('newPayment');
+					$state.go('app.newPayment');
 				}
 			}],
         	authenticate: true
 		})
-		.state('owners', {
+		.state('app.owners', {
 			url: '/owners',
 			templateUrl: './views/manager/owners.html',
 			controller: 'ManagerController',
@@ -164,7 +164,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('ownerDetails', {
+		.state('app.ownerDetails', {
 			url: '/ownerDetails/{id}',
 			templateUrl: './views/manager/owner.html',
 			controller: 'OwnerController',
@@ -179,7 +179,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('newOwner', {
+		.state('app.newOwner', {
 			url: '/newOwner',
 			templateUrl: './views/manager/newOwner.html',
 			controller: 'ManagerController',
@@ -189,12 +189,12 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('properties', {
+		.state('app.properties', {
 			url: '/properties',
 			template: '<ui-view/>',
 			abstract: true
 		})
-		.state('properties.list', {
+		.state('app.properties.list', {
 			url: '',
 			controller: 'ManagerController',
 			templateUrl: './views/manager/properties.html',
@@ -209,7 +209,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('properties.new', {
+		.state('app.properties.new', {
 			url: '/new?owner',
 			controller: 'PropertyController',
 			templateUrl: './views/manager/newProperty.html',
@@ -227,7 +227,7 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('properties.detail', {
+		.state('app.properties.detail', {
 			url: '/{id}',
 			controller: 'PropertyController',
 			templateUrl: './views/manager/property.html',
@@ -245,7 +245,7 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('properties.apply', {
+		.state('app.properties.apply', {
 			url: '/{id}/apply',
 			controller: 'PropertyController',
 			templateUrl: './views/application.html',
@@ -255,7 +255,7 @@ app.config([
 				}]
 			}
 		})
-		.state('application', {
+		.state('app.application', {
 			url: '/applications/{id}',
 			controller: 'ApplicationController',
 			templateUrl: './views/manager/application.html',
@@ -270,12 +270,12 @@ app.config([
 			},
         	authenticate: true
 		})
-		.state('tenants', {
+		.state('app.tenants', {
 			url: '/tenants',
 			template: '<ui-view/>',
 			abstract: true
 		})
-		.state('tenants.new', {
+		.state('app.tenants.new', {
 			url: '/new?property',
 			controller: 'ManagerController',
 			templateUrl: './views/manager/newTenant.html',
@@ -293,14 +293,14 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('connect', {
+		.state('app.connect', {
 			url: '/owners/connect?state&code',
 			controller: 'ManagerController',
 			onEnter: ['$state', 'auth', '$stateParams', 'owners', function($state, auth, $stateParams, owners) {
 				if (!auth.isLoggedIn() || !auth.isManager())
 					$state.go('home');
 				owners.connect($stateParams.state, $stateParams.code).success(function(data){
-					$state.go('ownerDetails', { id: data._id });
+					$state.go('app.ownerDetails', { id: data._id });
 				});
 			}],
         	authenticate: true

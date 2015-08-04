@@ -3,17 +3,17 @@
 		<h2>Payments ({{ payments.length }})</h2>
 		<div ng-show="payments">
 			<ul class="list-unstyled links">
-				<li ng-repeat="payment in payments" ui-sref="payment({ id: payment._id })">
+				<li ng-repeat="payment in payments" ui-sref="app.payment({ id: payment._id })">
 					{{ payment.created | date }} &mdash; {{ payment.amount | currency }}
 				</li>
 			</ul>
-			<button class="btn btn-primary btn-block input-lg" ui-sref="newPayment">New Payment</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newPayment">New Payment</button>
 		</div>
 		<div ng-hide="payments">
 			<p>Looks like you haven't made a payment yet.</p>
-			<button class="btn btn-primary btn-block input-lg" ui-sref="newPayment">New Payment</button>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newPayment">New Payment</button>
 		</div>
-		<a class="btn input-lg" ui-sref="dashboard">&lt; Dashboard</a>
+		<a class="btn input-lg" ui-sref="app.dashboard">&lt; Dashboard</a>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

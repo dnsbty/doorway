@@ -19,14 +19,14 @@ app.controller('ManagerController', [
 		$scope.newOwner = function() {
 			owners.create({ name: $scope.owner.name }).success(function(owner) {
 				$scope.owners.push(owner);
-				$state.go('ownerDetails', { id: owner._id });
+				$state.go('app.ownerDetails', { id: owner._id });
 			});
 		};
 
 		$scope.newTenant = function() {
 			$scope.error = '';
 			tenants.create($scope.tenant).success(function(tenant) {
-				$state.go('properties.detail', { id: $scope.tenant.property });
+				$state.go('app.properties.detail', { id: $scope.tenant.property });
 			}).error(function(err) {
 				$scope.error = err.message;
 			});

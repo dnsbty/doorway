@@ -33,7 +33,7 @@ app.controller('TenantController', [
 
 			tenants.save($scope.user);
 			auth.saveCurrentUser($scope.user);
-			$state.go('newAccount');
+			$state.go('app.newAccount');
 		};
 
 		$scope.newAccount = function() {
@@ -62,7 +62,7 @@ app.controller('TenantController', [
 			}).then(function(token) {
 				accounts.newAccount($scope.user._id, token);
 			}).then(function() {
-				$state.go('verifyAccount');
+				$state.go('app.verifyAccount');
 			}).catch(function (err) {
 				$scope.error = err.message;
 			});

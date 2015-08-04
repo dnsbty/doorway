@@ -3,7 +3,7 @@
 		<h2 ng-hide="instructions">{{ account.bank_name }} {{ account.last4 }}</h2>
 		<div ng-show="account.validated">
 			<p>This bank account is properly configured to pay rent.</p>
-			<a class="btn input-lg" ui-sref="newPayment">Make a Payment</a>
+			<a class="btn input-lg" ui-sref="app.newPayment">Make a Payment</a>
 		</div>
 		<div ng-hide="account.validated">
 			<p ng-hide="instructions">Looks like you haven't verified this bank account yet.</p>
@@ -28,6 +28,6 @@
 				<button class="btn btn-primary btn-block input-lg">Verify Account</button>
 			</form>
 		</div>
-		<a class="btn input-lg" ui-sref="accounts">&lt; All Accounts</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
+		<a class="btn input-lg" ui-sref="app.accounts">&lt; All Accounts</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

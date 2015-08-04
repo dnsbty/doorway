@@ -27,7 +27,7 @@ app.controller('PropertyController', [
 		$scope.newProperty = function() {
 			$scope.error = null;
 			properties.create(property).success(function(property) {
-				$state.go('properties.detail', { id: property._id });
+				$state.go('app.properties.detail', { id: property._id });
 			}).error(function(err) {
 				$scope.error = err.message;
 			});
