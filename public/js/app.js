@@ -10,7 +10,7 @@ app.config([
 	function($stateProvider, $urlRouterProvider) {
 		$stateProvider
 		.state('home', {
-			url: '/',
+			url: '',
 			templateUrl: './views/home.html',
 			controller: 'MainController',
 			onEnter: ['$state', 'auth', function($state, auth) {
@@ -19,12 +19,12 @@ app.config([
 			}]
 		})
 		.state('app', {
-			url: '/',
+			url: '',
 			template: '<div class="container" ui-view></div>',
 			abstract: true
 		})
 		.state('app.dashboard', {
-			url: '/',
+			url: '',
 			templateUrl: './views/dashboard.html',
 			controller: 'MainController',
 			onEnter: ['$state', 'auth', function($state, auth) {
@@ -306,7 +306,7 @@ app.config([
         	authenticate: true
 		})
 		.state('auth', {
-			url: '/',
+			url: '',
 			template: '<div class="container" ui-view></div>',
 			abstract: true
 		})
