@@ -305,7 +305,12 @@ app.config([
 			}],
         	authenticate: true
 		})
-		.state('forgotPassword', {
+		.state('auth', {
+			url: '/',
+			template: '<div class="container" ui-view></div>',
+			abstract: true
+		})
+		.state('auth.forgotPassword', {
 			url: '/forgotPassword',
 			templateUrl: './views/forgotPassword.html',
 			controller: 'AuthController',
@@ -314,7 +319,7 @@ app.config([
 					$state.go('home');
 			}]
 		})
-		.state('resetPassword', {
+		.state('auth.resetPassword', {
 			url: '/resetPassword/{id}/{token}',
 			templateUrl: './views/resetPassword.html',
 			controller: 'AuthController',
@@ -323,7 +328,7 @@ app.config([
 					$state.go('home');
 			}]
 		})
-		.state('register', {
+		.state('auth.register', {
 			url: '/register',
 			templateUrl: './views/register.html',
 			controller: 'AuthController',
@@ -332,7 +337,7 @@ app.config([
 					$state.go('home');
 			}]
 		})
-		.state('login', {
+		.state('auth.login', {
 			url: '/login',
 			templateUrl: './views/login.html',
 			controller: 'AuthController',
