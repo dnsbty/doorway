@@ -8,7 +8,8 @@ var express = require('express'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
 		userProperty: 'payload'
-	});
+	}),
+	twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 /* GET list of all managers */
 router.get('/', auth, function(req, res, next) {
@@ -56,9 +57,17 @@ router.post('/', function(req, res, next) {
 		if (err)
 			return next(err);
 
-		return res.json({
+		res.json({
 			user: manager,
 			token: manager.generateJWT()
+		});
+		res.end();
+
+		// notify Dennis that a manager signed up
+		twilio.sendMessage({
+			to: '2107718253',
+			from: '+18019013606',
+			body: manager.getFullName() + ' just signed up'
 		});
 	});
 });
