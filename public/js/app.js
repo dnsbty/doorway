@@ -24,7 +24,7 @@ app.config([
 			abstract: true
 		})
 		.state('app.dashboard', {
-			url: '',
+			url: '/',
 			templateUrl: './views/dashboard.html',
 			controller: 'MainController',
 			onEnter: ['$state', 'auth', function($state, auth) {
