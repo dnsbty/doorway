@@ -67,7 +67,8 @@ var ManagerSchema = UserSchema.extend({
 
 /* Schema for tenants */
 var TenantSchema = UserSchema.extend({
-	property : { type: mongoose.Schema.Types.ObjectId, ref: 'Property' },
+	property: { type: mongoose.Schema.Types.ObjectId, ref: 'Property' },
+	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
 	current: { type: Boolean, default: true },
 	stripe_customer: String,
 	default_account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account' }
