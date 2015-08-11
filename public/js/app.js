@@ -149,6 +149,16 @@ app.config([
 			}],
         	authenticate: true
 		})
+		.state('app.autoPay', {
+			url: '/autoPay',
+			templateUrl: './views/tenant/autoPay.html',
+			controller: 'TenantController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+        	authenticate: true
+		})
 		.state('app.owners', {
 			url: '/owners',
 			templateUrl: './views/manager/owners.html',

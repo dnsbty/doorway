@@ -16,7 +16,15 @@ var express = require('express'),
 
 /* GET list of all tenants */
 router.get('/', auth, function(req, res, next) {
-	Tenant.find({ '_type' : 'Tenant', current: {$ne: false} }, function(err, tenants){
+	var filter = { '_type' : 'Tenant', current: {$ne: false} };
+	if (req.payload._type == "Manager")
+		filter.manager = req.payload._id;
+	else
+		return res.status(403).json({ message: 'Only managers can view tenant lists.' });
+
+	console.log(filter);
+
+	Tenant.find(filter, function(err, tenants){
 		if (err)
 			return next(err);
 
@@ -26,6 +34,9 @@ router.get('/', auth, function(req, res, next) {
 
 /* GET specified tenant */
 router.get('/:tenant', auth, function(req, res) {
+	if (req.tenant._id != req.payload._id && req.tenant.manager != req.payload._id)
+		return res.status(403).json({ message: 'Only the tenant or their manager can view their info.' });
+
 	res.json(req.tenant);
 });
 
@@ -47,6 +58,9 @@ router.put('/:tenant', auth, function(req, res, next) {
 
 /* DELETE a tenant */
 router.delete('/:tenant', auth, function(req, res) {
+	if (req.tenant._id != req.payload._id)
+		return res.status(403).json({ message: 'Only the specified tenant can change their autopay settings.' });
+
 	req.tenant.disable(function(err, tenant){
 		if (err)
 			return next(err);
@@ -130,7 +144,17 @@ router.post('/:tenant/accounts', function(req, res, next) {
 			});
 		});
 	});
-})
+});
+
+/* PUT Toggle automatic payments on or off */
+router.put('/:tenant/autopay', auth, function(req, res, next) {
+	if (req.tenant._id != req.payload._id)
+		return res.status(403).json({ message: 'Only this tenant may change their autopay settings.' });
+
+	req.tenant.autopay = req.body.autopay;
+	req.tenant.save;
+	res.json(req.tenant);
+});
 
 /* Get tenant object when a tenant param is supplied */
 router.param('tenant', function(req, res, next, id) {

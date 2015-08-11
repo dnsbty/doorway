@@ -71,6 +71,7 @@ var TenantSchema = UserSchema.extend({
 	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
 	current: { type: Boolean, default: true },
 	stripe_customer: String,
+	autopay: { type: Boolean, default: false },
 	default_account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account' }
 });
 

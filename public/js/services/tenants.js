@@ -16,6 +16,15 @@ app.factory('tenants', ['$http', 'auth', function($http, auth){
 			}).error(function(err) {
 				console.log(err);
 			});
+		},
+		toggleAutoPay: function (tenant) {
+			return $http.put('/tenants/' + tenant._id + '/autopay', { autopay: tenant.autopay }, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).success(function (data) {
+				console.log(data);
+			}).error(function (err) {
+				console.log(err);
+			});
 		}
 	};
 	return o;

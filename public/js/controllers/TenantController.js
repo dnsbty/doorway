@@ -86,5 +86,13 @@ app.controller('TenantController', [
 				return;
 			});
 		};
+
+		$scope.toggleAutoPay = function () {
+			if ($scope.user.autopay)
+				$scope.user.autopay = false;
+			else
+				$scope.user.autopay = true;
+			auth.saveCurrentUser($scope.user);
+		};
 	}
 ]);

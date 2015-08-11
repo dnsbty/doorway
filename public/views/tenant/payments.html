@@ -8,10 +8,14 @@
 				</li>
 			</ul>
 			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newPayment">New Payment</button>
+			<a class="btn input-lg" ui-sref="app.autoPay" ng-hide="user.autopay">Set up automatic payments</a>
+			<a class="btn input-lg" ui-sref="app.autoPay" ng-show="user.autopay">Manage automatic payments</a>
 		</div>
 		<div ng-hide="payments">
 			<p>Looks like you haven't made a payment yet.</p>
 			<button class="btn btn-primary btn-block input-lg" ui-sref="app.newPayment">New Payment</button>
+			<a class="btn input-lg" ui-sref="app.autoPay" ng-hide="user.autopay">Set up automatic payments</a>
+			<a class="btn input-lg" ui-sref="app.autoPay" ng-show="user.autopay">Manage automatic payments</a>
 		</div>
 		<a class="btn input-lg" ui-sref="app.dashboard">&lt; Dashboard</a>
 		<a class="btn input-lg" ui-sref="logout">Log Out</a>
