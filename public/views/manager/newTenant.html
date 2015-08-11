@@ -18,6 +18,10 @@
 				<input type="email" class="form-control input-lg" ng-model="tenant.email">
 			</div>
 			<div class="form-group">
+				<label>Phone</label>
+				<input type="tel" pattern="\d{3}[\-]\d{3}[\-]\d{4}" class="form-control input-lg" placeholder="XXX-XXX-XXXX" ng-model="tenant.phone">
+			</div>
+			<div class="form-group">
 				<label>Property</label>
 				<select class="form-control input-lg" ng-model="tenant.property" ng-options="property._id as property.address for property in properties" ng-required="true"></select>
 			</div>
