@@ -127,6 +127,7 @@ router.post('/:property/tenants', auth, function(req, res, next) {
 		tenant.name_first = req.body.name_first;
 		tenant.setPassword(crypto.randomBytes(8).toString('hex'));
 		tenant.property = req.property;
+		tenant.manager = req.property.manager;
 		tenant.last_login = null;
 
 		// add in optional info if it was passed in
