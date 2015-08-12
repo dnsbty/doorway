@@ -32,6 +32,15 @@ app.factory('tenants', ['$http', 'auth', function($http, auth){
 			}).error(function (err) {
 				console.log(err);
 			});
+		},
+		toggleLock: function (tenant, locked) {
+			return $http.put('/tenants/' + tenant + '/lock', { locked: locked }, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).success(function (data) {
+				console.log(data);
+			}).error(function (err) {
+				console.log(err);
+			});
 		}
 	};
 	return o;

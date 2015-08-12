@@ -44,11 +44,15 @@ router.get('/:payment', auth, function(req, res, next) {
 /* POST a new payment */
 router.post('/', auth, function(req, res, next) {
 	if (!req.body.payment || !req.body.payment.amount || req.body.payment.amount == "")
-		return res.status(400).json({ message: 'Please provide an amount to pay.' });
+		return res.status(400).json({ message: 'Please provide an amount to pay' });
+	if (req.payload._type !== "Tenant")
+		return res.status(403).json({ message: 'Only tenants can pay rent on Doorway' });
 
 	Tenant.findById(req.payload._id, function(err, tenant) {
 		if (err)
 			return next(err);
+		if (tenant.current === false || tenant.locked === true)
+			return res.status(403).json({ message: 'You are not authorized to pay rent' });
 		if (!tenant || !tenant.property || tenant.property == '')
 			return next(new Error('Can\'t find property.'));
 

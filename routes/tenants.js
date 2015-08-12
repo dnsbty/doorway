@@ -156,6 +156,16 @@ router.put('/:tenant/autopay', auth, function(req, res, next) {
 	res.json(req.tenant);
 });
 
+/* PUT Toggle payment lock on or off */
+router.put('/:tenant/lock', auth, function(req, res, next) {
+	if (req.tenant.manager != req.payload._id)
+		return res.status(403).json({ message: 'Only this tenant\'s landlord may lock or unlock their account' });
+
+	req.tenant.locked = req.body.locked;
+	req.tenant.save;
+	res.json(req.tenant);
+});
+
 /* Get tenant object when a tenant param is supplied */
 router.param('tenant', function(req, res, next, id) {
 	var query = Tenant.findById(id);
