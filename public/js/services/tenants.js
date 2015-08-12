@@ -1,6 +1,13 @@
 app.factory('tenants', ['$http', 'auth', function($http, auth){
 	var o = {
 		tenants: [],
+		get: function(id) {
+			return $http.get('/tenants/' + id, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).then(function(res) {
+				return res.data;
+			});
+		},
 		create: function(tenant) {
 			return $http.post('/properties/' + tenant.property + '/tenants', tenant, {
 				headers: { Authorization: 'Bearer ' + auth.getToken() }

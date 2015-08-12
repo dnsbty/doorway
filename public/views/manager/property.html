@@ -13,7 +13,9 @@
 			<div>
 				<h3>Tenants</h3>
 				<ul class="list-unstyled links" ng-show="property.tenants.length">
-					<li ng-repeat="tenant in property.tenants">{{ tenant.name_first }} {{ tenant.name_last }}</li>
+					<li ng-repeat="tenant in property.tenants">
+						<a ui-sref="app.tenants.detail({id: tenant._id})">{{ tenant.name_first }} {{ tenant.name_last }}</a>
+					</li>
 				</ul>
 				<p ng-hide="property.tenants.length">It appears that this property is empty.</p>
 				<button class="btn btn-primary input-lg" ui-sref="app.tenants.new({property: property._id})">Add a Tenant</button>

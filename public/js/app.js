@@ -303,6 +303,21 @@ app.config([
 			},
 			authenticate: true
 		})
+		.state('app.tenants.detail', {
+			url: '/{id}',
+			controller: 'ManageTenantController',
+			templateUrl: './views/manager/tenant.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+			}],
+			resolve: {
+				tenant: ['$stateParams', 'tenants', function($stateParams, tenants) {
+					return tenants.get($stateParams.id);
+				}]
+			},
+			authenticate: true
+		})
 		.state('app.connect', {
 			url: '/owners/connect?state&code',
 			controller: 'ManagerController',
