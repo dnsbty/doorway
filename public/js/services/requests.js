@@ -25,6 +25,15 @@ app.factory('requests', ['$http', 'auth', function($http, auth){
 			}).success(function(data) {
 				console.log(data);
 			});
+		},
+		newMessage: function(request, message) {
+			return $http.post('/requests/' + request + '/messages', { message: message }, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).error(function(err) {
+				console.log(err);
+			}).success(function(data) {
+				console.log(data);
+			});
 		}
 	};
 	return o;

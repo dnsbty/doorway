@@ -63,10 +63,11 @@ router.post('/', auth, function(req, res, next) {
 			body: req.body.message
 		});
 
-		console.log(message);
 		message.save(function(err) {
+			if (err)
+				return next(err);
+
 			request.messages.push(message);
-			console.log(request);
 			request.save(function(err) {
 				if (err)
 					return next(err);
@@ -77,34 +78,41 @@ router.post('/', auth, function(req, res, next) {
 	});
 });
 
-/* POST connected stripe account to an owner */
-router.post('/:owner/stripe', auth, function(req, res) {
-	if (!req.body.code || req.body.code == '')
-		return res.status(400).json({ message: 'No Stripe code was received.' });
+/* POST new message to a maintenance request */
+router.post('/:request/messages', auth, function(req, res) {
+	if (req.payload._id != req.request.tenant && req.payload._id != req.request.manager)
+		return res.status(403).json({ message: 'Only the tenant and manager involved in this maintenance request can add messages to it.' });
+	if (!req.body.message || req.body.message == '')
+		return res.status(400).json({ message: 'Please provide a message' });
 
-	// Make /oauth/token endpoint POST request
-	request.post({
-		url: 'https://connect.stripe.com/oauth/token',
-		form: {
-			client_secret: process.env.STRIPE_SECRET,
-			code: req.body.code,
-			grant_type: 'authorization_code'
-		}
-	}, function(err, r, body) {
+	// set the correct recipient
+	var recipient = req.payload._type == "Tenant" ? req.request.manager : req.request.tenant;
+
+	// set up the message
+	var message = new Message({
+		sender: req.payload,
+		recipient: recipient,
+		sent: new Date(),
+		body: req.body.message
+	});
+
+	// save the message and the request
+	message.save(function(err) {
 		if (err)
 			return next(err);
 
-		body = JSON.parse(body);
+		req.request.messages.push(message);
+		req.request.save(function(err) {
+			if (err)
+				return next(err);
 
-		if (body.error)
-			return res.status(502).json({ message: body.error_description });
+			req.request.populate('property messages tenant manager', function(err, request) {
+				if (err)
+					return next(err);
 
-		req.owner.stripe_id = body.stripe_user_id;
-		req.owner.stripe_public = body.stripe_publishable_key;
-		req.owner.stripe_access = body.access_token;
-		req.owner.stripe_refresh = body.refresh_token;
-		req.owner.save();
-		res.json(req.owner);
+				res.json(request);
+			});
+		});
 	});
 });
 

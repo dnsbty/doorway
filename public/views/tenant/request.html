@@ -2,8 +2,19 @@
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2>{{ request.subject }}</h2>
 		<div class="message" ng-repeat="message in request.messages">
-			{{ message.body }}
+			<div class="info small">
+				<span class="date">{{ message.sent | date:"short" }}</span>
+			</div>
+			<div class="body">
+				{{ message.body }}
+			</div>
 		</div>
+		<form ng-submit="newMessage(request._id)">
+			<div class="form-group">
+				<textarea class="form-control" rows="3" ng-model="message" placeholder="Enter a message here..."></textarea>
+			</div>
+			<button class="btn btn-primary btn-block input-lg">Add Message</button>
+		</form>
 		<a class="btn input-lg" ui-sref="app.requests.list">&lt; Maintenance Requests</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

@@ -16,5 +16,15 @@ app.controller('RequestController', [
 				$scope.error = err.message;
 			});
 		};
+
+		$scope.newMessage = function(request) {
+			$scope.error = null;
+			requests.newMessage(request, $scope.message).success(function(request) {
+				$scope.message = null;
+				$scope.request = request;
+			}).error(function(err) {
+				$scope.error = err.message;
+			});
+		};
 	}
 ]);
