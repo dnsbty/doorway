@@ -19,6 +19,8 @@ require('./models/Accounts');
 require('./models/Emails');
 require('./models/Payments');
 require('./models/Applications');
+require('./models/Requests');
+require('./models/Messages');
 mongoose.connect(process.env.DB_URL);
 
 // config files
@@ -33,7 +35,8 @@ var routes = require('./routes/index'),
   properties = require('./routes/properties'),
   accounts = require('./routes/accounts'),
   payments = require('./routes/payments'),
-  applications = require('./routes/applications');
+  applications = require('./routes/applications'),
+  requests = require('./routes/requests');
 
 var app = express();
 app.set('env', process.env.NODE_ENV);
@@ -60,6 +63,7 @@ app.use('/properties', properties);
 app.use('/accounts', accounts);
 app.use('/payments', payments);
 app.use('/applications', applications);
+app.use('/requests', requests);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

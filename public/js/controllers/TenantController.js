@@ -6,12 +6,14 @@ app.controller('TenantController', [
 	'tenants',
 	'accounts',
 	'payments',
-	function($scope, $state, auth, stripe, tenants, accounts, payments) {
+	'requests',
+	function($scope, $state, auth, stripe, tenants, accounts, payments, requests) {
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
 		if ($scope.user)
 			$scope.payment = { amount: $scope.user.property.rent };
 		$scope.payments = payments.payments;
+		$scope.requests = requests.requests;
 		$scope.show = 'main';
 
 		$scope.editTenant = function() {

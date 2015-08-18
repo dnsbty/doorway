@@ -1,0 +1,17 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<h2>Maintenance Requests ({{ requests.length }})</h2>
+		<div ng-show="requests">
+			<ul class="list-unstyled links">
+				<li ng-repeat="request in requests" ui-sref="app.requests.detail({ id: request._id })">{{ request.subject }}</li>
+			</ul>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.requests.new">New Maintenance Request</button>
+		</div>
+		<div ng-hide="accounts">
+			<p>Looks like you haven't created any maintenance requests yet.</p>
+			<button class="btn btn-primary btn-block input-lg" ui-sref="app.requests.new">New Maintenance Request</button>
+		</div>
+		<a class="btn input-lg" ui-sref="app.dashboard">&lt; Dashboard</a>
+		<a class="btn input-lg" ui-sref="logout">Log Out</a>
+	</div>
+</div>

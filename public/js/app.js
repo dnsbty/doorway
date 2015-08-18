@@ -31,7 +31,7 @@ app.config([
 				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.newTenant', {
 			url: '/newTenant/{id}/{token}',
@@ -53,7 +53,7 @@ app.config([
 				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.newAccount', {
 			url: '/newAccount',
@@ -63,7 +63,7 @@ app.config([
 				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.verifyAccount', {
 			url: '/verifyAccount',
@@ -72,7 +72,7 @@ app.config([
 				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.accounts', {
 			url: '/accounts',
@@ -87,7 +87,7 @@ app.config([
 					return accounts.getAll();
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.accountDetails', {
 			url: '/accountDetails/{id}',
@@ -102,7 +102,7 @@ app.config([
 					return accounts.get($stateParams.id);
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.payments', {
 			url: '/payments',
@@ -147,7 +147,7 @@ app.config([
 					$state.go('app.newPayment');
 				}
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.autoPay', {
 			url: '/autoPay',
@@ -157,7 +157,7 @@ app.config([
 				if (!auth.isLoggedIn() || !auth.isTenant())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.owners', {
 			url: '/owners',
@@ -172,7 +172,7 @@ app.config([
 					return owners.getAll();
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.ownerDetails', {
 			url: '/ownerDetails/{id}',
@@ -187,7 +187,7 @@ app.config([
 					return owners.get($stateParams.id);
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.newOwner', {
 			url: '/newOwner',
@@ -197,7 +197,7 @@ app.config([
 				if (!auth.isLoggedIn() || !auth.isManager())
 					$state.go('home');
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.properties', {
 			url: '/properties',
@@ -217,7 +217,7 @@ app.config([
 					return properties.getAll();
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.properties.new', {
 			url: '/new?owner',
@@ -253,7 +253,7 @@ app.config([
 					return applications.getAll($stateParams.id);
 				}]
 			},
-        	authenticate: true
+			authenticate: true
 		})
 		.state('app.properties.apply', {
 			url: '/{id}/apply',
@@ -278,7 +278,57 @@ app.config([
 					return applications.get($stateParams.id);
 				}]
 			},
-        	authenticate: true
+			authenticate: true
+		})
+		.state('app.requests', {
+			url: '/requests',
+			template: '<ui-view/>',
+			abstract: true
+		})
+		.state('app.requests.list', {
+			url: '',
+			controller: 'TenantController',
+			templateUrl: './views/tenant/requests.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				requestPromise: ['requests', function(requests) {
+					return requests.getAll();
+				}]
+			},
+			authenticate: true
+		})
+		.state('app.requests.new', {
+			url: '/new',
+			controller: 'RequestController',
+			templateUrl: './views/tenant/newRequest.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				request: function() {
+					return {};
+				}
+			},
+			authenticate: true
+		})
+		.state('app.requests.detail', {
+			url: '/{id}',
+			controller: 'RequestController',
+			templateUrl: './views/tenant/request.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+			}],
+			resolve: {
+				request: ['$stateParams', 'requests', function($stateParams, requests) {
+					return requests.get($stateParams.id);
+				}]
+			},
+			authenticate: true
 		})
 		.state('app.tenants', {
 			url: '/tenants',
@@ -328,7 +378,7 @@ app.config([
 					$state.go('app.ownerDetails', { id: data._id });
 				});
 			}],
-        	authenticate: true
+			authenticate: true
 		})
 		.state('auth', {
 			url: '',
@@ -381,9 +431,9 @@ app.config([
 		});
 
 		$urlRouterProvider.otherwise( function($injector, $location) {
-            var $state = $injector.get('$state');
-            $state.go('home');
-        });
+			var $state = $injector.get('$state');
+			$state.go('home');
+		});
 	}
 ]);
 
