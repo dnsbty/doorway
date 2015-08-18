@@ -1,9 +1,11 @@
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
 		<h2>{{ request.subject }}</h2>
-		<div class="message" ng-repeat="message in request.messages">
+		<div class="message" ng-repeat="message in request.messages" ng-class="message.sender == user._id ? 'sent' : 'received'">
 			<div class="info small">
-				<span class="date">{{ message.sent | date:"short" }}</span>
+				<strong class="sender" ng-if="message.sender == request.manager._id">{{ request.manager.name_first }} {{ request.manager.name_last }}</strong>
+				<strong class="sender" ng-if="message.sender == request.tenant._id">{{ request.tenant.name_first }} {{ request.tenant.name_last }}</strong>
+				<small class="date">{{ message.sent | date:"short" }}</small>
 			</div>
 			<div class="body">
 				{{ message.body }}

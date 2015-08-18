@@ -286,12 +286,45 @@ app.config([
 			abstract: true
 		})
 		.state('app.requests.list', {
+			url: '/',
+			controller: function($scope, $state, auth) {
+				console.log(auth.isManager());
+				if (!auth.isLoggedIn())
+					$state.go('home');
+				else if (auth.isTenant())
+					$state.go('app.requests.list_tenant');
+				else if (auth.isManager())
+					$state.go('app.requests.list_manager');
+					
+			},
+			authenticate: true
+		})
+		.state('app.requests.list_tenant', {
 			url: '',
 			controller: 'TenantController',
 			templateUrl: './views/tenant/requests.html',
 			onEnter: ['$state', 'auth', function($state, auth) {
-				if (!auth.isLoggedIn() || !auth.isTenant())
+				if (!auth.isLoggedIn())
 					$state.go('home');
+				if (!auth.isTenant())
+					$state.go('app.requests.list_manager');
+			}],
+			resolve: {
+				requestPromise: ['requests', function(requests) {
+					return requests.getAll();
+				}]
+			},
+			authenticate: true
+		})
+		.state('app.requests.list_manager', {
+			url: '',
+			controller: 'ManagerController',
+			templateUrl: './views/tenant/requests.html',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn())
+					$state.go('home');
+				if (!auth.isManager())
+					$state.go('app.requests.list_tenant');
 			}],
 			resolve: {
 				requestPromise: ['requests', function(requests) {
@@ -320,7 +353,7 @@ app.config([
 			controller: 'RequestController',
 			templateUrl: './views/tenant/request.html',
 			onEnter: ['$state', 'auth', function($state, auth) {
-				if (!auth.isLoggedIn() || !auth.isTenant())
+				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
 			resolve: {

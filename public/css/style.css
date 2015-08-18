@@ -155,3 +155,10 @@ span.pricing {
 .page-application-detail p {
 	text-align: left;
 }
+
+/* Requests Page */
+.message { padding: 0.25em;}
+.message.sent {
+	background-color: #ecf0f1;
+	padding: 0.5em;
+}

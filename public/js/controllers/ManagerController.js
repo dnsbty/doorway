@@ -6,7 +6,8 @@ app.controller('ManagerController', [
 	'owners',
 	'properties',
 	'tenants',
-	function($scope, $state, $stateParams, auth, owners, properties, tenants) {
+	'requests',
+	function($scope, $state, $stateParams, auth, owners, properties, tenants, requests) {
 		$scope.user = auth.currentUser();
 		$scope.owners = owners.owners;
 		$scope.properties = properties.properties;
@@ -15,6 +16,7 @@ app.controller('ManagerController', [
 			$scope.tenant = {};
 			$scope.tenant.property = $stateParams.property;
 		}
+		$scope.requests = requests.requests;
 
 		$scope.newOwner = function() {
 			owners.create({ name: $scope.owner.name }).success(function(owner) {

@@ -17,6 +17,7 @@ router.get('/', auth, function(req, res, next) {
 		filter.manager = req.payload._id;
 	else if (req.payload._type == "Tenant")
 		filter.tenant = req.payload._id;
+	console.log(filter);
 
 	Request.find(filter)
 	.populate({ path: 'property', select: '_id address'})

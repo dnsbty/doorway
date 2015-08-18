@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var MessageSchema = new mongoose.Schema({
-	sender: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-	recipient: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+	sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	sent: Date,
 	body: String,
 	read: { type: Boolean, default: false },
