@@ -158,7 +158,7 @@ span.pricing {
 
 /* Requests Page */
 .message { padding: 0.25em;}
-.message.sent {
+.message.received {
 	background-color: #ecf0f1;
 	padding: 0.5em;
 }
