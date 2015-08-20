@@ -4,6 +4,8 @@ var express = require('express'),
 	Request = mongoose.model('Request'),
 	Message = mongoose.model('Message'),
 	Tenant = mongoose.model('Tenant'),
+	mandrill_lib = require('mandrill-api/mandrill'),
+	mandrill = new mandrill_lib.Mandrill(process.env.MANDRILL_KEY),
 	jwt = require('express-jwt'),
 	auth = jwt({
 		secret: process.env.JWT_SECRET,
@@ -48,7 +50,10 @@ router.post('/', auth, function(req, res, next) {
 	if (!req.body.message || req.body.message == '')
 		return res.status(400).json({ message: 'Please provide a message detailing your maintenance request' });
 
-	Tenant.findById(req.payload._id, function(err, tenant) {
+	Tenant.findById(req.payload._id).populate('property manager').exec(function(err, tenant) {
+		if (err)
+			return next(err);
+
 		var request = new Request({
 			property: tenant.property,
 			tenant: tenant,
@@ -73,7 +78,36 @@ router.post('/', auth, function(req, res, next) {
 				if (err)
 					return next(err);
 
-				res.json(request);
+				res.json(request).end();
+
+				// send the landlord a notification of the new maintenance request
+				mandrill.messages.sendTemplate({
+					'template_name': 'maintenance-request',
+					'template_content': null,
+					'message': {
+						'from_email': tenant.email,
+						'from_name': tenant.getFullName(),
+						'to': [{
+							'email': tenant.email,
+							'name': tenant.name_first,
+							'type': 'to'
+						}],
+						'merge_language': 'handlebars',
+						'global_merge_vars': [{
+							'name': 'manager',
+							'content': tenant.manager.name_first
+						},{
+							'name': 'property',
+							'content': tenant.property.address
+						},{
+							'name': 'tenant',
+							'content': tenant.getFullName()
+						},{
+							'name': 'link',
+							'content': process.env.ROOT_NAME + '/#/requests/' + request._id
+						}]
+					}
+				});
 			});
 		});
 	});
