@@ -88,8 +88,8 @@ router.post('/', auth, function(req, res, next) {
 						'from_email': tenant.email,
 						'from_name': tenant.getFullName(),
 						'to': [{
-							'email': tenant.email,
-							'name': tenant.name_first,
+							'email': manager.email,
+							'name': manager.name_first,
 							'type': 'to'
 						}],
 						'merge_language': 'handlebars',
@@ -145,7 +145,53 @@ router.post('/:request/messages', auth, function(req, res) {
 				if (err)
 					return next(err);
 
-				res.json(request);
+				res.json(request).end();
+				if (req.payload._type == "Tenant") {
+					var email = {
+						from_email: request.tenant.email,
+						from_name: request.tenant.getFullName(),
+						to_email: request.manager.email,
+						to_name: request.manager.getFullName(),
+						to_name_first: request.manager.name_first
+					};
+				} else {
+					var email = {
+						from_email: request.manager.email,
+						from_name: request.manager.getFullName(),
+						to_email: request.tenant.email,
+						to_name: request.tenant.getFullName(),
+						to_name_first: request.tenant.name_first
+					};
+				}
+
+				// send the landlord a notification of the new maintenance request
+				mandrill.messages.sendTemplate({
+					'template_name': 'maintenance-request-reply',
+					'template_content': null,
+					'message': {
+						'from_email': email.from_email,
+						'from_name': email.from_name,
+						'to': [{
+							'email': email.to_email,
+							'name': email.to_name,
+							'type': 'to'
+						}],
+						'merge_language': 'handlebars',
+						'global_merge_vars': [{
+							'name': 'sender',
+							'content': email.from_name
+						},{
+							'name': 'subject',
+							'content': req.request.subject
+						},{
+							'name': 'recipient',
+							'content': email.to_name_first
+						},{
+							'name': 'link',
+							'content': process.env.ROOT_NAME + '/#/requests/' + request._id
+						}]
+					}
+				});
 			});
 		});
 	});
