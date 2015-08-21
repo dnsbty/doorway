@@ -9,7 +9,7 @@ h1 { font-size: 3.6em; }
 h2 { font-size: 1.7em; }
 h3 { font-size: 1.3em; }
 
-a, a:visited, a:active { color: #1abc9c; cursor: hand; }
+a, a:visited, a:active { color: #1abc9c; cursor: pointer; }
 a:hover { color: #16a085; text-decoration: none; }
 
 header {

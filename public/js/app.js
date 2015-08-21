@@ -465,7 +465,12 @@ app.config([
 		})
 		.state('app.support', {
 			url: '/support',
-			controller: 'MainController',
+			controller: function($scope) {
+				$scope.$parent.setBack({
+					title: "Home",
+					link: "app.dashboard"
+				});
+			},
 			templateUrl: './views/support.html'
 		});
 
