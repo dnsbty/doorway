@@ -8,6 +8,28 @@ app.controller('ManagerController', [
 	'tenants',
 	'requests',
 	function($scope, $state, $stateParams, auth, owners, properties, tenants, requests) {
+		switch ($state.current.name)
+		{
+			case "app.newOwner":
+				$scope.$parent.setBack({
+					title: "Owners",
+					link: "app.owners"
+				});
+				break;
+			case "app.tenants.new":
+				$scope.$parent.setBack({
+					title: "Property",
+					link: "app.properties.detail",
+					linkParams: { id: $stateParams.property }
+				});
+				break;
+			default:
+				$scope.$parent.setBack({
+					title: "Home",
+					link: "app.dashboard"
+				});
+				break;
+		}
 		$scope.user = auth.currentUser();
 		$scope.owners = owners.owners;
 		$scope.properties = properties.properties;

@@ -1,6 +1,6 @@
+<h2 class="title">{{ tenant.name_first }} {{ tenant.name_last }}</h2>
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h2>{{ tenant.name_first }} {{ tenant.name_last }}</h2>
 		<p>Email: <a href="mailto:{{ tenant.email }}">{{ tenant.email }}</a></p>
 		<p>Phone: <a href="tel:{{ tenant.phone }}">{{ tenant.phone }}</a></p>
 		<p ng-hide="tenant.locked"><a class="btn" ng-click="lockTenant()">Lock Tenant</a></p>

@@ -8,6 +8,10 @@ app.controller('AccountController', [
 		$scope.user = auth.currentUser();
 		$scope.account = account;
 		$scope.instructions = false;
+		$scope.$parent.setBack({
+			title: "Accounts",
+			link: "app.accounts"
+		});
 
 		$scope.verifyAccount = function() {
 			$scope.error = null;

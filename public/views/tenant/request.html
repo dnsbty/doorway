@@ -1,6 +1,6 @@
+<h2 class="title">{{ request.subject }}</h2>
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h2>{{ request.subject }}</h2>
 		<div class="message" ng-repeat="message in request.messages" ng-class="message.sender == user._id ? 'sent' : 'received'">
 			<div class="info small">
 				<strong class="sender" ng-if="message.sender == request.manager._id">{{ request.manager.name_first }} {{ request.manager.name_last }}</strong>
@@ -17,6 +17,5 @@
 			</div>
 			<button class="btn btn-primary btn-block input-lg">Add Message</button>
 		</form>
-		<a class="btn input-lg" ui-sref="app.requests.list">&lt; Maintenance Requests</a><a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

@@ -1,7 +1,7 @@
+<h2 class="title">Lease Application</h2>
 <div class="row page-application-detail">
 	<div class="col-sm-4 col-sm-offset-4">
 		<div>
-			<h2>Lease Application</h2>
 			<div>
 				<h3>Contact Info</h3>
 				<p><small>First Name:</small> {{ application.name_first }}</p>
@@ -223,6 +223,5 @@
 				<p><small>Repair Requests:</small> {{ application.repair_requests }}</p>
 			</div>
 		</div>
-		<a class="btn" ui-sref="app.properties.detail({id: application.property._id })">&lt; {{ application.property.address }}</a>
 	</div>
 </div>

@@ -20,7 +20,7 @@ app.config([
 		})
 		.state('app', {
 			url: '',
-			template: '<div class="container" ui-view></div>',
+			templateUrl: './views/container.html',
 			abstract: true
 		})
 		.state('app.dashboard', {
@@ -68,6 +68,7 @@ app.config([
 		.state('app.verifyAccount', {
 			url: '/verifyAccount',
 			templateUrl: './views/verifyAccount.html',
+			controller: 'TenantController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isLoggedIn())
 					$state.go('home');

@@ -7,6 +7,16 @@ app.controller('RequestController', [
 	function($scope, $state, auth, requests, request) {
 		$scope.user = auth.currentUser();
 		$scope.request = request;
+		if ($scope.$parent.isManager)
+			$scope.$parent.setBack({
+				title: "Requests",
+				link: "app.requests.list_manager"
+			});
+		else
+			$scope.$parent.setBack({
+				title: "Maintenance",
+				link: "app.requests.list_tenant"
+			});
 
 		$scope.newRequest = function() {
 			$scope.error = null;

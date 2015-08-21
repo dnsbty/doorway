@@ -8,6 +8,38 @@ app.controller('TenantController', [
 	'payments',
 	'requests',
 	function($scope, $state, auth, stripe, tenants, accounts, payments, requests) {
+		switch ($state.current.name)
+		{
+			case "app.newTenant":
+				$scope.$parent.setBack(false);
+				break;
+			case "app.newTenantInfo":
+				$scope.$parent.setBack({
+					title: "Back",
+					link: "app.newTenant"
+				});
+				break;
+			case "app.newAccount":
+			case "app.verifyAccount":
+				$scope.$parent.setBack({
+					title: "Accounts",
+					link: "app.accounts"
+				});
+				break;
+			case "app.newPayment":
+			case "app.autoPay":
+				$scope.$parent.setBack({
+					title: "Payments",
+					link: "app.payments"
+				});
+				break;
+			default:
+				$scope.$parent.setBack({
+					title: "Home",
+					link: "app.dashboard"
+				});
+				break;
+		}
 		$scope.user = auth.currentUser();
 		$scope.accounts = accounts.accounts;
 		if ($scope.user)

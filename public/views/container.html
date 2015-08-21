@@ -1,0 +1,20 @@
+<div ng-controller="MainController">
+	<header>
+		<h1>Doorway</h1>
+		<a class="back" ng-click="goBack()" ng-show="backButton.title">&lt; {{ backButton.title }}</a>
+		<a class="nav-toggle" ng-click="toggleUserMenu()"><i class="fa fa-bars"></i></a>
+	</header>
+	<nav class="menu" ng-show="showUserMenu">
+		<ul class="list-unstyled links">
+			<li><i class="fa fa-pencil fa-fw"></i>Edit Contact Info</li>
+			<li ui-sref="app.accounts" ng-if="isTenant"><i class="fa fa-bank fa-fw"></i>Manage Bank Accounts</li>
+			<li ui-sref="logout"><i class="fa fa-sign-out fa-fw"></i>Sign Out</li>
+		</ul>
+	</nav>
+	<div class="container">
+		<ui-view />
+	</div>
+	<footer>
+		<p>Copyright &copy; 2015 Doorway Management LLC</p>
+	</footer>
+</div>

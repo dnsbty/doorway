@@ -1,6 +1,6 @@
+<h2 class="title">Properties ({{ properties.length }})</h2>
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4">
-		<h2>Properties ({{ properties.length }})</h2>
 		<div ng-show="properties">
 			<ul class="list-unstyled links">
 				<li ng-repeat="property in properties" ui-sref="app.properties.detail({ id: property._id })">{{ property.address }}</li>
@@ -11,7 +11,5 @@
 			<p>Looks like you haven't added any properties yet.</p>
 			<button class="btn btn-primary btn-block input-lg" ui-sref="app.properties.new">Add a Property</button>
 		</div>
-		<a class="btn input-lg" ui-sref="app.dashboard">&lt; Dashboard</a>
-		<a class="btn input-lg" ui-sref="logout">Log Out</a>
 	</div>
 </div>

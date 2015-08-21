@@ -7,6 +7,11 @@ app.controller('ManageTenantController', [
 	function($scope, $state, tenants, tenant, auth) {
 		$scope.user = auth.currentUser();
 		$scope.tenant = tenant;
+		$scope.$parent.setBack({
+			title: "Property",
+			link: "app.properties.detail",
+			linkParams: { id: $scope.tenant.property }
+		});
 
 		$scope.lockTenant = function() {
 			$scope.tenant.locked = true;

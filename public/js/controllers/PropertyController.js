@@ -23,6 +23,10 @@ app.controller('PropertyController', [
 			vehicles: [{}],
 			pets: [{}]
 		};
+		$scope.$parent.setBack({
+			title: "Properties",
+			link: "app.properties.list"
+		});
 
 		$scope.newProperty = function() {
 			$scope.error = null;

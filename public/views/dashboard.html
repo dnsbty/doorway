@@ -1,17 +1,14 @@
-<div class="row">
-	<div class="col-sm-4 col-sm-offset-4">
-		<h2>Hi {{ user.name_first }}!</h2>
-		<p class="small">Thanks for using Doorway!  If you have any questions, feel free to contact us at <a href="mailto:support@doorwayapp.com">support@doorwayapp.com</a> or <a href="tel:8018993951">(801)&nbsp;899&#8209;3951</a>.</p>
-		<div ng-show="isManager">
-			<p><a ui-sref="app.owners" class="btn">Owners</a></p>
-			<p><a ui-sref="app.properties.list" class="btn">Properties</a></p>
-			<p><a ui-sref="app.requests.list_manager" class="btn">Maintenance Requests</a></p>
-		</div>
-		<div ng-show="isTenant">
-			<p><a ui-sref="app.accounts" class="btn">Bank Accounts</a></p>
-			<p><a ui-sref="app.payments" class="btn">Payments</a></p>
-			<p><a ui-sref="app.requests.list_tenant" class="btn">Maintenance Requests</a></p>
-		</div>
-		<a class="btn input-lg" ui-sref="logout">Log Out</a>
-	</div>
-</div>
+<h2 class="title">Hi {{ user.name_first }}!</h2>
+<nav class="container-ignore">
+	<ul ng-show="isManager" class="list-unstyled links">
+		<li ui-sref="app.owners"><i class="fa fa-users fa-fw"></i>Owners</li>
+		<li ui-sref="app.properties.list"><i class="fa fa-home fa-fw"></i>Properties</li>
+		<li ui-sref="app.requests.list_manager"><i class="fa fa-wrench fa-fw"></i>Maintenance Requests</li>
+		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
+	</ul>
+	<ul ng-show="isTenant" class="list-unstyled links">
+		<li ui-sref="app.payments"><i class="fa fa-money fa-fw"></i>Payments</li>
+		<li ui-sref="app.requests.list_tenant"><i class="fa fa-wrench fa-fw"></i>Maintenance</li>
+		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
+	</ul>
+</nav>
