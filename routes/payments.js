@@ -92,7 +92,10 @@ router.post('/', auth, function(req, res, next) {
 							amount: charge.amount / 100,
 							created: Date(charge.created * 1000),
 							source: account,
-							property: property
+							property: property,
+							payer: tenant,
+							owner: owner,
+							manager: property.manager
 						});
 						payment.save();
 						res.json(payment);
@@ -158,7 +161,10 @@ router.post('/', auth, function(req, res, next) {
 								amount: charge.amount / 100,
 								created: Date(charge.created * 1000),
 								source: account,
-								property: property
+								property: property,
+								payer: tenant,
+								owner: owner,
+								manager: property.manager
 							});
 							payment.save();
 							res.json(payment);
