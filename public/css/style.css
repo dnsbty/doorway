@@ -102,6 +102,7 @@ i.lg {
 	color: #16a085;
 	text-decoration:none;
 }
+.btn-left { text-align: left; }
 
 ::-webkit-input-placeholder { color: #bdc3c7 !important; }
 :-moz-placeholder { color: #bdc3c7 !important; }

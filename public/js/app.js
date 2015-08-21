@@ -462,6 +462,11 @@ app.config([
 				auth.logout();
 				$state.go('home');
 			}]
+		})
+		.state('app.support', {
+			url: '/support',
+			controller: 'MainController',
+			templateUrl: './views/support.html'
 		});
 
 		$urlRouterProvider.otherwise( function($injector, $location) {
