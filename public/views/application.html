@@ -1,11 +1,28 @@
-<div class="row">
-	<div class="col-sm-4 col-sm-offset-4">
-		<div ng-switch="page" ng-show="property.applications_open">
+<div ng-switch="page" ng-show="property.applications_open">
+	<h2 class="title" ng-switch-when="main">Residential Lease Application</h2>
+	<h2 class="title" ng-switch-when="property">Property Info</h2>
+	<h2 class="title" ng-switch-when="contact">Contact Info</h2>
+	<h2 class="title" ng-switch-when="identification">Identification</h2>
+	<h2 class="title" ng-switch-when="emergency_contact">Emergency Contact</h2>
+	<h2 class="title" ng-switch-when="occupants">Occupants</h2>
+	<h2 class="title" ng-switch-when="current_address">Current Address</h2>
+	<h2 class="title" ng-switch-when="previous_address">Previous Address</h2>
+	<h2 class="title" ng-switch-when="employer">Current Employer</h2>
+	<h2 class="title" ng-switch-when="previous_employer">Previous Employer</h2>
+	<h2 class="title" ng-switch-when="other_income">Other Income</h2>
+	<h2 class="title" ng-switch-when="vehicles">Vehicles</h2>
+	<h2 class="title" ng-switch-when="pets">Pets</h2>
+	<h2 class="title" ng-switch-when="miscellaneous">Miscellaneous</h2>
+	<h2 class="title" ng-switch-when="additional_info">Additional Info</h2>
+	<h2 class="title" ng-switch-when="payment">Payment Info</h2>
+	<h2 class="title" ng-switch-when="legal">Legal</h2>
+	<h2 class="title" ng-switch-when="confirmation">Success</h2>
+	<div class="row">
+		<div class="col-sm-4 col-sm-offset-4">
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
 			</div>
 			<div ng-switch-when="main">
-				<h3>Residential Lease Application</h3>
 				<form ng-submit="changePage('property')" novalidate>
 					<address>
 						<p>{{ property.address }}</p>
@@ -21,7 +38,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="property">
-				<h3>Property Info</h3>
 				<form ng-submit="changePage('contact')" novalidate>
 					<div class="form-group">
 						<label>Anticipated Move-in Date</label>
@@ -75,7 +91,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="contact">
-				<h3>Contact Info</h3>
 				<form ng-submit="changePage('identification')" novalidate>
 					<div class="form-group">
 						<label>First Name</label>
@@ -113,7 +128,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="identification">
-				<h3>Identification</h3>
 				<form ng-submit="changePage('emergency_contact')" novalidate>
 					<div class="form-group">
 						<label>Social Security Number</label>
@@ -159,7 +173,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="emergency_contact">
-				<h3>Emergency Contact</h3>
 				<form ng-submit="changePage('occupants')" novalidate>
 					<p>Do not insert the name of an occupant or co-applicant.</p>
 					<div class="form-group">
@@ -194,7 +207,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="occupants">
-				<h3>Occupants</h3>
 				<p>Name all other persons who will occupy the property.</p>
 				<form ng-submit="changePage('current_address')" novalidate>
 					<div class="panel" ng-repeat="occupant in application.occupants">
@@ -216,7 +228,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="current_address">
-				<h3>Current Address</h3>
 				<form ng-submit="changePage('previous_address')" novalidate>
 					<div class="form-group">
 						<label>Address</label>
@@ -270,7 +281,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="previous_address">
-				<h3>Previous Address</h3>
 				<form ng-submit="changePage('employer')" novalidate>
 					<div class="form-group">
 						<label>Address</label>
@@ -324,7 +334,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="employer">
-				<h3>Current Employer</h3>
 				<form ng-submit="changePage('previous_employer')" novalidate>
 					<div class="form-group">
 						<label>Employer</label>
@@ -374,7 +383,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="previous_employer">
-				<h3>Previous Employer</h3>
 				<form ng-submit="changePage('other_income')" novalidate>
 					<div class="form-group">
 						<label>Employer</label>
@@ -428,7 +436,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="other_income">
-				<h3>Other Income</h3>
 				<p>Describe any other income Applicant wants considered.</p>
 				<form ng-submit="changePage('vehicles')" novalidate>
 					<div class="form-group">
@@ -438,7 +445,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="vehicles">
-				<h3>Vehicles</h3>
 				<p>List all vehicles to be parked on the property.</p>
 				<form ng-submit="changePage('pets')" novalidate>
 					<div class="panel" ng-repeat="vehicle in application.vehicles">
@@ -476,7 +482,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="pets">
-				<h3>Pets</h3>
 				<form ng-submit="changePage('miscellaneous')" novalidate>
 					<div class="form-group">
 						<p>Will any pets (dogs, cats, birds, reptiles, fish, and other pets) be kept on the Property?</p>
@@ -545,7 +550,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="miscellaneous">
-				<h3>Miscellaneous</h3>
 				<form ng-submit="changePage('additional_info')" novalidate>
 					<div class="form-group">
 						<p>Will any waterbeds or water-filled furniture be on the Property?</p>
@@ -677,7 +681,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="additional_info">
-				<h3>Additional Information</h3>
 				<form ng-submit="changePage('payment')" novalidate>
 					<div class="form-group">
 						<textarea class="form-control input-lg" rows="5" ng-model="application.additional_comments"></textarea>
@@ -686,7 +689,6 @@
 				</form>
 			</div>
 			<div ng-switch-when="payment">
-				<h3>Payment Information</h3>
 				<p>Your card won't be processed until you click Submit on the next page.</p>
 				<form ng-submit="changePage('legal')" novalidate>
 					<div class="form-group">
@@ -726,7 +728,7 @@
 				<ol>
 					<li>Signing this application indicates that Applicant has had the opportunity to review Landlord's tenant selection criteria, which is available upon request.  The tenant selection criteria may include factors such as criminal history, credit history, current income and rental history.</li>
 					<li>Applicant understands that providing inaccurate or incomplete information is grounds for rejection of this application and forfeiture of any application fee and may be grounds to declare Applicant in breach of any lease the Applicant may sign.</li>
-					<li>Applicant represents that the statements in tehis application are true and complete.</li>
+					<li>Applicant represents that the statements in this application are true and complete.</li>
 				</ol>
 				<form ng-submit="submitApplication()" novalidate>
 					<div class="form-group">
@@ -737,14 +739,15 @@
 				</form>
 			</div>
 			<div ng-switch-when="confirmation">
-				<h3>Success</h3>
 				<p>Your application has been submitted. You will be contacted when a decision has been made.</p>
 			</div>
 		</div>
-		<div ng-hide="property.applications_open">
-			<h3>Applications Closed</h3>
-			<p>Sorry, but applications have been closed for this property.</p>
-			<a class="btn btn-lg" ui-sref="home">What is this?</a>
-		</div>
+	</div>
+</div>
+<div ng-hide="property.applications_open">
+	<h2 class="title">Applications Closed</h2>
+	<div class="col-sm-4 col-sm-offset-4">
+		<p>Sorry, but applications have been closed for this property.</p>
+		<a class="btn btn-lg" ui-sref="home">What is this?</a>
 	</div>
 </div>

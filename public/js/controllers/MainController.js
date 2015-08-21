@@ -20,7 +20,9 @@ app.controller('MainController', [
 		};
 
 		$scope.goBack = function () {
-			if ($scope.backButton.link) {
+			if ($state.current.name == "app.properties.apply")
+				$scope.$broadcast("goBack", { page: $scope.backButton.link });
+			else if ($scope.backButton.link) {
 				if ($scope.backButton.linkParams)
 					$state.go($scope.backButton.link, $scope.backButton.linkParams);
 				else
