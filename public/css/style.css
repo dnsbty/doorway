@@ -1,6 +1,8 @@
 body {
 	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 14pt;
+	width: 100%;
+	overflow-x: hidden;
 }
 h1, h2, h3 { font-weight: 300; }
 h1 { font-size: 3.6em; }
