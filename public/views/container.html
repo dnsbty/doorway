@@ -6,9 +6,10 @@
 	</header>
 	<nav class="menu" ng-show="showUserMenu">
 		<ul class="list-unstyled links">
-			<li><i class="fa fa-pencil fa-fw"></i>Edit Contact Info</li>
+			<!--<li ng-if="isLoggedIn"><i class="fa fa-pencil fa-fw"></i>Edit Contact Info</li>-->
 			<li ui-sref="app.accounts" ng-if="isTenant"><i class="fa fa-bank fa-fw"></i>Manage Bank Accounts</li>
-			<li ui-sref="logout"><i class="fa fa-sign-out fa-fw"></i>Sign Out</li>
+			<li ui-sref="logout" ng-if="isLoggedIn"><i class="fa fa-sign-out fa-fw"></i>Sign Out</li>
+			<li ui-sref="auth.login" ng-if="!isLoggedIn"><i class="fa fa-sign-in fa-fw"></i>Sign In</li>
 		</ul>
 	</nav>
 	<div class="container">

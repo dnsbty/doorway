@@ -5,6 +5,7 @@ app.controller('MainController', [
 	'auth',
 	function($scope, $state, emails, auth){
 		$scope.user = auth.currentUser();
+		$scope.isLoggedIn = auth.isLoggedIn();
 		$scope.isManager = auth.isManager();
 		$scope.isTenant = auth.isTenant();
 		$scope.showUserMenu = false;
