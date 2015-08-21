@@ -4,20 +4,15 @@
 		<div ng-hide="owner.stripe_connect_url">
 			<p class="small">Everything is properly configured to collect rent for this owner.</p>
 			<h3>Properties</h3>
-			<div ng-show="owner.properties.length">
-				<ul class="list-unstyled links">
-					<li ng-repeat="property in owner.properties" ui-sref="app.properties.detail({ id: property._id })">{{ property.address }}</li>
-				</ul>
-				<button ui-sref="app.properties.new({ owner: owner._id })" class="btn btn-primary btn-block input-lg">New Property</button>
-			</div>
-			<div ng-hide="owner.properties.length">
-				<p>Looks like you haven't added any properties for this owner.</p>
-				<button ui-sref="app.properties.new({ owner: owner._id })" class="btn btn-primary btn-block input-lg">New Property</button>
-			</div>
+			<ul class="list-unstyled links" ng-show="owner.properties.length">
+				<li ng-repeat="property in owner.properties" ui-sref="app.properties.detail({ id: property._id })">{{ property.address }}</li>
+			</ul>
+			<p ng-hide="owner.properties.length">Looks like you haven't added any properties for this owner.</p>
+			<button ui-sref="app.properties.new({ owner: owner._id })" class="btn btn-primary btn-block btn-lg">New Property</button>
 		</div>
 		<div ng-show="owner.stripe_connect_url">
 			<p>Looks like you haven't connected a Stripe account to this owner.</p>
-			<button ng-click="stripeConnect()" class="btn btn-primary btn-block input-lg">Connect with Stripe</button>
+			<button ng-click="stripeConnect()" class="btn btn-primary btn-block btn-lg">Connect with Stripe</button>
 		</div>
 	</div>
 </div>

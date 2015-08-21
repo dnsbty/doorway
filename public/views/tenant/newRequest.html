@@ -1,7 +1,7 @@
+<h2 class="title">New Maintenance Request</h2>
 <div class="row">
 	<div class="col-sm-4 col-sm-offset-4" ng-switch="view">
 		<div ng-switch-default>
-			<h2>New Maintenance Request</h2>
 			<div class="alert alert-danger" ng-show="error">
 				{{ error }}
 			</div>
@@ -14,7 +14,7 @@
 					<label class="control-label">Message</label>
 					<textarea class="form-control" rows="5" ng-model="request.message"></textarea>
 				</div>
-				<button class="btn btn-primary btn-block input-lg">Submit Maintenance Request</button>
+				<button class="btn btn-primary btn-block btn-lg">Submit Maintenance Request</button>
 			</form>
 		</div>
 	</div>

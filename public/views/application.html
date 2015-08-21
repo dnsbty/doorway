@@ -34,7 +34,7 @@
 						<li ng-show="property.security_deposit">Security Deposit: {{ property.security_deposit | currency }}</li>
 						<li ng-show="property.pet_deposit">Pet Deposit: {{ property.pet_deposit | currency }}</li>
 					</ul>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="property">
@@ -87,7 +87,7 @@
 						<p><strong>Applicant is strongly encouraged to view the Property prior to submitting any application.</strong> <span class="small">Landlord makes no express or implied warranties as to the Property's condition. Applicant requests Landlord consider the following repairs or treatments should Applicant and Landlord enter into a lease:</span></p>
 						<textarea class="form-control input-lg" rows="5" ng-model="application.repair_requests"></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="contact">
@@ -124,7 +124,7 @@
 						<label>Mobile Phone</label>
 						<input type="text" class="form-control input-lg" ng-model="application.phone_mobile">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="identification">
@@ -169,7 +169,7 @@
 						<label>Citizenship</label>
 						<input type="text" class="form-control input-lg" placeholder="Country" ng-model="application.citizenship">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="emergency_contact">
@@ -203,7 +203,7 @@
 						<label>Email</label>
 						<input type="email" class="form-control input-lg" ng-model="application.emergency_contact.email">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="occupants">
@@ -224,7 +224,7 @@
 						</div>
 					</div>
 					<a class="btn" ng-click="addOccupant()">Add Occupant</a>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="current_address">
@@ -277,7 +277,7 @@
 						<label>Reason for move</label>
 						<textarea class="form-control input-lg" rows="2" ng-model="application.current_address.reason"></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="previous_address">
@@ -330,7 +330,7 @@
 						<label>Reason for move</label>
 						<textarea class="form-control input-lg" rows="2" ng-model="application.previous_address.reason"></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="employer">
@@ -379,7 +379,7 @@
 						<label>Position</label>
 						<input type="text" class="form-control input-lg" ng-model="application.current_employer.position">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="previous_employer">
@@ -432,7 +432,7 @@
 						<label>Position</label>
 						<input type="text" class="form-control input-lg" ng-model="application.previous_employer.position">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="other_income">
@@ -441,7 +441,7 @@
 					<div class="form-group">
 						<textarea class="form-control input-lg" rows="3" ng-model="application.other_income"></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="vehicles">
@@ -478,7 +478,7 @@
 						</div>
 					</div>
 					<a ng-click="addVehicle()">Add Vehicle</a>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="pets">
@@ -546,7 +546,7 @@
 						</div>
 					</div>
 					<a class="btn" ng-click="addPet()" ng-show="application.pets_boolean">Add Pet</a>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="miscellaneous">
@@ -677,7 +677,7 @@
 							<input type="radio" name="criminal" ng-model="application.miscellaneous.criminal_pending" ng-value="false" required> No
 						</label>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="additional_info">
@@ -685,7 +685,7 @@
 					<div class="form-group">
 						<textarea class="form-control input-lg" rows="5" ng-model="application.additional_comments"></textarea>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="payment">
@@ -707,7 +707,7 @@
 						<label>CVC (on back of card)</label>
 						<input type="text" class="form-control input-lg" ng-model="application.card.cvc" ng-required="true">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Continue</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Continue</button>
 				</form>
 			</div>
 			<div ng-switch-when="legal">
@@ -735,7 +735,7 @@
 						<label>Signature (Please type full name)</label>
 						<input type="text" class="form-control input-lg" ng-model="application.signature" ng-required="true">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block input-lg">Submit Application</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg">Submit Application</button>
 				</form>
 			</div>
 			<div ng-switch-when="confirmation">

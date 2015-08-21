@@ -10,7 +10,7 @@
 		<div ng-hide="requests.length">
 			<p ng-if="user._type == 'Tenant'">Looks like you haven't created any maintenance requests yet.</p>
 			<p ng-if="user._type == 'Manager'">Looks like your tenants haven't created any maintenance requests yet.</p>
-			<button class="btn btn-primary btn-block input-lg" ui-sref="app.requests.new" ng-if="user._type == 'Tenant'">New Maintenance Request</button>
+			<button class="btn btn-primary btn-block btn-lg" ui-sref="app.requests.new" ng-if="user._type == 'Tenant'">New Maintenance Request</button>
 		</div>
 	</div>
 </div>
