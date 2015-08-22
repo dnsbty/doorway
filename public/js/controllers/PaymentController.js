@@ -7,7 +7,7 @@ app.controller('PaymentController', [
 	function($scope, $state, auth, payments, payment) {
 		$scope.$parent.setBack({
 			title: "Payments",
-			link: "app.payments.list"
+			link: "app.payments"
 		});
 		$scope.user = auth.currentUser();
 		$scope.payment = payment;
