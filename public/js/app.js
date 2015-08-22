@@ -416,7 +416,8 @@ app.config([
 		})
 		.state('auth', {
 			url: '',
-			template: '<div class="container" ui-view></div>',
+			controller: 'MainController',
+			templateUrl: './views/container.html',
 			abstract: true
 		})
 		.state('auth.forgotPassword', {

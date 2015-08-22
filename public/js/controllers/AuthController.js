@@ -11,6 +11,7 @@ app.controller('AuthController', [
 		if ($stateParams.token)
 			$scope.user.token = $stateParams.token;
 		$scope.success = false;
+		$scope.passwordType = 'password';
 
 		$scope.login = function() {
 			auth.login($scope.user)
@@ -59,6 +60,13 @@ app.controller('AuthController', [
 			}).then(function() {
 				$scope.success = true;
 			});
+		};
+
+		$scope.togglePasswordShow = function () {
+			if ($scope.passwordType == 'password')
+				$scope.passwordType = 'text';
+			else
+				$scope.passwordType = 'password';
 		};
 	}
 ]);
