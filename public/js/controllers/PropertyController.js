@@ -14,7 +14,6 @@ app.controller('PropertyController', [
 		$scope.property = property;
 		$scope.properties = properties.properties;
 		$scope.owners = owners.owners;
-		console.log($scope.owners.length);
 		if ($scope.owners.length == 1)
 			$scope.property.owner = $scope.owners[0]._id;
 		else if ($stateParams.owner)

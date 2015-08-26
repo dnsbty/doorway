@@ -33,6 +33,6 @@ app.controller('MainController', [
 
 		$scope.setBack = function (button) {
 			$scope.backButton = button;
-		}
+		};
 	}
 ]);
