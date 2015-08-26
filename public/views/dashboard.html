@@ -1,7 +1,7 @@
 <h2 class="title">Hi {{ user.name_first }}!</h2>
 <nav class="container-ignore">
 	<ul ng-show="isManager" class="list-unstyled links">
-		<li ui-sref="app.owners"><i class="fa fa-users fa-fw"></i>Owners</li>
+		<li ui-sref="app.owners" ng-if="user.multiple_owners"><i class="fa fa-users fa-fw"></i>Owners</li>
 		<li ui-sref="app.properties.list"><i class="fa fa-home fa-fw"></i>Properties</li>
 		<li ui-sref="app.requests.list_manager"><i class="fa fa-wrench fa-fw"></i>Maintenance Requests</li>
 		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
@@ -12,3 +12,30 @@
 		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
 	</ul>
 </nav>
+<main class="onboarding" ng-if="user.onboarding && isManager" ng-controller="ManagerController">
+	<div class="container-fluid">
+		<div class="row" ng-switch="onboardingPage">
+			<div class="col-sm-4 col-sm-offset-4 panel" ng-switch-when="stripe">
+				<h2>Connect with Stripe</h2>
+				<p>We use a company called Stripe as our payment processing partner.  You will need to create an account on their site to be able to charge fees and allow your tenants to use Doorway to pay rent.</p>
+				<button class="btn btn-block btn-primary btn-lg" ng-click="stripeConnect()">Create a Stripe account</button>
+				<!--<a class="btn btn-block" ng-click="skipStripe()">I want to set up Stripe later</a>-->
+			</div>
+			<div class="col-sm-4 col-sm-offset-4 panel" ng-switch-when="manages_others">
+				<p>Will you be using the software to manage properties for yourself, or for other people too? (You can change this later)</p>
+				<button class="btn btn-block btn-primary btn-lg" ng-click="setMultipleOwners(false)">Just myself</button>
+				<button class="btn btn-block btn-lg" ng-click="setMultipleOwners(true)">For other people too</button>
+			</div>
+			<div class="col-sm-4 col-sm-offset-4 panel" ng-switch-when="self_manage">
+				<p>Great! To get started, add your properties into the system and then invite your tenants to set up tenant accounts.<p>
+				<p>If you have any questions, feel free to contact us using the support link in the menu at the top right of every page!</p>
+				<button class="btn btn-block btn-lg" ng-click="endOnboarding()">Add your first property</button>
+			</div>
+			<div class="col-sm-4 col-sm-offset-4 panel" ng-switch-when="other_manage">
+				<p>Great! To get started, you will need to create a Stripe account for each owner so that the rent payments can be transferred directly into their accounts.  Then you can add properties for each owner, and invite tenants to each property.<p>
+				<p>If you have any questions, feel free to contact us using the support link in the menu at the top right of every page!</p>
+				<button class="btn btn-block btn-lg" ng-click="endOnboarding()">Add your first owner</button>
+			</div>
+		</div>
+	</div>
+</main>

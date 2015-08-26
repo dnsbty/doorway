@@ -11,7 +11,8 @@ var UserSchema = new mongoose.Schema({
 	name_last: String,
 	phone: String,
 	created: { type: Date, default: Date.now },
-	last_login: { type: Date, default: Date.now }
+	last_login: { type: Date, default: Date.now },
+	onboarding: { type: Boolean, default: true }
 }, {
 	collection : 'users',
 	discriminatorKey: '_type'
@@ -59,11 +60,34 @@ UserSchema.methods.loginToken = function() {
 
 /* Schema for property managers */
 var ManagerSchema = UserSchema.extend({
+	multiple_owners: { type: Boolean, default: true },
 	owners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
 	properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
 	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }],
-	application_fee: Number
+	application_fee: { type: Number, default: 30 },
+	stripe_id: String,
+	stripe_public: String,
+	stripe_access: String,
+	stripe_refresh: String
 });
+
+ManagerSchema.methods.toJSON = function() {
+	var manager = this.toObject();
+	if (!manager.stripe_id || manager.stripe_id == '')
+		manager.stripe_connect_url = 'https://connect.stripe.com/oauth/authorize?response_type=code'
+			+ '&client_id=' + process.env.STRIPE_CONNECT + '&scope=read_write'
+			+ '&state=' + jwt.sign({ owner: this._id }, process.env.JWT_SECRET)
+			+ '&redirect_uri=' + encodeURIComponent(process.env.ROOT_NAME + '/#/managers/connect')
+			+ '&stripe_user[email]=' + manager.email
+			+ '&stripe_user[url]=' + encodeURIComponent(process.env.ROOT_NAME)
+			+ '&stripe_user[phone_number]=' + manager.phone
+			+ '&stripe_user[first_name]=' + manager.name_first
+			+ '&stripe_user[last_name]=' + manager.name_last
+			+ '&stripe_user[physical_product]=true&stripe_user[country]=US&stripe_user[currency]=usd'
+			+ '&stripe_user[product_category]=other&stripe_user[average_payment]=50'
+			+ '&stripe_user[product_description]=' + encodeURIComponent('Property management services');
+	return manager;
+}
 
 /* Schema for tenants */
 var TenantSchema = UserSchema.extend({

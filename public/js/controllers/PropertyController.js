@@ -12,10 +12,13 @@ app.controller('PropertyController', [
 	function($scope, $state, $stateParams, $window, auth, stripe, properties, property, owners, applications) {
 		$scope.user = auth.currentUser();
 		$scope.property = property;
-		if ($stateParams.owner)
-			$scope.property.owner = $stateParams.owner;
 		$scope.properties = properties.properties;
 		$scope.owners = owners.owners;
+		console.log($scope.owners.length);
+		if ($scope.owners.length == 1)
+			$scope.property.owner = $scope.owners[0]._id;
+		else if ($stateParams.owner)
+			$scope.property.owner = $stateParams.owner;
 		$scope.page = 'main';
 		$scope.applications = applications.applications;
 		$scope.application = {

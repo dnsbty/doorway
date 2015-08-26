@@ -1,4 +1,4 @@
-var app = angular.module('doorway', ['ui.router', 'angular-stripe', 'angulartics', 'angulartics.google.analytics']);
+var app = angular.module('doorway', ['ui.router', 'angular-stripe', 'angulartics', 'angulartics.google.analytics', 'ngMask']);
 
 app.config(function (stripeProvider) {
 	stripeProvider.setPublishableKey(window.stripeKey);
@@ -402,7 +402,7 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('app.connect', {
+		.state('app.connectOwner', {
 			url: '/owners/connect?state&code',
 			controller: 'ManagerController',
 			onEnter: ['$state', 'auth', '$stateParams', 'owners', function($state, auth, $stateParams, owners) {
@@ -410,6 +410,19 @@ app.config([
 					$state.go('home');
 				owners.connect($stateParams.state, $stateParams.code).success(function(data){
 					$state.go('app.ownerDetails', { id: data._id });
+				});
+			}],
+			authenticate: true
+		})
+		.state('app.connectManager', {
+			url: '/managers/connect?code',
+			controller: 'ManagerController',
+			onEnter: ['$state', 'auth', '$stateParams', 'managers', function($state, auth, $stateParams, managers) {
+				if (!auth.isLoggedIn() || !auth.isManager())
+					$state.go('home');
+				managers.connect($stateParams.code).success(function(data){
+					auth.saveCurrentUser(data);
+					$state.go('app.dashboard');
 				});
 			}],
 			authenticate: true
