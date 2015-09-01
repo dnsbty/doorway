@@ -130,6 +130,9 @@ i.lg {
 .container-ignore {
 	margin: 0 -15px;
 }
+nav.container-ignore {
+	margin-top: -1.7em;
+}
 footer {
 	color: #bdc3c7;
 	font-size: 0.8em;
