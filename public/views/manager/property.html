@@ -4,7 +4,9 @@
 		<div>
 			<ul class="list-unstyled">
 				<li><p>Rent: {{ property.rent | currency }}</p></li>
-				<li><p>Owner: <a ui-sref="app.ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p></li>
+				<li ng-if="user.multiple_owners">
+					<p>Owner: <a ui-sref="app.ownerDetails({id: property.owner._id})">{{ property.owner.name }}</a></p>
+				</li>
 			</ul>
 			<div>
 				<h3>Tenants</h3>
