@@ -11,8 +11,8 @@
 			<div>
 				<h3>Tenants</h3>
 				<ul class="list-unstyled links" ng-show="property.tenants.length">
-					<li ng-repeat="tenant in property.tenants">
-						<a ui-sref="app.tenants.detail({id: tenant._id})">{{ tenant.name_first }} {{ tenant.name_last }}</a>
+					<li ng-repeat="tenant in property.tenants" ui-sref="app.tenants.detail({id: tenant._id})">
+						{{ tenant.name_first }} {{ tenant.name_last }}
 					</li>
 				</ul>
 				<p ng-hide="property.tenants.length">It appears that this property is empty.</p>
@@ -24,8 +24,8 @@
 		<div ng-show="property.applications_open">
 			<h3>Applications</h3>
 			<ul class="list-unstyled links" ng-show="applications.length">
-				<li ng-repeat="application in applications">
-					<a ui-sref="app.application({id: application._id})">{{ application.name_first }} {{ application.name_last }}</a>
+				<li ng-repeat="application in applications" ui-sref="app.application({id: application._id})">
+					{{ application.name_first }} {{ application.name_last }}
 				</li>
 			</ul>
 			<p ng-hide="applications.length">No applications have been received for this property.</p>
