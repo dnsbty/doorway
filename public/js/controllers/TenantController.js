@@ -30,7 +30,7 @@ app.controller('TenantController', [
 			case "app.autoPay":
 				$scope.$parent.setBack({
 					title: "Payments",
-					link: "app.payments"
+					link: "app.payments.list_tenant"
 				});
 				break;
 			default:

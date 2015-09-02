@@ -1,0 +1,11 @@
+<h2 class="title">Payments ({{ payments.length }})</h2>
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<ul class="list-unstyled links" ng-show="payments.length">
+			<li ng-repeat="payment in payments" ui-sref="app.payment({ id: payment._id })">
+				{{ payment.created | date }} &mdash; {{ payment.amount | currency }}
+			</li>
+		</ul>
+		<p ng-hide="payments.length">Looks like you haven't received a payment yet.</p>
+	</div>
+</div>

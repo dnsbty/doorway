@@ -9,7 +9,9 @@ app.controller('ManagerController', [
 	'properties',
 	'tenants',
 	'requests',
-	function($scope, $state, $stateParams, $window, auth, managers, owners, properties, tenants, requests) {
+	'payments',
+	function($scope, $state, $stateParams, $window, auth, managers, owners, properties, tenants, requests, payments) {
+		console.log($state.current.name);
 		switch ($state.current.name)
 		{
 			case "app.newOwner":
@@ -44,6 +46,7 @@ app.controller('ManagerController', [
 		$scope.onboardingPage = 'stripe';
 		if ($scope.user.stripe_id)
 			$scope.onboardingPage = 'manages_others';
+		$scope.payments = payments.payments;
 
 		$scope.newOwner = function() {
 			owners.create({ name: $scope.owner.name }).success(function(owner) {

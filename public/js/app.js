@@ -107,11 +107,45 @@ app.config([
 		})
 		.state('app.payments', {
 			url: '/payments',
+			template: '<ui-view/>',
+			abstract: true
+		})
+		.state('app.payments.list', {
+			url: '/',
+			controller: function($scope, $state, auth) {
+				console.log(auth.isManager());
+				if (!auth.isLoggedIn())
+					$state.go('home');
+				else if (auth.isTenant())
+					$state.go('app.payments.list_tenant');
+				else if (auth.isManager())
+					$state.go('app.payments.list_manager');
+					
+			},
+			authenticate: true
+		})
+		.state('app.payments.list_tenant', {
+			url: '',
 			templateUrl: './views/tenant/payments.html',
 			controller: 'TenantController',
 			onEnter: ['$state', 'auth', function($state, auth) {
 				if (!auth.isTenant())
-					$state.go('home');
+					$state.go('app.payments.list_manager');
+			}],
+			resolve: {
+				paymentsPromise: ['payments', function(payments) {
+					return payments.getAll();
+				}]
+			},
+			authenticate: true
+		})
+		.state('app.payments.list_manager', {
+			url: '',
+			templateUrl: './views/manager/payments.html',
+			controller: 'ManagerController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isManager())
+					$state.go('app.payments.list_tenant');
 			}],
 			resolve: {
 				paymentsPromise: ['payments', function(payments) {

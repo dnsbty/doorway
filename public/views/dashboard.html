@@ -3,11 +3,12 @@
 	<ul ng-show="isManager" class="list-unstyled links">
 		<li ui-sref="app.owners" ng-if="user.multiple_owners"><i class="fa fa-users fa-fw"></i>Owners</li>
 		<li ui-sref="app.properties.list"><i class="fa fa-home fa-fw"></i>Properties</li>
+		<li ui-sref="app.payments.list_manager"><i class="fa fa-money fa-fw"></i>Payments</li>
 		<li ui-sref="app.requests.list_manager"><i class="fa fa-wrench fa-fw"></i>Maintenance Requests</li>
 		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
 	</ul>
 	<ul ng-show="isTenant" class="list-unstyled links">
-		<li ui-sref="app.payments"><i class="fa fa-money fa-fw"></i>Payments</li>
+		<li ui-sref="app.payments.list_tenant"><i class="fa fa-money fa-fw"></i>Payments</li>
 		<li ui-sref="app.requests.list_tenant"><i class="fa fa-wrench fa-fw"></i>Maintenance</li>
 		<li ui-sref="app.support"><i class="fa fa-support fa-fw"></i>Support</li>
 	</ul>
