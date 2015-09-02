@@ -11,7 +11,6 @@ app.controller('ManagerController', [
 	'requests',
 	'payments',
 	function($scope, $state, $stateParams, $window, auth, managers, owners, properties, tenants, requests, payments) {
-		console.log($state.current.name);
 		switch ($state.current.name)
 		{
 			case "app.newOwner":

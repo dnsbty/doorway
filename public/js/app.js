@@ -154,12 +154,12 @@ app.config([
 			},
 			authenticate: true
 		})
-		.state('app.payment', {
+		.state('app.payments.detail', {
 			url: '/payments/{id}',
 			templateUrl: './views/tenant/payment.html',
 			controller: 'PaymentController',
 			onEnter: ['$state', 'auth', function($state, auth) {
-				if (!auth.isLoggedIn() || !auth.isTenant())
+				if (!auth.isLoggedIn())
 					$state.go('home');
 			}],
 			resolve: {
