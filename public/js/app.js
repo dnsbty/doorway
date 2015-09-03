@@ -154,6 +154,21 @@ app.config([
 			},
 			authenticate: true
 		})
+		.state('app.payments.new', {
+			url: '/new',
+			templateUrl: './views/tenant/newPayment.html',
+			controller: 'TenantController',
+			onEnter: ['$state', 'auth', function($state, auth) {
+				if (!auth.isLoggedIn() || !auth.isTenant())
+					$state.go('home');
+				var user = auth.currentUser();
+				if (!user.property || !user.property.rent) {
+					auth.logout();
+					$state.go('app.payments.new');
+				}
+			}],
+			authenticate: true
+		})
 		.state('app.payments.detail', {
 			url: '/{id}',
 			templateUrl: './views/tenant/payment.html',
@@ -167,21 +182,6 @@ app.config([
 					return payments.get($stateParams.id);
 				}]
 			},
-			authenticate: true
-		})
-		.state('app.newPayment', {
-			url: '/newPayment',
-			templateUrl: './views/tenant/newPayment.html',
-			controller: 'TenantController',
-			onEnter: ['$state', 'auth', function($state, auth) {
-				if (!auth.isLoggedIn() || !auth.isTenant())
-					$state.go('home');
-				var user = auth.currentUser();
-				if (!user.property || !user.property.rent) {
-					auth.logout();
-					$state.go('app.newPayment');
-				}
-			}],
 			authenticate: true
 		})
 		.state('app.autoPay', {

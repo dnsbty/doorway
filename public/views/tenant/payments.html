@@ -7,7 +7,7 @@
 			</li>
 		</ul>
 		<p ng-hide="payments.length">Looks like you haven't made a payment yet.</p>
-		<button class="btn btn-primary btn-block btn-lg" ui-sref="app.newPayment">New Payment</button>
+		<button class="btn btn-primary btn-block btn-lg" ui-sref="app.payments.new">New Payment</button>
 		<a class="btn btn-block" ui-sref="app.autoPay" ng-hide="user.autopay">Set up automatic payments</a>
 		<a class="btn btn-block" ui-sref="app.autoPay" ng-show="user.autopay">Manage automatic payments</a>
 		</div>
