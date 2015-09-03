@@ -155,7 +155,7 @@ app.config([
 			authenticate: true
 		})
 		.state('app.payments.detail', {
-			url: '/payments/{id}',
+			url: '/{id}',
 			templateUrl: './views/tenant/payment.html',
 			controller: 'PaymentController',
 			onEnter: ['$state', 'auth', function($state, auth) {
