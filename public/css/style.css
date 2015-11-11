@@ -156,6 +156,7 @@ label {
 	width: 100%;
 }
 label > .checkbox { margin-top: 0; }
+label > a.link { margin-left: 0.5em; }
 
 /* PAGE-SPECIFIC STYLES */
 /* Home Page */
@@ -220,7 +221,12 @@ span.pricing {
 }
 
 /* Onboarding Screens */
-.onboarding {
+body.has-modal {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.onboarding, .modal-bg {
 	background: #fff;
 	position: absolute;
 	width: 100%;
@@ -228,7 +234,7 @@ span.pricing {
 	top: 0;
 	left: 0;
 }
-.onboarding .panel {
+.onboarding .panel, .modal {
 	position: absolute;
 	top: 25%;
 	transform: translate(0, -50%);
@@ -236,7 +242,7 @@ span.pricing {
 	border: 0;
 	box-shadow: none;
 }
-.onboarding .panel h2 { text-align: center; }
+.onboarding .panel h2, .modal h2 { text-align: center; }
 
 /* Application Detail Page */
 .page-application-detail p {

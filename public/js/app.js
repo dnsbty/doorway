@@ -511,6 +511,26 @@ app.config([
 				$state.go('home');
 			}]
 		})
+		.state('app.terms', {
+			url: '/terms',
+			controller: function($scope) {
+				$scope.$parent.setBack({
+					title: "Home",
+					link: "home"
+				});
+			},
+			templateUrl: './views/terms.html'
+		})
+		.state('app.privacy', {
+			url: '/privacy',
+			controller: function($scope) {
+				$scope.$parent.setBack({
+					title: "Home",
+					link: "home"
+				});
+			},
+			templateUrl: './views/privacy.html'
+		})
 		.state('app.support', {
 			url: '/support',
 			controller: function($scope) {
