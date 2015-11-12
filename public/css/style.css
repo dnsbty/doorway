@@ -228,13 +228,14 @@ body.has-modal {
 }
 .onboarding, .modal-bg {
 	background: #fff;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	top: 0;
 	left: 0;
 }
-.onboarding .panel, .modal {
+.onboarding .panel, .modal-bg .panel {
+	display: block;
 	position: absolute;
 	top: 25%;
 	transform: translate(0, -50%);
@@ -242,7 +243,7 @@ body.has-modal {
 	border: 0;
 	box-shadow: none;
 }
-.onboarding .panel h2, .modal h2 { text-align: center; }
+.onboarding .panel h2, .modal-bg .panel h2 { text-align: center; }
 
 /* Application Detail Page */
 .page-application-detail p {

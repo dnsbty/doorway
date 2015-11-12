@@ -265,6 +265,67 @@ router.post('/:property/applications', function(req, res, next) {
 	});
 });
 
+/* POST new application invitation */
+router.post('/:property/applications/invite', auth, function(req, res, next) {
+	if (req.payload._id != req.property.manager)
+		return res.status(403).json({ message: 'Only the manager of this property may invite applicants to it' });
+	console.log(req.body);
+	req.property.populate('manager', function(err, property) {
+		if (err)
+			return next(err);
+
+		if (req.body.type == "text") {
+			// send a text message with a link to the application
+			twilio.sendMessage({
+				to: req.body.number.replace(/[^0-9]/g, ''),
+				from: '+18019013606',
+				body: 'Application to lease ' + property.address + ':\n' + process.env.ROOT_NAME +'/#/properties/' + property._id + '/apply'
+			});
+			res.json({ message: 'The application invitation has been sent.' });
+		} else if (req.body.type == "email") {
+			res.status(503).json({ message: 'The system for emailing application invitations is under construction.  Please invite via text message or send an email manually until this is working.' });
+			// send an email with a link to the application
+
+			// TODO: create an email template for invitations
+
+			/*mandrill.messages.sendTemplate({
+				'template_name': 'tenant-invite',
+				'template_content': null,
+				'message': {
+					'from_email': req.property.manager.email,
+					'from_name': req.property.manager.getFullName(),
+					'to': [{
+						'email': tenant.email,
+						'name': tenant.name_first,
+						'type': 'to'
+					}],
+					'merge_language': 'handlebars',
+					'global_merge_vars': [{
+						'name': 'tenant_name',
+						'content': tenant.name_first
+					},{
+						'name': 'manager_name',
+						'content': req.property.manager.getFullName()
+					},{
+						'name': 'manager_phone',
+						'content': req.property.manager.phone
+					},{
+						'name': 'link',
+						'content': process.env.ROOT_NAME + '/#/newTenant/' + tenant._id + '/' + tenant.hash
+					}]
+				},
+				'async': true
+			}, function(result) {
+				return res.json(tenant);
+			}, function(err) {
+				return next(err);
+			});*/
+		} else {
+			return res.status(400).json({ message: 'A message type must be specified' });
+		}
+	});
+});
+
 /* Get property object when a property param is supplied */
 router.param('property', function(req, res, next, id) {
 	var query = Property.findById(id);

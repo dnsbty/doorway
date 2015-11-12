@@ -31,6 +31,13 @@ app.factory('properties', ['$http', 'auth', function($http, auth){
 				console.log(err);
 			});
 		},
+		inviteToApply: function(id, info) {
+			return $http.post('/properties/' + id + '/applications/invite', info, {
+				headers: { Authorization: 'Bearer ' + auth.getToken() }
+			}).error(function(err) {
+				console.error(err);
+			});
+		},
 		apply: function(property, application) {
 			return $http.post('/properties/' + property._id + '/applications', application).error(function(err) {
 				console.log(err);

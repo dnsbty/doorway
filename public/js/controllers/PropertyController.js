@@ -25,6 +25,11 @@ app.controller('PropertyController', [
 			vehicles: [{}],
 			pets: [{}]
 		};
+		$scope.showModal = false;
+		$scope.share = {
+			number: '',
+			email: ''
+		};
 		if ($state.current.name == "app.properties.apply")
 			$scope.$parent.setBack(false);
 		else
@@ -57,6 +62,49 @@ app.controller('PropertyController', [
 				$scope.error = err.message;
 			});
 		};
+
+		$scope.textApplicationLink = function() {
+			console.info($scope.share.number);
+			properties.inviteToApply($scope.property._id, {
+				type: "text",
+				number: $scope.share.number
+			}).success(function(response) {
+				$scope.error = "";
+				$scope.success = "The text message was successfully sent";
+				$scope.modal();
+			}).error(function(response) {
+				$scope.success = "";
+				$scope.error = response.message;
+				$scope.modal();
+			});
+		};
+
+		$scope.emailApplicationLink = function() {
+			console.info($scope.share.email);
+			properties.inviteToApply($scope.property._id, {
+				type: "email",
+				email: $scope.share.email
+			}).success(function(response) {
+				$scope.error = "";
+				$scope.success = "The email was successfully sent";
+				$scope.modal();
+			}).error(function(response) {
+				$scope.success = "";
+				$scope.error = response.message;
+				$scope.modal();
+			});
+		};
+
+		$scope.modal = function (name) {
+			if ($scope.showModal)
+			{
+				document.getElementsByTagName('body')[0].className = '';
+				$scope.showModal = false;
+			} else {
+				document.getElementsByTagName('body')[0].className = 'has-modal';
+				$scope.showModal = name;
+			}
+		}
 
 		$scope.cardToken = function() {
 			$scope.error = null;
