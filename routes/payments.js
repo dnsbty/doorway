@@ -74,6 +74,11 @@ router.post('/', auth, function(req, res, next) {
 					if (!account || !account.token || account.token == '')
 						return next(new Error('Account isn\'t correctly set up.'));
 
+					/*
+					NOTE: I'm switching away from using the destination parameter to avoid fraud
+					I will leave this code here for now in case for some reason I need to switch
+					back.  It should probably be removed at some point in the future.
+
 					stripe.charges.create({
 						amount: req.body.payment.amount * 100,
 						currency: 'usd',
@@ -118,13 +123,7 @@ router.post('/', auth, function(req, res, next) {
 								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.  Please allow 5-7 business days for this payment to arrive.'
 							});
 						});
-					});
-
-					/*
-					NOTE: Eventually we will probably want to switch back to performing transactions
-					on behalf of owners instead of using the destination parameter, so I've left the
-					code here, but for the moment it will take too long to get everyone signed up to
-					the ACH beta, and using destination seems to be the easiest way around that.
+					});*/
 
 					stripe.tokens.create({
 						customer: tenant.stripe_customer,
@@ -140,18 +139,9 @@ router.post('/', auth, function(req, res, next) {
 							currency: 'usd',
 							source: token.id,
 							description: 'Rent payment',
-							application_fee: 300
+							application_fee: 275
 						},
 						owner.stripe_access,
-						stripe.charges.create({
-							amount: req.body.payment.amount * 100,
-							currency: 'usd',
-							customer: tenant.stripe_customer,
-							source: account.token,
-							description: 'Rent payment',
-							application_fee: 300,
-							destination: owner.stripe_id
-						},
 						function(err, charge) {
 							if (err)
 								return next(err);
@@ -168,8 +158,27 @@ router.post('/', auth, function(req, res, next) {
 							});
 							payment.save();
 							res.json(payment);
+
+							// notify Dennis that a payment was made
+							twilio.sendMessage({
+								to: '2107718253',
+								from: '+18019013606',
+								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
+							});
+
+							Manager.findById(property.manager, function(err, manager) {
+								if (err)
+									return next(err);
+
+								// notify the manager that a payment was made
+								twilio.sendMessage({
+									to: manager.phone.replace(/[^0-9]/g, ''),
+									from: '+18019013606',
+									body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.  Please allow 5-7 business days for this payment to arrive.'
+								});
+							});
 						});
-					});*/
+					});
 				});
 			});
 		});
