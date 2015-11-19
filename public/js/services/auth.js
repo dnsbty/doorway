@@ -59,7 +59,11 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 			});
 		},
 		saveCurrentUser: function(user) {
-			$window.localStorage['doorway-user'] = angular.toJson(user);
+			try {
+				$window.localStorage['doorway-user'] = angular.toJson(user);
+			} catch (e) {
+				console.err("User info could not be saved to localStorage");
+			}
 		},
 		savePasswordReset: function(user) {
 			return $http.put('/users/' + user._id + '/password', {
@@ -69,7 +73,11 @@ app.factory('auth', ['$http', '$window', '$filter', function($http, $window, $fi
 			});
 		},
 		saveToken: function(token) {
-			$window.localStorage['doorway-token'] = token;
+			try {
+				$window.localStorage['doorway-token'] = token;
+			} catch (e) {
+				console.err("User token could not be saved to localStorage");
+			}
 		}
 	};
 	return auth;

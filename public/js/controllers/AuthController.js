@@ -18,14 +18,24 @@ app.controller('AuthController', [
 			.error(function(err) {
 				$scope.error = err.message;
 			}).then(function() {
-				// Logged in, redirect to correct URL
-				if ( $stateParams.toState ) {
-					$state.go($stateParams.toState, $stateParams.toParams);
-				} else if( $rootScope.returnToState ) {
-					$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
-				} else {
-					// redirect all others after login to dashboard
-					$state.go('app.dashboard');
+				// Make sure that the info was saved to localStorage
+				// Prevent bug caused by Safari's Private Browsing mode
+				if (!auth.isLoggedIn()) {
+					if (navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && !navigator.userAgent.match('CriOS'))
+						$scope.error = "<p>Doorway doesn't currently support Safari's Private Browsing mode.  Please disable Private Browsing and try logging in again.</p><p><a href=\"https://support.apple.com/en-us/HT203036\">How to disable Private Browsing</a></p>";
+					else
+						$scope.error = "Your web browser does not support storing settings locally.  Please try another browser or contact us for help at <a href=\"tel:8018993951\">(801)899-3951</a>.";
+				}
+				else {
+					// Logged in, redirect to correct URL
+					if ( $stateParams.toState ) {
+						$state.go($stateParams.toState, $stateParams.toParams);
+					} else if( $rootScope.returnToState ) {
+						$state.go($rootScope.returnToState, $rootScope.returnToStateParams);
+					} else {
+						// redirect all others after login to dashboard
+						$state.go('app.dashboard');
+					}
 				}
 			});
 		};
