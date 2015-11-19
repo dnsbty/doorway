@@ -1,6 +1,7 @@
 body {
 	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 14pt;
+	font-weight: 300;
 	width: 100%;
 	overflow-x: hidden;
 }
@@ -66,6 +67,9 @@ nav.menu ul.links > li:hover {
 }
 input.form-control {
 	color: #34495e;
+}
+label, .btn, .checkbox label, .radio label {
+	font-weight: 300;
 }
 label, address, .form-group {
 	text-align: left;
