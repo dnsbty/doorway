@@ -549,7 +549,7 @@ app.config([
 	}
 ]);
 
-app.run(['$rootScope', '$location', 'auth', function ($rootScope, $location, auth) {
+app.run(['$rootScope', '$location', '$window', 'auth', function ($rootScope, $location, $window, auth) {
 	// Redirect to login if route requires auth and you're not logged in
 	$rootScope.$on('$stateChangeStart', function (event, destination, toParams) {
 		if (destination.authenticate && !auth.isLoggedIn()) {
@@ -558,4 +558,9 @@ app.run(['$rootScope', '$location', 'auth', function ($rootScope, $location, aut
 			$location.path('/login');
 		}
 	});
+
+	// Scroll to the top of the page for new UI states
+	$rootScope.$on('$stateChangeSuccess',function(){
+	    $window.scrollTo(0,0);
+	})
 }]);
