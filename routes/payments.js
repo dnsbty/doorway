@@ -125,6 +125,14 @@ router.post('/', auth, function(req, res, next) {
 						});
 					});*/
 
+					// Determine the amount of the fee to be charged
+					var fee_amount = 275;
+					if (owner.fee_amount !== null && owner.fee_amount < fee_amount)
+						fee_amount = owner.fee_amount;
+					if (property.fee_amount !== null && property.fee_amount < fee_amount)
+						fee_amount = property.fee_amount;
+					console.log("Fee: " + fee_amount);
+
 					stripe.tokens.create({
 						customer: tenant.stripe_customer,
 						bank_account: account.token

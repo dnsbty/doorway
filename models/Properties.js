@@ -10,6 +10,7 @@ var PropertySchema = new mongoose.Schema({
 	security_deposit: Number,
 	pet_deposit: Number,
 	applications_open: Boolean,
+	fee_amount: { type: Number, default: null },
 	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner' },
 	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
 	tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tenant' }]

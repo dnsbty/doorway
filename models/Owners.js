@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 
 var OwnerSchema = new mongoose.Schema({
 	name: String,
+	fee_amount: { type: Number, default: null },
 	manager: { type: mongoose.Schema.Types.ObjectId, ref: 'Manager' },
 	properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
 	stripe_id: String,
