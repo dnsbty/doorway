@@ -147,7 +147,7 @@ router.post('/', auth, function(req, res, next) {
 							currency: 'usd',
 							source: token.id,
 							description: 'Rent payment',
-							application_fee: 275
+							application_fee: fee_amount
 						},
 						owner.stripe_access,
 						function(err, charge) {
