@@ -74,109 +74,60 @@ router.post('/', auth, function(req, res, next) {
 					if (!account || !account.token || account.token == '')
 						return next(new Error('Account isn\'t correctly set up.'));
 
-					/*
-					NOTE: I'm switching away from using the destination parameter to avoid fraud
-					I will leave this code here for now in case for some reason I need to switch
-					back.  It should probably be removed at some point in the future.
-
-					stripe.charges.create({
-						amount: req.body.payment.amount * 100,
-						currency: 'usd',
-						customer: tenant.stripe_customer,
-						source: account.token,
-						description: 'Rent payment',
-						application_fee: 300,
-						destination: owner.stripe_id
-					},
-					function(err, charge) {
+					Manager.findById(tenant.manager, function(err, manager) {
 						if (err)
 							return next(err);
+						if (!manager.verified)
+							return res.status(403).json({ message: "Your manager still hasn't been verified.  Please contact them to resolve this issue."});
 
-						var payment = new Payment({
-							stripe_charge: charge.id,
-							amount: charge.amount / 100,
-							created: Date(charge.created * 1000),
-							source: account,
-							property: property,
-							payer: tenant,
-							owner: owner,
-							manager: property.manager
-						});
-						payment.save();
-						res.json(payment);
+						// Determine the amount of the fee to be charged
+						var fee_amount = 275;
+						if (owner.fee_amount !== null && owner.fee_amount < fee_amount)
+							fee_amount = owner.fee_amount;
+						if (property.fee_amount !== null && property.fee_amount < fee_amount)
+							fee_amount = property.fee_amount;
+						console.log("Fee: " + fee_amount);
 
-						// notify Dennis that a payment was made
-						twilio.sendMessage({
-							to: '2107718253',
-							from: '+18019013606',
-							body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
-						});
-
-						Manager.findById(property.manager, function(err, manager) {
-							if (err)
-								return next(err);
-
-							// notify the manager that a payment was made
-							twilio.sendMessage({
-								to: manager.phone.replace(/[^0-9]/g, ''),
-								from: '+18019013606',
-								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.  Please allow 5-7 business days for this payment to arrive.'
-							});
-						});
-					});*/
-
-					// Determine the amount of the fee to be charged
-					var fee_amount = 275;
-					if (owner.fee_amount !== null && owner.fee_amount < fee_amount)
-						fee_amount = owner.fee_amount;
-					if (property.fee_amount !== null && property.fee_amount < fee_amount)
-						fee_amount = property.fee_amount;
-					console.log("Fee: " + fee_amount);
-
-					stripe.tokens.create({
-						customer: tenant.stripe_customer,
-						bank_account: account.token
-					},
-					owner.stripe_access,
-					function(err, token) {
-						if (err)
-							return next(err);
-
-						stripe.charges.create({
-							amount: req.body.payment.amount * 100,
-							currency: 'usd',
-							source: token.id,
-							description: 'Rent payment',
-							application_fee: fee_amount
+						stripe.tokens.create({
+							customer: tenant.stripe_customer,
+							bank_account: account.token
 						},
 						owner.stripe_access,
-						function(err, charge) {
+						function(err, token) {
 							if (err)
 								return next(err);
 
-							var payment = new Payment({
-								stripe_charge: charge.id,
-								amount: charge.amount / 100,
-								created: Date(charge.created * 1000),
-								source: account,
-								property: property,
-								payer: tenant,
-								owner: owner,
-								manager: property.manager
-							});
-							payment.save();
-							res.json(payment);
-
-							// notify Dennis that a payment was made
-							twilio.sendMessage({
-								to: '2107718253',
-								from: '+18019013606',
-								body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
-							});
-
-							Manager.findById(property.manager, function(err, manager) {
+							stripe.charges.create({
+								amount: req.body.payment.amount * 100,
+								currency: 'usd',
+								source: token.id,
+								description: 'Rent payment',
+								application_fee: fee_amount
+							},
+							owner.stripe_access,
+							function(err, charge) {
 								if (err)
 									return next(err);
+
+								var payment = new Payment({
+									stripe_charge: charge.id,
+									amount: charge.amount / 100,
+									created: Date(charge.created * 1000),
+									source: account,
+									property: property,
+									payer: tenant,
+									owner: owner,
+									manager: property.manager
+								});
+								payment.save();
+								res.json(payment);
+
+								// notify Dennis that a payment was made
+								twilio.sendMessage({
+									to: '2107718253',
+									from: '+18019013606',
+									body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.'
+								});
 
 								// notify the manager that a payment was made
 								twilio.sendMessage({
@@ -184,14 +135,14 @@ router.post('/', auth, function(req, res, next) {
 									from: '+18019013606',
 									body: tenant.getFullName() + ' just paid $' + payment.amount + ' for rent of ' + property.address +'.  Please allow 5-7 business days for this payment to arrive.'
 								});
-							});
-						});
-					});
-				});
-			});
-		});
-	});
-});
+							}); // stripe charge create
+						}); // stripe token create
+					}); // manager
+				}); // account
+			}); // owner
+		}); // property
+	}); // tenant
+}); // router.post
 
 /* Get payment object when a payment param is supplied */
 router.param('payment', function(req, res, next, id) {

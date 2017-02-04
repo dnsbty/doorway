@@ -60,6 +60,7 @@ UserSchema.methods.loginToken = function() {
 
 /* Schema for property managers */
 var ManagerSchema = UserSchema.extend({
+	verified: { type: Boolean, default: false },
 	multiple_owners: { type: Boolean, default: true },
 	owners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
 	properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
